@@ -170,7 +170,6 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .ar-name{font-weight:600;color:var(--text2)}
 .ar-best{font-size:9px;font-weight:700;background:var(--green2);color:var(--green);padding:1px 6px;border-radius:4px;margin-left:5px}
 .ar-meta{font-family:var(--mono);font-size:10px;color:var(--text3)}
-.ar-best-tag{font-size:9px;font-weight:700;background:var(--green2);color:var(--green);padding:2px 6px;border-radius:4px}
 .ar-cost{font-weight:700;color:var(--text)}
 .a-btns{display:flex;gap:6px}
 .btn-approve{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:700;background:var(--green2);border:1px solid #86efac;color:var(--green);cursor:pointer;transition:all .15s;font-family:var(--sans)}
@@ -521,7 +520,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   </div>
   <div class="nav-spc"></div>
   <div class="nav-mid">
-    <button class="nav-tab on" onclick="window.location.href='../dashboard/dashboard.html'">Dashboard</button>
+    <button class="nav-tab on">Dashboard</button>
     <button class="nav-tab" onclick="window.location.href='../map/map.html'">🗺 Map</button>
     <button class="nav-tab" onclick="window.location.href='../analytics/analytics.html'">Analytics</button>
     <button class="nav-tab" onclick="window.location.href='../reports/reports.html'">Reports</button>
@@ -2035,7 +2034,7 @@ function genAltRoutes(s) {
         {name:'Cape of Good Hope Route',via:'Mundra → Cape of Good Hope → Rotterdam (bypass Suez)',extraH:168,extraCost:280000,rec:'last_resort',note:'Only if Suez Canal is blocked. Adds 7 days + heavy bunker fuel.'},
       ],
       Chennai: [
-        {name:'Tuticorin Port (VOC)',via:'Road drayage Chennai → Tuticorin VOC Port → Colombo',extraH:18,extraCost:2800,rec:'best',note:'Chennai cyclone warning active. Tuticorin 180km inland, unaffected.'},
+        {name:'Tuticorin Port (VOC)',via:'Road drayage Chennai → Tuticorin VOC Port → Colombo',extraH:18,extraCost:28000,rec:'best',note:'Chennai cyclone warning active. Tuticorin 180km inland, unaffected.'},
         {name:'Wait for port reopening',via:'Hold cargo at Chennai CFS — port resumes post-cyclone',extraH:36,extraCost:12000,rec:'acceptable',note:'CFS demurrage applies. Viable if cyclone passes within 24h.'},
       ],
       Kolkata: [
@@ -2261,7 +2260,7 @@ function openSDM(s) {
   }[mode] || {heading:'Alternative Options', sub:''};
 
   document.getElementById('sdm-alt-routes').innerHTML = `
-    <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5px solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
+    <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5 solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
       <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${modeCtx.heading}</div>
       <div style="font-size:11px;color:var(--text3);line-height:1.6">${modeCtx.sub}</div>
     </div>
