@@ -1,10 +1,6 @@
-const CONFIG = {
-    BASE_URL: (function() {
-        const host = window.location.hostname;
-        if (host === 'localhost' || host === '127.0.0.1') {
-            return 'http://localhost:5000';
-        }
-        return 'https://vaanichain-backend-1099191343978.asia-south1.run.app';
-    })()
+const CONFIG = { 
+    BASE_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' 
+        ? 'http://127.0.0.1:5000' 
+        : 'https://vaanichain-backend.onrender.com' 
 };
 const API = CONFIG.BASE_URL;
