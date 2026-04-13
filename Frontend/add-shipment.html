@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Shipment - VaaniChain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f2f7; --white: #fff; --border: #e2e6ef; --text: #0f172a;
+            --text2: #374151; --text3: #6b7280; --blue: #2563eb;
+            --grad1: linear-gradient(135deg,#2563eb,#4f46e5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+        
+        .navbar {
+            height: 60px; background: var(--white); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+            position: sticky; top: 0; z-index: 100;
+        }
+        .nav-left { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; }
+        .nav-left span.icon { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
+        
+        .container { max-width: 1000px; margin: 32px auto; padding: 0 16px; }
+        
+        .wizard-header { margin-bottom: 32px; text-align: center; }
+        .wizard-header h1 { font-size: 24px; font-weight: 700; }
+        
+        .steps { display: flex; justify-content: space-between; margin-bottom: 40px; position: relative; }
+        .steps::before {
+            content: ''; position: absolute; top: 15px; left: 0; right: 0; height: 2px; background: var(--border); z-index: 1;
+        }
+        .step { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; gap: 8px; width: 100px; }
+        .step-circle {
+            width: 32px; height: 32px; border-radius: 50%; background: var(--white); border: 2px solid var(--border);
+            display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 14px;
+            color: var(--text3); transition: all 0.3s;
+        }
+        .step.active .step-circle { background: var(--blue); border-color: var(--blue); color: var(--white); }
+        .step.completed .step-circle { background: var(--grad1); border-color: transparent; color: var(--white); }
+        .step-label { font-size: 12px; font-weight: 600; color: var(--text2); text-align: center; }
+
+        .step-content { display: none; background: var(--white); padding: 32px; border-radius: 12px; border: 1px solid var(--border); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+        .step-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .mode-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+        .mode-card {
+            border: 2px solid var(--border); border-radius: 12px; padding: 24px; text-align: center;
+            cursor: pointer; transition: all 0.2s;
+        }
+        .mode-card:hover { border-color: var(--blue); transform: translateY(-2px); }
+        .mode-card.selected { border-color: var(--blue); background: #eff6ff; }
+        .mode-card span { font-size: 32px; display: block; margin-bottom: 12px; }
+        .mode-card font { font-weight: 600; }
+
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { margin-bottom: 16px; }
+        .form-group label { display: block; font-size: 13px; font-weight: 600; margin-bottom: 6px; color: var(--text2); }
+        .form-group input, .form-group select {
+            width: 100%; padding: 12px; border: 1px solid var(--border); border-radius: 8px; font-family: inherit; font-size: 14px;
+        }
+
+        .actions { display: flex; justify-content: space-between; margin-top: 32px; }
+        .btn { padding: 12px 24px; border-radius: 8px; font-weight: 600; cursor: pointer; border: none; font-size: 15px; transition: opacity 0.2s; }
+        .btn-prev { background: var(--border); color: var(--text); }
+        .btn-next { background: var(--grad1); color: var(--white); }
+        .btn:hover { opacity: 0.9; }
+
+        .success-msg { text-align: center; padding: 40px 0; }
+        .success-msg h2 { color: #059669; margin: 16px 0; }
+        
+        @media(max-width: 768px) {
+            .mode-grid { grid-template-columns: 1fr 1fr; }
+            .form-grid { grid-template-columns: 1fr; }
+            .steps { display: none; }
+        }
+    </style>
+</head>
+<body>
+    <script>if(!localStorage.getItem('vc_token')) window.location.href='index.html';</script>
+
+    <div class="navbar">
+        <div class="nav-left">
+            <span class="icon">🚛</span> VaaniChain
+        </div>
+        <a href="dashboard/dashboard.html" style="color:var(--text2); text-decoration:none; font-weight:600; font-size:14px;">✕ Cancel</a>
+    </div>
+
+    <div class="container">
+        <div class="wizard-header">
+            <h1>Create New Shipment</h1>
+        </div>
+
+        <div class="steps" id="steps">
+            <div class="step active"><div class="step-circle">1</div><div class="step-label">Mode</div></div>
+            <div class="step"><div class="step-circle">2</div><div class="step-label">Route</div></div>
+            <div class="step"><div class="step-circle">3</div><div class="step-label">Cargo</div></div>
+            <div class="step"><div class="step-circle">4</div><div class="step-label">Schedule</div></div>
+            <div class="step"><div class="step-circle">5</div><div class="step-label">Review</div></div>
+            <div class="step"><div class="step-circle">6</div><div class="step-label">Submit</div></div>
+        </div>
+
+        <form id="shipmentForm">
+            <!-- Step 1 -->
+            <div class="step-content active" id="step1">
+                <h3 style="margin-bottom: 24px;">Select Transport Mode</h3>
+                <div class="mode-grid">
+                    <div class="mode-card selected" onclick="selectMode(this, 'road')"><span>🚛</span><font>Road</font></div>
+                    <div class="mode-card" onclick="selectMode(this, 'rail')"><span>🚂</span><font>Rail</font></div>
+                    <div class="mode-card" onclick="selectMode(this, 'air')"><span>✈️</span><font>Air</font></div>
+                    <div class="mode-card" onclick="selectMode(this, 'sea')"><span>🚢</span><font>Sea</font></div>
+                </div>
+            </div>
+
+            <!-- Step 2 -->
+            <div class="step-content" id="step2">
+                <h3 style="margin-bottom: 24px;">Journey Details</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Origin</label>
+                        <input type="text" id="s_origin" placeholder="City or Hub" value="Mumbai" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Destination</label>
+                        <input type="text" id="s_dest" placeholder="City or Hub" value="Delhi" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 3 -->
+            <div class="step-content" id="step3">
+                <h3 style="margin-bottom: 24px;">Cargo Information</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Cargo Type</label>
+                        <select id="s_type">
+                            <option>Electronics</option><option>Pharmaceuticals</option><option>FMCG</option>
+                            <option>Textiles</option><option>Machinery</option><option>Auto Parts</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Weight (kg)</label>
+                        <input type="number" id="s_weight" value="5000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Value (INR)</label>
+                        <input type="number" id="s_value" value="1000000" required>
+                    </div>
+                    <div class="form-group">
+                        <label>E-Way Bill Number</label>
+                        <input type="text" value="EWB123456789">
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 4 -->
+            <div class="step-content" id="step4">
+                <h3 style="margin-bottom: 24px;">Schedule & Supplier</h3>
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Supplier Name</label>
+                        <input type="text" id="s_supplier" value="TechCorp Logistics" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Departure Date</label>
+                        <input type="datetime-local" id="s_date" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Step 5 -->
+            <div class="step-content" id="step5">
+                <h3 style="margin-bottom: 24px;">Review Details</h3>
+                <div id="reviewSummary" style="background:#f8fafc; padding:20px; border-radius:8px; border:1px solid var(--border); font-family: 'JetBrains Mono', monospace; font-size:14px;">
+                    <!-- Filled by JS -->
+                </div>
+            </div>
+
+            <!-- Step 6 -->
+            <div class="step-content" id="step6">
+                <div class="success-msg">
+                    <span style="font-size: 64px;">✅</span>
+                    <h2>Shipment Created Successfully</h2>
+                    <p style="color:var(--text3); margin-bottom: 24px;" id="genId">ID: SHP-NEW-1234</p>
+                    <button type="button" class="btn btn-next" onclick="window.location.href='dashboard/dashboard.html'">View on Dashboard</button>
+                </div>
+            </div>
+
+            <div class="actions" id="actionBtns">
+                <button type="button" class="btn btn-prev" id="btnPrev" style="display:none;" onclick="prevStep()">Back</button>
+                <div style="flex:1"></div>
+                <button type="button" class="btn btn-next" id="btnNext" onclick="nextStep()">Continue</button>
+            </div>
+        </form>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        let currentStep = 1;
+        let selectedMode = 'road';
+        document.getElementById('s_date').value = new Date().toISOString().slice(0,16);
+
+        function selectMode(elem, mode) {
+            document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+            elem.classList.add('selected');
+            selectedMode = mode;
+        }
+
+        function updateSteps() {
+            document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+            document.getElementById('step' + currentStep).classList.add('active');
+            
+            const steps = document.querySelectorAll('.step');
+            steps.forEach((el, idx) => {
+                if(idx + 1 < currentStep) { el.classList.add('completed'); el.classList.remove('active'); }
+                else if (idx + 1 === currentStep) { el.classList.add('active'); el.classList.remove('completed'); }
+                else { el.classList.remove('active', 'completed'); }
+            });
+
+            document.getElementById('btnPrev').style.display = currentStep > 1 ? 'block' : 'none';
+            if (currentStep === 5) document.getElementById('btnNext').innerText = 'Submit Shipment';
+            else document.getElementById('btnNext').innerText = 'Continue';
+            
+            if (currentStep === 6) document.getElementById('actionBtns').style.display = 'none';
+
+            if (currentStep === 5) {
+                document.getElementById('reviewSummary').innerHTML = `
+                    Mode: ${selectedMode.toUpperCase()}<br>
+                    Route: ${document.getElementById('s_origin').value} → ${document.getElementById('s_dest').value}<br>
+                    Cargo: ${document.getElementById('s_type').value} (${document.getElementById('s_weight').value} kg)<br>
+                    Supplier: ${document.getElementById('s_supplier').value}<br>
+                    Value: ₹${document.getElementById('s_value').value}
+                `;
+            }
+        }
+
+        async function nextStep() {
+            if (currentStep === 5) {
+                // Submit
+                const payload = {
+                    id: 'SHP-' + selectedMode.substring(0,2).toUpperCase() + '-' + Math.floor(Math.random()*1000),
+                    mode: selectedMode,
+                    origin: document.getElementById('s_origin').value,
+                    destination: document.getElementById('s_dest').value,
+                    supplier: document.getElementById('s_supplier').value,
+                    cargo_type: document.getElementById('s_type').value,
+                    weight_kg: parseInt(document.getElementById('s_weight').value),
+                    value_inr: parseInt(document.getElementById('s_value').value),
+                    status: 'on_time', progress_pct: 0, eta_hours: 24, route_name: 'Auto-assigned',
+                    departure_date: document.getElementById('s_date').value
+                };
+                
+                try {
+                    await fetch(`${API}/shipments/add`, {
+                        method: 'POST', headers: {'Content-Type': 'application/json'},
+                        body: JSON.stringify(payload)
+                    });
+                } catch(e) {
+                    // Save to local storage for offline support
+                    let local = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
+                    local.push(payload);
+                    localStorage.setItem('owner_shipments', JSON.stringify(local));
+                }
+                
+                document.getElementById('genId').innerText = 'ID: ' + payload.id;
+                currentStep++;
+                updateSteps();
+            } else if (currentStep < 6) {
+                currentStep++;
+                updateSteps();
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 1) {
+                currentStep--;
+                updateSteps();
+            }
+        }
+    </script>
+</body>
+</html>
+

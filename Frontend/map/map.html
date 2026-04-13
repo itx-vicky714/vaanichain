@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Route Map - VaaniChain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <style>
+        :root {
+            --bg: #f0f2f7; --white: #fff; --border: #e2e6ef; --text: #0f172a;
+            --text2: #374151; --text3: #6b7280; --blue: #2563eb;
+            --grad1: linear-gradient(135deg,#2563eb,#4f46e5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); overflow: hidden;}
+        
+        .navbar {
+            height: 60px; background: var(--white); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+            position: relative; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; }
+        .nav-left span.icon { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
+        .nav-center { display: flex; gap: 24px; }
+        .nav-center a { text-decoration: none; color: var(--text2); font-weight: 600; font-size: 14px; padding: 20px 0; border-bottom: 2px solid transparent; }
+        .nav-center a.on { color: var(--blue); border-bottom-color: var(--blue); }
+
+        .app-container { display: flex; height: calc(100vh - 60px); }
+        
+        .sidebar {
+            width: 320px; background: var(--white); border-right: 1px solid var(--border);
+            display: flex; flex-direction: column; z-index: 10;
+        }
+        .sidebar-header { padding: 20px; border-bottom: 1px solid var(--border); }
+        .sidebar-header h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        
+        .filters { display: flex; gap: 8px; flex-wrap: wrap; }
+        .f-btn { padding: 4px 10px; font-size: 11px; font-weight: 600; border: 1px solid var(--border); border-radius: 12px; background: var(--bg); cursor: pointer; }
+        .f-btn.active { background: var(--blue); color: white; border-color: var(--blue); }
+        
+        .ship-list { flex: 1; overflow-y: auto; padding: 12px; }
+        .s-item { padding: 12px; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 8px; cursor: pointer; transition: all 0.2s; }
+        .s-item:hover { border-color: var(--blue); background: #f8fafc; }
+        .s-id { font-family: 'JetBrains Mono', monospace; font-size: 12px; font-weight: 600; margin-bottom: 4px; display: flex; justify-content: space-between;}
+        .s-route { font-size: 13px; font-weight: 700; }
+        
+        .badge { padding: 2px 6px; border-radius: 4px; font-size: 9px; font-weight: 700; text-transform: uppercase; }
+        .on_time { background: #d1fae5; color: #065f46; }
+        .at_risk { background: #fef3c7; color: #92400e; }
+        .delayed { background: #fee2e2; color: #991b1b; }
+
+        #map { flex: 1; height: 100%; z-index: 1; }
+    </style>
+</head>
+<body>
+    <script>if(!localStorage.getItem('vc_token')) window.location.href='../index.html';</script>
+
+    <div class="navbar">
+        <div class="nav-left"><span class="icon">🚛</span> VaaniChain</div>
+        <div class="nav-center">
+            <a href="../dashboard/dashboard.html">Dashboard</a>
+            <a href="../map/map.html" class="on">Map View</a>
+            <a href="../analytics/analytics.html">Analytics</a>
+            <a href="../reports/reports.html">Reports</a>
+        </div>
+        <div></div>
+    </div>
+
+    <div class="app-container">
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <h2>🗺️ Route Map</h2>
+                <div class="filters">
+                    <button class="f-btn active">All</button>
+                    <button class="f-btn">Road</button>
+                    <button class="f-btn">Rail</button>
+                    <button class="f-btn">Air</button>
+                    <button class="f-btn">Sea</button>
+                </div>
+            </div>
+            <div class="ship-list" id="shipList">
+                <!-- Injected via JS -->
+            </div>
+        </div>
+        <div id="map"></div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="js/config.js"></script>
+    <script>
+        const coords = {
+            'Delhi': [28.67,77.22], 'Mumbai': [19.07,72.87], 'Chennai': [13.08,80.27], 'Kolkata': [22.57,88.36],
+            'Bangalore': [12.97,77.59], 'Hyderabad': [17.38,78.47], 'Jaipur': [26.91,75.79], 'Pune': [18.52,73.85],
+            'Ahmedabad': [23.02,72.57], 'Surat': [21.17,72.83], 'Cochin': [9.93,76.27], 'Vishakhapatnam': [17.69,83.21],
+            'Mundra': [22.84,69.72], 'JNPT Mumbai': [18.95,72.93], 'JNPT': [18.95,72.93],
+            'DEL': [28.55,77.10], 'BOM': [19.09,72.86], 'MAA': [12.99,80.17], 'BLR': [13.19,77.70], 'CCU': [22.65,88.44],
+            'HYD': [17.24,78.42], 'AMD': [23.07,72.63]
+        };
+
+        const map = L.map('map').setView([20.59, 78.96], 5);
+        L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+            attribution: '© OpenStreetMap'
+        }).addTo(map);
+
+        let lines = [];
+
+        async function init() {
+            let data = [];
+            try {
+                const res = await fetch(`${API}/shipments`);
+                if(res.ok) data = await res.json();
+            } catch(e) {
+                // local fallback
+                const local = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
+                data = local;
+            }
+
+            const list = document.getElementById('shipList');
+            
+            data.forEach(s => {
+                if(!coords[s.origin] || !coords[s.destination]) return; // skip if coords missing
+                
+                // Add to list
+                list.innerHTML += `
+                    <div class="s-item" onclick="focusMap('${s.origin}', '${s.destination}')">
+                        <div class="s-id"><span>${s.id}</span> <span class="badge ${s.status}">${s.status.replace('_',' ')}</span></div>
+                        <div class="s-route">${s.origin} → ${s.destination}</div>
+                    </div>
+                `;
+
+                // Add to map
+                let color = '#2563eb'; // road
+                let dash = '';
+                if(s.mode === 'rail') { color = '#059669'; dash = '6, 6'; }
+                if(s.mode === 'air') { color = '#7c3aed'; dash = '2, 8'; }
+                if(s.mode === 'sea') { color = '#0ea5e9'; dash = '2, 8'; }
+                if(s.status === 'at_risk' || s.status === 'delayed') { color = '#dc2626'; dash = '10, 5'; }
+
+                const p1 = coords[s.origin];
+                const p2 = coords[s.destination];
+
+                const line = L.polyline([p1, p2], {color: color, weight: 3, dashArray: dash}).addTo(map);
+                line.bindPopup(`<b>${s.id}</b><br>${s.origin} to ${s.destination}<br>Status: ${s.status}`);
+                lines.push({orig: s.origin, dest: s.destination, layer: line});
+                
+                // Markers
+                L.circleMarker(p1, {radius: 5, color: color, fillColor: color, fillOpacity: 1}).addTo(map);
+                L.circleMarker(p2, {radius: 5, color: color, fillColor: '#fff', fillOpacity: 1, weight: 2}).addTo(map);
+            });
+        }
+
+        window.focusMap = function(orig, dest) {
+            const l = lines.find(x => x.orig === orig && x.dest === dest);
+            if(l) map.fitBounds(l.layer.getBounds(), {padding: [50, 50]});
+        }
+
+        init();
+    </script>
+</body>
+</html>
+

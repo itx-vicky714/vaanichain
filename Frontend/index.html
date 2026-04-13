@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VaaniChain - AI-Powered Logistics</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f2f7;
+            --white: #fff;
+            --border: #e2e6ef;
+            --text: #0f172a;
+            --text2: #374151;
+            --text3: #6b7280;
+            --blue: #2563eb;
+            --indigo: #4f46e5;
+            --grad1: linear-gradient(135deg,#2563eb,#4f46e5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        .login-card {
+            background: var(--white);
+            width: 100%;
+            max-width: 400px;
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            text-align: center;
+        }
+        .logo-icon {
+            font-size: 32px;
+            background: var(--grad1);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 8px;
+            display: block;
+        }
+        .title {
+            font-size: 24px;
+            font-weight: 800;
+            margin-bottom: 4px;
+        }
+        .subtitle {
+            font-size: 14px;
+            color: var(--text3);
+            margin-bottom: 32px;
+        }
+        .input-group {
+            margin-bottom: 16px;
+            text-align: left;
+        }
+        .input-group label {
+            display: block;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 6px;
+            color: var(--text2);
+        }
+        .input-group input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            font-size: 14px;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: border-color 0.2s;
+        }
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--blue);
+        }
+        .btn-signin {
+            width: 100%;
+            padding: 14px;
+            background: var(--grad1);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            margin-top: 8px;
+        }
+        .btn-signin:hover {
+            opacity: 0.9;
+        }
+        .demo-creds {
+            margin-top: 24px;
+            font-size: 13px;
+            color: var(--text3);
+            background: var(--bg);
+            padding: 12px;
+            border-radius: 8px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        .error-msg {
+            color: #dc2626;
+            font-size: 13px;
+            margin-bottom: 16px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="login-card">
+        <span class="logo-icon">🚛</span>
+        <h1 class="title">VaaniChain</h1>
+        <p class="subtitle">AI-Powered Supply Chain Intelligence</p>
+        
+        <div class="error-msg" id="errorMsg">Invalid credentials</div>
+
+        <form id="loginForm">
+            <div class="input-group">
+                <label>Username</label>
+                <input type="text" id="username" placeholder="Enter username" required>
+            </div>
+            <div class="input-group">
+                <label>Password</label>
+                <input type="password" id="password" placeholder="Enter password" required>
+            </div>
+            <button type="submit" class="btn-signin">Sign In</button>
+        </form>
+
+        <div class="demo-creds">
+            Demo credentials:<br>
+            demo / vaanichain123
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const u = document.getElementById('username').value;
+            const p = document.getElementById('password').value;
+            const err = document.getElementById('errorMsg');
+            
+            try {
+                const res = await fetch(`${API}/login`, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify({username: u, password: p})
+                });
+                const data = await res.json();
+                
+                if(data.success) {
+                    localStorage.setItem('vc_token', data.token);
+                    localStorage.setItem('vc_user', u);
+                    window.location.href = 'dashboard/dashboard.html';
+                } else {
+                    err.style.display = 'block';
+                }
+            } catch (error) {
+                // Offline fallback
+                if ((u === 'demo' && p === 'vaanichain123') || (u==='admin' && p==='admin123')) {
+                    localStorage.setItem('vc_token', 'vc-demo-offline');
+                    localStorage.setItem('vc_user', u);
+                    window.location.href = 'dashboard/dashboard.html';
+                } else {
+                    err.textContent = "Offline or Invalid Credentials";
+                    err.style.display = 'block';
+                }
+            }
+        });
+    </script>
+</body>
+</html>
+

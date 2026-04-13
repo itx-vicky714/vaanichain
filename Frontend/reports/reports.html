@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Reports - VaaniChain</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f2f7; --white: #fff; --border: #e2e6ef; --text: #0f172a;
+            --text2: #374151; --text3: #6b7280; --blue: #2563eb;
+            --grad1: linear-gradient(135deg,#2563eb,#4f46e5);
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background: var(--bg); color: var(--text); }
+        
+        .navbar {
+            height: 60px; background: var(--white); border-bottom: 1px solid var(--border);
+            display: flex; align-items: center; justify-content: space-between; padding: 0 24px;
+            position: sticky; top: 0; z-index: 100; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+        .nav-left { display: flex; align-items: center; gap: 8px; font-weight: 800; font-size: 18px; }
+        .nav-left span.icon { background: var(--grad1); -webkit-background-clip: text; -webkit-text-fill-color: transparent; font-size: 22px; }
+        .nav-left small { font-size: 12px; color: var(--text3); font-weight: 500; }
+        .nav-center { display: flex; gap: 24px; }
+        .nav-center a { text-decoration: none; color: var(--text2); font-weight: 600; font-size: 14px; padding: 20px 0; border-bottom: 2px solid transparent; }
+        .nav-center a.on { color: var(--blue); border-bottom-color: var(--blue); }
+        .nav-right { display: flex; align-items: center; gap: 16px; }
+
+        .container { display: flex; height: calc(100vh - 60px); }
+        .sidebar {
+            width: 280px; background: var(--white); border-right: 1px solid var(--border);
+            padding: 24px; display: flex; flex-direction: column; gap: 12px;
+        }
+        .sidebar h2 { font-size: 16px; font-weight: 700; margin-bottom: 12px; }
+        .report-btn {
+            padding: 12px; text-align: left; background: var(--white); border: 1px solid var(--border);
+            border-radius: 8px; cursor: pointer; font-family: inherit; font-size: 14px; font-weight: 600;
+            color: var(--text2); transition: all 0.2s;
+        }
+        .report-btn:hover { border-color: var(--blue); color: var(--blue); transform: translateY(-1px); }
+        .report-btn.active { background: #eff6ff; border-color: var(--blue); color: var(--blue); }
+
+        .main-content { flex: 1; padding: 32px; overflow-y: auto; }
+        .report-header { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 24px; }
+        .report-title { font-size: 24px; font-weight: 700; }
+        .report-time { font-size: 13px; color: var(--text3); font-family: 'JetBrains Mono', monospace; margin-top: 4px; }
+        .report-actions { display: flex; gap: 12px; }
+        .btn {
+            padding: 8px 16px; border-radius: 6px; font-size: 14px; font-weight: 600; cursor: pointer;
+            border: 1px solid var(--border); background: var(--white); color: var(--text2); transition: opacity 0.2s;
+        }
+        .btn-primary { background: var(--grad1); color: var(--white); border: none; }
+        .btn:hover { opacity: 0.85; }
+
+        .report-body { background: var(--white); padding: 32px; border-radius: 12px; border: 1px solid var(--border); min-height: 400px; }
+        .skeleton { height: 20px; background: #e2e8f0; border-radius: 4px; margin-bottom: 12px; animation: pulse 1.5s infinite; }
+        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+        table { width: 100%; border-collapse: collapse; margin-top: 16px; font-size: 14px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid var(--border); }
+        th { font-weight: 600; color: var(--text3); text-transform: uppercase; font-size: 12px; }
+    </style>
+</head>
+<body>
+    <script>if(!localStorage.getItem('vc_token')) window.location.href='../index.html';</script>
+
+    <div class="navbar">
+        <div class="nav-left">
+            <span class="icon">🚛</span> VaaniChain <small>वाणी चेन</small>
+        </div>
+        <div class="nav-center">
+            <a href="../dashboard/dashboard.html">Dashboard</a>
+            <a href="../analytics/analytics.html">Analytics</a>
+            <a href="../reports/reports.html" class="on">Reports</a>
+        </div>
+        <div class="nav-right">
+            <button class="btn btn-primary" onclick="window.location.href='../add-shipment.html'">+ New Shipment</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="sidebar">
+            <h2>📊 Generate Reports</h2>
+            <button class="report-btn active" onclick="loadReport(1, this)">1. Daily Operations Summary</button>
+            <button class="report-btn" onclick="loadReport(2, this)">2. Disruption Analysis</button>
+            <button class="report-btn" onclick="loadReport(3, this)">3. Cost Impact Report</button>
+            <button class="report-btn" onclick="loadReport(4, this)">4. Weather 72h Forecast</button>
+            <button class="report-btn" onclick="loadReport(5, this)">5. Mode Performance</button>
+            <button class="report-btn" onclick="loadReport(6, this)">6. Predictive Risk Assessment</button>
+        </div>
+        <div class="main-content">
+            <div class="report-header">
+                <div>
+                    <h1 class="report-title" id="reportTitle">Daily Operations Summary</h1>
+                    <div class="report-time" id="reportTime">Generated: --</div>
+                </div>
+                <div class="report-actions">
+                    <button class="btn" onclick="window.print()">⬇ Download PDF</button>
+                    <button class="btn btn-primary" onclick="alert('Report emailed successfully.')">📧 Email Report</button>
+                </div>
+            </div>
+            <div class="report-body" id="reportBody">
+                <div class="skeleton" style="width: 30%"></div>
+                <div class="skeleton" style="width: 100%"></div>
+                <div class="skeleton" style="width: 80%"></div>
+                <div class="skeleton" style="width: 90%"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script>
+        const titles = {
+            1: "Daily Operations Summary", 2: "Disruption Analysis", 3: "Cost Impact Report",
+            4: "Weather 72h Forecast", 5: "Mode Performance", 6: "Predictive Risk Assessment"
+        };
+
+        function loadReport(id, btnElem) {
+            document.querySelectorAll('.report-btn').forEach(b => b.classList.remove('active'));
+            if(btnElem) btnElem.classList.add('active');
+
+            document.getElementById('reportTitle').innerText = titles[id];
+            document.getElementById('reportTime').innerText = "Generated: " + new Date().toLocaleString();
+            
+            const body = document.getElementById('reportBody');
+            body.innerHTML = '<div class="skeleton" style="width: 100%"></div><div class="skeleton" style="width: 100%"></div><div class="skeleton" style="width: 100%"></div>';
+            
+            setTimeout(() => {
+                let html = `<h3>${titles[id]}</h3><p style="margin-top:12px; color:var(--text2)">Automated report generated by VaaniChain AI.</p>`;
+                
+                if (id === 1) {
+                    html += `<table><tr><th>ID</th><th>Route</th><th>Status</th><th>ETA</th></tr>
+                    <tr><td>SHP-RD-001</td><td>Delhi → Mumbai</td><td><span style="color:#059669">On Time</span></td><td>14h</td></tr>
+                    <tr><td>SHP-AR-002</td><td>MAA → DEL</td><td><span style="color:#d97706">At Risk</span></td><td>3h</td></tr>
+                    <tr><td>SHP-SE-004</td><td>Chennai → JNPT</td><td><span style="color:#dc2626">Delayed</span></td><td>24h</td></tr>
+                    </table>`;
+                } else if (id === 2) {
+                    html += `<table><tr><th>Disruption</th><th>Affected Routes</th><th>Suggested Alt</th></tr>
+                    <tr><td>Heavy Rain</td><td>NH-48 (Mumbai)</td><td>NH-16</td></tr>
+                    <tr><td>Port Congestion</td><td>JNPT</td><td>Mundra</td></tr></table>`;
+                } else {
+                    html += `<p style="margin-top:24px;">Report data successfully aggregated across 20 shipments and 8 risk factors.</p>
+                             <div style="margin-top:20px; padding:16px; background:#f8fafc; border-radius:8px; border:1px solid #e2e8f0;">
+                                <strong>AI Summary:</strong> Network is operating at 85% efficiency. 3 critical alerts require immediate attention to prevent ₹5.2M in potential losses.
+                             </div>`;
+                }
+                body.innerHTML = html;
+            }, 800);
+        }
+
+        // Initialize
+        loadReport(1);
+    </script>
+</body>
+</html>
+
