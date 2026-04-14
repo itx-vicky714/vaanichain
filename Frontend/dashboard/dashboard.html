@@ -5,643 +5,519 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VaaniChain — Live Operations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-
-:root {
-  --primary: #2563EB;
-  --primary-dark: #1D4ED8;
-  --success: #10B981;
-  --warning: #F59E0B;
-  --danger: #EF4444;
-  --bg: #F8FAFC;
-  --surface: #FFFFFF;
-  --surface-2: #F1F5F9;
-  --border: #E2E8F0;
-  --text-primary: #0F172A;
-  --text-secondary: #64748B;
-  --text-muted: #94A3B8;
-
-  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08), 0 1px 2px rgba(0,0,0,0.06);
-  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08), 0 2px 4px -1px rgba(0,0,0,0.04);
-  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08), 0 4px 6px -2px rgba(0,0,0,0.04);
-  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08), 0 10px 10px -5px rgba(0,0,0,0.03);
-
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+:root{
+  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
+  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+  --blue:#2563eb;--indigo:#4f46e5;--green:#059669;--green2:#d1fae5;
+  --amber:#d97706;--amber2:#fef3c7;--red:#dc2626;--red2:#fee2e2;--sky:#0ea5e9;
+  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
+  --grad2:linear-gradient(135deg,#059669,#0ea5e9);
+  --grad3:linear-gradient(135deg,#d97706,#dc2626);
+  --grad4:linear-gradient(135deg,#6366f1,#8b5cf6);
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --hindi:'Noto Sans Devanagari',sans-serif;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow2:0 4px 16px rgba(0,0,0,.1),0 2px 6px rgba(0,0,0,.06);
+  --r:12px;
 }
-
-body {
-  background: var(--bg);
-  color: var(--text-primary);
-  font-family: 'Inter', sans-serif;
-  min-height: 100vh;
-  overflow-y: auto;
-}
-
-h1, h2, h3, h4, h5, h6 {
-  font-family: 'Plus Jakarta Sans', sans-serif;
-}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-y:auto}
 
 /* ── NAVBAR ── */
-.nav {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  height: 72px;
-  display: flex;
-  align-items: center;
-  padding: 0 32px;
-  gap: 24px;
-  backdrop-filter: blur(12px);
-  background: rgba(255, 255, 255, 0.85);
-  border-bottom: 1px solid rgba(226, 232, 240, 0.8);
-  transition: all 0.2s ease;
-}
-
-.nav-brand {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  text-decoration: none;
-}
-
-.nav-icon {
-  width: 40px;
-  height: 40px;
-  border-radius: var(--radius-md);
-  background: linear-gradient(135deg, var(--primary), #4f46e5);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
-}
-
-.nav-name {
-  font-size: 20px;
-  font-weight: 800;
-  color: var(--text-primary);
-  letter-spacing: -0.02em;
-}
-
-.nav-name span {
-  background: linear-gradient(135deg, var(--primary), #4f46e5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-.nav-spc { flex: 1; }
-
-.nav-mid {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.nav-tab {
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  transition: all 0.2s ease;
-}
-
-.nav-tab:hover { color: var(--text-primary); }
-
-.nav-tab.on { color: var(--primary); }
-
-.nav-tab::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 16px;
-  right: 16px;
-  height: 2px;
-  background: var(--primary);
-  border-radius: 2px;
-  transform: scaleX(0);
-  transition: transform 0.2s ease;
-}
-
-.nav-tab.on::after, .nav-tab:hover::after { transform: scaleX(1); }
-
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.risk-badge {
-  font-size: 12px;
-  font-weight: 700;
-  padding: 6px 16px;
-  border-radius: 20px;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-}
-
-.risk-low { background: #DCFCE7; color: var(--success); }
-.risk-med { background: #FEF3C7; color: var(--warning); }
-.risk-high { 
-  background: #FEE2E2; color: var(--danger);
-  animation: pulse-red 2s infinite;
-}
-
-@keyframes pulse-red {
-  0% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.4); }
-  70% { box-shadow: 0 0 0 10px rgba(239, 68, 68, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-}
-
-.nav-btn {
-  padding: 10px 20px;
-  border-radius: var(--radius-md);
-  font-size: 13px;
-  font-weight: 600;
-  cursor: pointer;
-  border: none;
-  transition: all 0.2s ease;
-}
-
-.btn-add {
-  background: linear-gradient(135deg, var(--success), #059669);
-  color: #fff;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
-}
-
-.btn-add:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(16, 185, 129, 0.3); }
-
-.nav-clock {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 13px;
-  color: var(--text-secondary);
-  background: var(--surface-2);
-  padding: 6px 12px;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-}
-
-.user-av {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #6366f1, #8b5cf6);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #fff;
-  font-weight: 700;
-  box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--primary);
-  cursor: pointer;
-  position: relative;
-}
+.nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-brand{display:flex;align-items:center;gap:10px}
+.nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(37,99,235,.35)}
+.nav-name{font-size:18px;font-weight:800;color:var(--text)}
+.nav-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-hindi{font-family:var(--hindi);font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:12px}
+.nav-spc{flex:1}
+.nav-mid{display:flex;align-items:center;gap:4px}
+.nav-tab{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:var(--sans)}
+.nav-tab:hover{background:var(--bg);color:var(--text2)}
+.nav-tab.on{background:var(--grad1);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28)}
+.nav-right{display:flex;align-items:center;gap:8px}
+.risk-badge{font-size:12px;font-weight:700;padding:6px 14px;border-radius:20px;border:none;transition:all .2s}
+.risk-low{background:var(--green2);color:var(--green)}
+.risk-med{background:var(--amber2);color:var(--amber)}
+.risk-high{background:var(--red2);color:var(--red);animation:rpulse 1.5s ease-in-out infinite}
+@keyframes rpulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
+.nav-btn{padding:8px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;font-family:var(--sans);transition:all .15s}
+.btn-simulate{background:var(--grad3);color:#fff;box-shadow:0 2px 8px rgba(217,119,6,.28)}
+.btn-simulate:hover{opacity:.88;transform:translateY(-1px)}
+.btn-reset{background:var(--bg);border:1px solid var(--border2);color:var(--text3)}
+.btn-reset:hover{background:var(--border2)}
+.btn-add{background:var(--grad2);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.28)}
+.btn-add:hover{opacity:.88;transform:translateY(-1px)}
+.nav-clock{font-family:var(--mono);font-size:12px;color:var(--text3);background:var(--bg);padding:6px 12px;border-radius:8px;border:1px solid var(--border)}
+.user-av{width:32px;height:32px;border-radius:50%;background:var(--grad4);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:700;color:#fff;flex-shrink:0;cursor:pointer;position:relative}
+.user-menu{position:absolute;top:38px;right:0;background:var(--white);border:1px solid var(--border);border-radius:10px;box-shadow:var(--shadow2);min-width:160px;display:none;z-index:200}
+.user-menu.open{display:block}
+.um-item{padding:10px 16px;font-size:13px;color:var(--text2);cursor:pointer;transition:background .12s}
+.um-item:hover{background:var(--bg)}
+.um-item:first-child{border-radius:10px 10px 0 0}
+.um-item:last-child{border-radius:0 0 10px 10px;color:var(--red)}
+.um-divider{height:1px;background:var(--border);margin:4px 0}
 
 /* ── KPI STRIP ── */
-.kpi-strip {
-  display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  gap: 20px;
-  padding: 32px 32px 0;
-}
-
-.kpi {
-  background: var(--surface);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  box-shadow: var(--shadow-md);
-  border-top: 4px solid var(--primary);
-  position: relative;
-  overflow: hidden;
-  transition: all 0.3s ease;
-}
-
-.kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow-lg); }
-
-.kpi-1 { border-color: var(--primary); }
-.kpi-2 { border-color: var(--success); }
-.kpi-3 { border-color: var(--warning); }
-.kpi-4 { border-color: #6366F1; }
-.kpi-5 { border-color: #0EA5E9; }
-.kpi-6 { border-color: var(--danger); }
-
-.kpi-label {
-  font-size: 11px;
-  font-weight: 700;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.05em;
-  margin-bottom: 12px;
-}
-
-.kpi-value {
-  font-size: 32px;
-  font-weight: 800;
-  color: var(--text-primary);
-  line-height: 1;
-}
-
-.kpi-sub {
-  font-size: 12px;
-  color: var(--text-muted);
-  margin-top: 8px;
-}
-
-.kpi-icon-circle {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 44px;
-  height: 44px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-}
-
-.kpi-1 .kpi-icon-circle { background: rgba(37, 99, 235, 0.1); color: var(--primary); }
-.kpi-2 .kpi-icon-circle { background: rgba(16, 185, 129, 0.1); color: var(--success); }
-.kpi-3 .kpi-icon-circle { background: rgba(245, 158, 11, 0.1); color: var(--warning); }
-.kpi-4 .kpi-icon-circle { background: rgba(99, 102, 241, 0.1); color: #6366F1; }
-.kpi-5 .kpi-icon-circle { background: rgba(14, 165, 233, 0.1); color: #0EA5E9; }
-.kpi-6 .kpi-icon-circle { background: rgba(239, 68, 68, 0.1); color: var(--danger); }
+.kpi-strip{padding:20px 28px 0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
+.kpi{background:var(--white);border-radius:var(--r);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
+.kpi:hover{box-shadow:var(--shadow2);transform:translateY(-2px)}
+.kpi::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.kpi-1::before{background:var(--grad1)}.kpi-2::before{background:var(--grad2)}
+.kpi-3::before{background:var(--grad3)}.kpi-4::before{background:var(--grad4)}
+.kpi-5::before{background:linear-gradient(135deg,#0ea5e9,#6366f1)}
+.kpi-6::before{background:linear-gradient(135deg,#10b981,#059669)}
+.kpi-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.kpi-value{font-size:26px;font-weight:800;color:var(--text);line-height:1;margin-bottom:3px;font-family:var(--mono)}
+.kpi-sub{font-size:10px;color:var(--text4)}
+.kpi-icon{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
 
 /* ── MAIN GRID ── */
-.grid {
-  display: grid;
-  grid-template-columns: 1fr 400px;
-  gap: 32px;
-  padding: 32px;
-}
+.grid{display:grid;grid-template-columns:1fr 390px;gap:18px;padding:18px 28px 40px;align-items:start}
 
 /* ── PANEL ── */
-.panel {
-  background: var(--surface);
-  border-radius: var(--radius-xl);
-  box-shadow: var(--shadow-md);
-  border: 1px solid var(--border);
-  display: flex;
-  flex-direction: column;
-  overflow: hidden;
-}
+.panel{background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column}
+.panel-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.ph-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
+.ph-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--text3)}
+.ph-refresh{font-family:var(--mono);font-size:10px;color:var(--text4)}
 
-.panel-head {
-  padding: 20px 24px;
-  border-bottom: 1px solid var(--border);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+/* ── MODE + FILTER BAR ── */
+.filter-bar{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;background:var(--bg);flex-wrap:wrap}
+.filter-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.filter-btn:hover{border-color:var(--blue);color:var(--blue)}
+.filter-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.filter-btn.road.on{background:#92400e;border-color:#92400e}
+.filter-btn.rail.on{background:#1447be;border-color:#1447be}
+.filter-btn.air.on{background:#6d28d9;border-color:#6d28d9}
+.filter-btn.sea.on{background:#065f46;border-color:#065f46}
+.filter-sep{width:1px;height:20px;background:var(--border);flex-shrink:0}
+.filter-spc{flex:1}
+.search{padding:6px 13px;border-radius:8px;font-size:13px;border:1.5px solid var(--border);background:var(--white);color:var(--text);outline:none;font-family:var(--sans);width:200px;transition:border-color .15s}
+.search:focus{border-color:var(--blue)}
+.search::placeholder{color:var(--text4)}
 
-.ph-title {
-  font-size: 16px;
-  font-weight: 700;
-  color: var(--text-primary);
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
+/* ── SHIPMENT CARDS GRID ── */
+.ships-grid{padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px}
+.ship-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px;cursor:pointer;transition:all .2s;position:relative}
+.ship-card:hover{box-shadow:var(--shadow2);transform:translateY(-2px);border-color:var(--border2)}
+.ship-card.on_time{border-top:3px solid var(--green)}
+.ship-card.at_risk{border-top:3px solid var(--amber)}
+.ship-card.delayed{border-top:3px solid var(--red)}
+.sc-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.sc-id{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--blue)}
+.sc-status{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px}
+.s-on_time{background:var(--green2);color:var(--green)}
+.s-at_risk{background:var(--amber2);color:var(--amber)}
+.s-delayed{background:var(--red2);color:var(--red)}
+.sc-mode-chip{position:absolute;top:12px;left:12px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;font-family:var(--mono);letter-spacing:.04em}
+.mc-road{background:#fef3c7;color:#92400e}.mc-rail{background:#dbeafe;color:#1447be}
+.mc-air{background:#ede9fe;color:#6d28d9}.mc-sea{background:#d1fae5;color:#065f46}
+.sc-route{font-size:14px;font-weight:700;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:5px}
+.sc-arr{color:var(--text4);font-size:11px}
+.sc-highway{font-family:var(--mono);font-size:10px;color:var(--text3);margin-bottom:10px;background:var(--bg);display:inline-block;padding:2px 7px;border-radius:4px}
+.sc-stats{display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-bottom:10px}
+.sc-stat{background:var(--bg);border-radius:7px;padding:7px 9px;border:1px solid var(--border)}
+.sc-stat-k{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.05em;margin-bottom:2px}
+.sc-stat-v{font-size:12px;font-weight:700;color:var(--text);font-family:var(--mono)}
+.sc-footer{display:flex;align-items:center;justify-content:space-between;padding-top:9px;border-top:1px solid var(--border);gap:6px}
+.sc-supplier{font-size:11px;color:var(--text3);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sc-owner{font-size:10px;font-weight:600;background:#ede9fe;color:#6d28d9;padding:2px 7px;border-radius:4px;flex-shrink:0}
+.sc-pri{font-size:10px;font-weight:600;padding:2px 7px;border-radius:4px}
+.pri-critical{background:var(--red2);color:var(--red)}
+.pri-high{background:var(--amber2);color:var(--amber)}
+.pri-normal{background:var(--green2);color:var(--green)}
 
-/* ── SHIPMENT CARDS ── */
-.ships-grid {
-  padding: 24px;
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: 20px;
-}
-
-.ship-card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 20px;
-  position: relative;
-  transition: all 0.2s ease;
-  box-shadow: var(--shadow-sm);
-}
-
-.ship-card:hover { transform: scale(1.01); box-shadow: var(--shadow-lg); }
-
-.ship-card::before {
-  content: '';
-  position: absolute;
-  top: 12px;
-  left: 0;
-  bottom: 12px;
-  width: 4px;
-  border-radius: 0 4px 4px 0;
-}
-
-.ship-card.on_time::before { background: var(--success); }
-.ship-card.at_risk::before { background: var(--warning); }
-.ship-card.delayed::before { background: var(--danger); }
-
-.sc-header {
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  margin-bottom: 16px;
-}
-
-.sc-mode-pill {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 12px;
-  border-radius: 20px;
-  font-size: 11px;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.02em;
-}
-
-.mc-road { background: #FEF3C7; color: #92400E; }
-.mc-rail { background: #DBEAFE; color: #1E40AF; }
-.mc-air { background: #EDE9FE; color: #6D28D9; }
-.mc-sea { background: #D1FAE5; color: #065F46; }
-
-.sc-id {
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 12px;
-  font-weight: 700;
-  color: var(--text-muted);
-}
-
-.sc-route {
-  font-size: 18px;
-  font-weight: 700;
-  color: var(--text-primary);
-  margin-bottom: 12px;
-}
-
-.sc-prog-label {
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  font-weight: 600;
-  color: var(--text-secondary);
-  margin-bottom: 8px;
-}
-
-.sc-prog-bar {
-  height: 6px;
-  background: var(--surface-2);
-  border-radius: 10px;
-  overflow: hidden;
-  margin-bottom: 16px;
-}
-
-.sc-prog-fill {
-  height: 100%;
-  border-radius: 10px;
-  background: linear-gradient(90deg, var(--primary), #4f46e5);
-  transition: width 1s ease;
-}
-
-.sc-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding-top: 16px;
-  border-top: 1px solid var(--border);
-}
-
-.btn-details {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text-secondary);
-  padding: 6px 14px;
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-details:hover {
-  background: var(--surface-2);
-  color: var(--text-primary);
-  border-color: var(--text-muted);
-}
+/* ── RIGHT COLUMN ── */
+.right-col{display:flex;flex-direction:column;gap:14px}
 
 /* ── WEATHER ── */
-.wx-list {
-  padding: 16px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
+.wx-grid{padding:10px;display:flex;flex-direction:column;gap:7px}
+.wx-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
+.wx-left{display:flex;align-items:center;gap:9px}
+.wx-icon{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0}
+.wx-city{font-size:13px;font-weight:700;color:var(--text)}
+.wx-desc{font-size:11px;color:var(--text3);margin-top:1px}
+.wx-right{text-align:right}
+.wx-temp{font-size:18px;font-weight:800;color:var(--text);font-family:var(--mono)}
+.wx-rain{font-size:10px;font-weight:600;padding:2px 7px;border-radius:5px;margin-top:3px;display:inline-block}
+.wxr-clear{background:var(--green2);color:var(--green)}
+.wxr-light{background:#dbeafe;color:var(--blue)}
+.wxr-heavy{background:var(--red2);color:var(--red)}
+.wx-empty{padding:20px;text-align:center;font-size:12px;color:var(--text3)}
 
-.wx-row {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 12px 16px;
-  background: rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(4px);
-  border: 1px solid var(--border);
-  border-radius: var(--radius-md);
-  transition: transform 0.2s ease;
-}
-
-.wx-row:hover { transform: translateX(4px); border-color: var(--primary); }
-
-.wx-icon-circle {
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 20px;
-  background: #eff6ff;
-}
-
-.wx-info { flex: 1; }
-.wx-city { font-weight: 700; color: var(--text-primary); }
-.wx-desc { font-size: 12px; color: var(--text-secondary); }
-.wx-temp { font-size: 20px; font-weight: 800; color: var(--text-primary); }
+/* ── ALERTS ── */
+.alert-card{margin:9px 11px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;animation:slideIn .3s ease both;box-shadow:var(--shadow)}
+@keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
+.alert-card.high{border-left:4px solid var(--red)}
+.alert-card.medium{border-left:4px solid var(--amber)}
+.alert-head{padding:10px 13px;display:flex;align-items:center;justify-content:space-between;background:linear-gradient(to right,var(--bg),var(--white));border-bottom:1px solid var(--border)}
+.ah-id{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--blue)}
+.ah-conf{font-size:11px;font-weight:600;color:var(--green);background:var(--green2);padding:2px 8px;border-radius:4px}
+.alert-body{padding:11px 13px}
+.a-weather-badge{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;background:#dbeafe;color:var(--blue);padding:2px 8px;border-radius:4px;margin-bottom:6px;font-family:var(--mono)}
+.a-level{display:inline-block;font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;margin-bottom:7px;text-transform:uppercase;letter-spacing:.05em}
+.al-high{background:var(--red2);color:var(--red)}.al-medium{background:var(--amber2);color:var(--amber)}
+.a-reason{font-size:12px;color:var(--text2);line-height:1.55;margin-bottom:8px}
+.a-action{font-size:11px;font-weight:600;color:var(--blue);background:#eff6ff;border:1px solid #bfdbfe;border-radius:6px;padding:6px 10px;margin-bottom:9px;font-family:var(--mono)}
+.a-routes{display:flex;flex-direction:column;gap:4px;margin-bottom:9px}
+.a-route{display:flex;justify-content:space-between;align-items:center;padding:6px 9px;border-radius:7px;font-size:11px;background:var(--bg);border:1px solid var(--border)}
+.a-route.best{background:#f0fdf4;border-color:#86efac}
+.ar-name{font-weight:600;color:var(--text2)}
+.ar-best{font-size:9px;font-weight:700;background:var(--green2);color:var(--green);padding:1px 6px;border-radius:4px;margin-left:5px}
+.ar-meta{font-family:var(--mono);font-size:10px;color:var(--text3)}
+.ar-cost{font-weight:700;color:var(--text)}
+.a-btns{display:flex;gap:6px}
+.btn-approve{flex:1;padding:7px;border-radius:8px;font-size:11px;font-weight:700;background:var(--green2);border:1px solid #86efac;color:var(--green);cursor:pointer;transition:all .15s;font-family:var(--sans)}
+.btn-approve:hover{background:#bbf7d0}
+.btn-email-a{padding:7px 11px;border-radius:8px;font-size:11px;font-weight:700;background:var(--amber2);border:1px solid #fcd34d;color:var(--amber);cursor:pointer;font-family:var(--sans)}
+.btn-email-a:hover{background:#fde68a}
+.btn-dismiss{padding:7px 10px;border-radius:8px;font-size:11px;font-weight:700;background:var(--bg);border:1px solid var(--border);color:var(--text3);cursor:pointer;font-family:var(--sans)}
+.btn-dismiss:hover{background:var(--red2);color:var(--red)}
 
 /* ── CHAT ── */
-.chat-body {
-  height: 400px;
-  display: flex;
-  flex-direction: column;
+.chat-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
+.msg{max-width:88%}
+.msg-user{align-self:flex-end}.msg-ai{align-self:flex-start}
+.msg-bubble{padding:9px 13px;border-radius:12px;font-size:13px;line-height:1.55;font-family:var(--hindi)}
+.msg-user .msg-bubble{background:var(--grad1);color:#fff;border-radius:12px 12px 3px 12px}
+.msg-ai .msg-bubble{background:var(--bg);border:1px solid var(--border);color:var(--text2);border-radius:12px 12px 12px 3px}
+.msg-time{font-size:10px;color:var(--text4);margin-top:3px;font-family:var(--mono)}
+.msg-user .msg-time{text-align:right}
+.typing{display:flex;gap:4px;padding:10px 12px;background:var(--bg);border:1px solid var(--border);border-radius:12px 12px 12px 3px;width:fit-content}
+.td{width:6px;height:6px;background:var(--text4);border-radius:50%;animation:td 1.2s ease-in-out infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes td{0%,60%,100%{opacity:.3}30%{opacity:1}}
+.chat-footer{padding:11px;border-top:1px solid var(--border)}
+.quick-qs{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:8px}
+.qq{font-size:10px;padding:4px 10px;border-radius:20px;border:1.5px solid var(--border);background:transparent;color:var(--text3);cursor:pointer;font-family:var(--hindi);transition:all .15s}
+.qq:hover{border-color:var(--blue);color:var(--blue)}
+.chat-row{display:flex;gap:7px}
+.chat-in{flex:1;padding:9px 13px;border-radius:10px;font-size:13px;border:1.5px solid var(--border);background:var(--bg);font-family:var(--hindi);color:var(--text);outline:none;transition:border-color .15s}
+.chat-in:focus{border-color:var(--blue);background:var(--white)}
+.chat-in::placeholder{color:var(--text4);font-size:12px}
+.chat-send{width:38px;height:38px;border-radius:10px;border:none;background:var(--grad1);color:#fff;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .15s;box-shadow:0 2px 8px rgba(37,99,235,.28);flex-shrink:0}
+.chat-send:hover{opacity:.85;transform:scale(1.05)}
+.mic-btn{width:38px;height:38px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--text3);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0}
+.mic-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-bg,#eff6ff)}
+.mic-btn.recording{border-color:var(--red);background:var(--red2);color:var(--red);animation:mic-pulse 1s ease-in-out infinite}
+@keyframes mic-pulse{0%,100%{box-shadow:0 0 0 0 rgba(220,38,38,.4)}50%{box-shadow:0 0 0 6px rgba(220,38,38,0)}}
+.speak-btn{width:28px;height:28px;border-radius:7px;border:1px solid var(--border);background:var(--bg);color:var(--text4);cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;transition:all .15s;flex-shrink:0;margin-left:4px}
+.speak-btn:hover{border-color:var(--green);color:var(--green);background:var(--green2)}
+.speak-btn.speaking{border-color:var(--green);background:var(--green2);color:var(--green);animation:mic-pulse 1s ease-in-out infinite}
+.voice-status{font-size:10px;color:var(--red);font-family:var(--mono);margin-top:5px;display:none;text-align:center;letter-spacing:.02em}
+.voice-status.show{display:block}
+.chat-lang-row{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.lang-toggle-btn{font-size:10px;font-weight:700;padding:3px 9px;border-radius:20px;border:1.5px solid var(--border);background:var(--white);color:var(--text3);cursor:pointer;font-family:var(--sans);transition:all .15s}
+.lang-toggle-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
+.voice-hint{font-size:10px;color:var(--text4);font-family:var(--mono);margin-left:auto}
+
+/* ── MODAL ── */
+.modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s}
+.modal-ov.open{opacity:1;pointer-events:all}
+.modal{background:var(--white);border-radius:16px;padding:26px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:translateY(16px);transition:transform .2s}
+.modal-ov.open .modal{transform:translateY(0)}
+.modal-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:3px}
+.modal-sub{font-size:12px;color:var(--text3);margin-bottom:16px;font-family:var(--mono)}
+.email-content{background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:15px;font-size:12px;line-height:1.75;color:var(--text2);white-space:pre-wrap;font-family:var(--mono);margin-bottom:14px}
+.modal-btns{display:flex;gap:8px;justify-content:flex-end}
+.btn-copy-e{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;background:var(--grad1);color:#fff;border:none;cursor:pointer;font-family:var(--sans)}
+.btn-close-e{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;background:var(--bg);border:1.5px solid var(--border);color:var(--text3);cursor:pointer;font-family:var(--sans)}
+
+/* ── EMPTY / TOAST ── */
+.empty{text-align:center;padding:40px 20px;color:var(--text3)}
+.empty-icon{font-size:32px;margin-bottom:10px;opacity:.5}
+.empty-text{font-size:13px;line-height:1.6}
+.toast{position:fixed;bottom:24px;right:24px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;font-weight:600;box-shadow:var(--shadow2);z-index:999;transform:translateY(50px);opacity:0;transition:all .3s;max-width:300px}
+.toast.show{transform:translateY(0);opacity:1}
+.toast.ok{border-left:3px solid var(--green);color:var(--green)}
+.toast.err{border-left:3px solid var(--red);color:var(--red)}
+.toast.info{border-left:3px solid var(--blue);color:var(--blue)}
+
+::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+/* ══════════════════════════════════════════════
+   SHIPMENT DETAIL MODAL — Production Grade
+══════════════════════════════════════════════ */
+.sdm-ov{
+  position:fixed;inset:0;background:rgba(15,23,42,.6);
+  z-index:300;display:flex;align-items:center;justify-content:center;
+  padding:20px;backdrop-filter:blur(6px);
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.sdm-ov.open{opacity:1;pointer-events:all}
+.sdm{
+  background:var(--white);border-radius:20px;
+  width:100%;max-width:760px;max-height:90vh;
+  overflow:hidden;display:flex;flex-direction:column;
+  box-shadow:0 32px 80px rgba(0,0,0,.25),0 8px 24px rgba(0,0,0,.12);
+  transform:translateY(20px) scale(.98);transition:transform .25s;
+}
+.sdm-ov.open .sdm{transform:translateY(0) scale(1)}
+
+/* Header */
+.sdm-header{
+  padding:20px 24px 0;
+  background:linear-gradient(135deg,#f8faff,var(--white));
+  border-bottom:1px solid var(--border);flex-shrink:0;
+}
+.sdm-h-top{display:flex;align-items:flex-start;gap:14px;margin-bottom:14px}
+.sdm-mode-icon{
+  width:52px;height:52px;border-radius:14px;
+  display:flex;align-items:center;justify-content:center;
+  font-size:24px;flex-shrink:0;box-shadow:var(--shadow2);
+}
+.sdm-title-block{flex:1;min-width:0}
+.sdm-shipid{font-family:var(--mono);font-size:13px;font-weight:500;color:var(--blue);margin-bottom:3px}
+.sdm-route-title{font-size:20px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.sdm-route-arr{color:var(--text4);font-size:16px}
+.sdm-badges{display:flex;gap:6px;margin-top:6px;flex-wrap:wrap}
+.sdm-status-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.sdm-mode-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px;font-family:var(--mono)}
+.sdm-pri-badge{font-size:11px;font-weight:700;padding:4px 12px;border-radius:20px}
+.sdm-close{
+  width:36px;height:36px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--bg);color:var(--text3);font-size:16px;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;
+}
+.sdm-close:hover{background:var(--red2);color:var(--red);border-color:#fca5a5}
+
+/* Tabs */
+.sdm-tabs{display:flex;gap:0;border-top:1px solid var(--border)}
+.sdm-tab{
+  flex:1;padding:11px 8px;font-size:12px;font-weight:700;
+  border:none;background:transparent;color:var(--text3);
+  cursor:pointer;font-family:var(--sans);
+  border-bottom:2px solid transparent;transition:all .15s;
+  display:flex;align-items:center;justify-content:center;gap:5px;
+}
+.sdm-tab:hover{color:var(--blue);background:var(--bg)}
+.sdm-tab.on{color:var(--blue);border-bottom-color:var(--blue);background:var(--white)}
+
+/* Body */
+.sdm-body{flex:1;overflow-y:auto;padding:0}
+
+/* Tab panes */
+.sdm-pane{display:none;padding:20px 24px}
+.sdm-pane.on{display:block}
+
+/* Section inside pane */
+.sdm-section{margin-bottom:20px}
+.sdm-section-title{
+  font-size:10px;font-weight:700;color:var(--text3);
+  text-transform:uppercase;letter-spacing:.08em;
+  margin-bottom:10px;display:flex;align-items:center;gap:6px;
+}
+.sdm-section-title::after{content:'';flex:1;height:1px;background:var(--border)}
+
+/* Route timeline */
+.sdm-timeline{position:relative;padding-left:28px}
+.sdm-timeline::before{
+  content:'';position:absolute;left:10px;top:12px;bottom:12px;
+  width:2px;background:linear-gradient(to bottom,var(--green),var(--blue));
+  border-radius:1px;
+}
+.sdm-tstop{position:relative;margin-bottom:18px}
+.sdm-tstop:last-child{margin-bottom:0}
+.sdm-tdot{
+  position:absolute;left:-22px;top:2px;
+  width:14px;height:14px;border-radius:50%;
+  border:2px solid var(--white);box-shadow:0 0 0 2px var(--green);
+  background:var(--green);
+}
+.sdm-tdot.current{
+  background:var(--blue);box-shadow:0 0 0 2px var(--blue),0 0 0 5px rgba(37,99,235,.2);
+  animation:tdot-pulse 2s ease-in-out infinite;
+}
+.sdm-tdot.pending{background:var(--white);box-shadow:0 0 0 2px var(--border2)}
+@keyframes tdot-pulse{0%,100%{box-shadow:0 0 0 2px var(--blue),0 0 0 5px rgba(37,99,235,.2)}50%{box-shadow:0 0 0 2px var(--blue),0 0 0 8px rgba(37,99,235,0)}}
+.sdm-tstop-name{font-size:13px;font-weight:700;color:var(--text)}
+.sdm-tstop-meta{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:1px}
+.sdm-tstop-eta{font-size:10px;font-weight:600;color:var(--blue);background:#eff6ff;padding:2px 8px;border-radius:4px;display:inline-block;margin-top:3px}
+
+/* Progress bar in modal */
+.sdm-progress-wrap{margin-bottom:18px}
+.sdm-progress-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.sdm-progress-bar{height:10px;background:var(--border);border-radius:5px;overflow:visible;position:relative}
+.sdm-progress-fill{height:100%;border-radius:5px;background:var(--grad2);transition:width .5s ease;position:relative}
+.sdm-progress-dot{
+  width:18px;height:18px;border-radius:50%;
+  background:var(--white);border:3px solid var(--green);
+  position:absolute;right:-9px;top:50%;transform:translateY(-50%);
+  box-shadow:0 0 0 4px rgba(5,150,105,.2);
+  animation:tracker-pulse 2s ease-in-out infinite;
+}
+.sdm-progress-dot.risk{border-color:var(--amber);box-shadow:0 0 0 4px rgba(217,119,6,.2)}
+
+/* KPI row in modal */
+.sdm-kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+.sdm-kpi{background:var(--bg);border:1px solid var(--border);border-radius:10px;padding:12px 14px;text-align:center}
+.sdm-kpi-v{font-size:20px;font-weight:800;color:var(--text);font-family:var(--mono);line-height:1}
+.sdm-kpi-k{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.06em;margin-top:3px}
+
+/* Risk factors */
+.sdm-risk-score-row{
+  display:flex;align-items:center;gap:14px;
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:12px;padding:14px 16px;margin-bottom:14px;
+}
+.sdm-risk-meter{
+  width:70px;height:70px;flex-shrink:0;
+  border-radius:50%;display:flex;align-items:center;justify-content:center;
+  font-size:22px;font-weight:800;font-family:var(--mono);
+  position:relative;
+}
+.sdm-risk-meter.low{background:var(--green2);color:var(--green);border:3px solid #86efac}
+.sdm-risk-meter.medium{background:var(--amber2);color:var(--amber);border:3px solid #fcd34d}
+.sdm-risk-meter.high{background:var(--red2);color:var(--red);border:3px solid #fca5a5;animation:rpulse 1.5s ease-in-out infinite}
+.sdm-risk-summary{flex:1}
+.sdm-risk-level{font-size:15px;font-weight:800;color:var(--text);margin-bottom:3px}
+.sdm-risk-desc{font-size:12px;color:var(--text3);line-height:1.5}
+
+.sdm-factor-list{display:flex;flex-direction:column;gap:7px}
+.sdm-factor{
+  display:flex;align-items:flex-start;gap:10px;
+  background:var(--white);border:1.5px solid var(--border);
+  border-radius:10px;padding:11px 13px;
+  transition:box-shadow .15s;
+}
+.sdm-factor:hover{box-shadow:var(--shadow)}
+.sdm-factor.high{border-left:3px solid var(--red)}
+.sdm-factor.medium{border-left:3px solid var(--amber)}
+.sdm-factor.low{border-left:3px solid var(--green)}
+.sdm-factor-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+.sdm-factor-body{flex:1}
+.sdm-factor-label{font-size:12px;font-weight:700;color:var(--text);margin-bottom:2px}
+.sdm-factor-detail{font-size:11px;color:var(--text3);line-height:1.5}
+.sdm-factor-score{
+  font-family:var(--mono);font-size:11px;font-weight:700;
+  padding:3px 8px;border-radius:6px;flex-shrink:0;align-self:flex-start;margin-top:1px;
+}
+.fs-high{background:var(--red2);color:var(--red)}
+.fs-medium{background:var(--amber2);color:var(--amber)}
+.fs-low{background:var(--green2);color:var(--green)}
+
+.sdm-factor-empty{
+  text-align:center;padding:24px;color:var(--text3);
+  background:var(--bg);border-radius:10px;border:1px solid var(--border);
+  font-size:13px;
 }
 
-.chat-msgs {
-  flex: 1;
-  padding: 24px;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-  background: #F8FAFC;
+/* Driver / vehicle info */
+.sdm-info-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.sdm-info-card{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:10px;padding:13px 15px;
 }
+.sdm-info-k{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
+.sdm-info-v{font-size:13px;font-weight:700;color:var(--text);font-family:var(--mono)}
+.sdm-info-v.normal{font-family:var(--sans)}
 
-.msg-bubble {
-  padding: 12px 16px;
-  border-radius: var(--radius-lg);
-  font-size: 14px;
-  line-height: 1.5;
-  max-width: 80%;
-  position: relative;
+/* Alt routes */
+.sdm-alt-routes{display:flex;flex-direction:column;gap:8px}
+.sdm-alt-route{
+  display:flex;justify-content:space-between;align-items:center;
+  padding:11px 14px;border-radius:10px;border:1.5px solid var(--border);
+  background:var(--white);transition:all .15s;
 }
+.sdm-alt-route.best{background:#f0fdf4;border-color:#86efac}
+.sdm-alt-route:hover{box-shadow:var(--shadow)}
+.sar-left{display:flex;flex-direction:column;gap:2px}
+.sar-name{font-size:12px;font-weight:700;color:var(--text);display:flex;align-items:center;gap:6px}
+.sar-best-tag{font-size:9px;font-weight:700;background:var(--green2);color:var(--green);padding:2px 6px;border-radius:4px}
+.sar-desc{font-size:11px;color:var(--text3)}
+.sar-right{text-align:right;flex-shrink:0}
+.sar-cost{font-size:13px;font-weight:800;color:var(--text);font-family:var(--mono)}
+.sar-time{font-size:10px;color:var(--text4);margin-top:1px;font-family:var(--mono)}
 
-.msg-user {
-  align-self: flex-end;
-  background: var(--primary);
-  color: #fff;
-  border-bottom-right-radius: 4px;
+/* Footer actions */
+.sdm-footer{
+  padding:14px 24px;border-top:1px solid var(--border);
+  display:flex;gap:8px;flex-shrink:0;background:var(--white);
 }
-
-.msg-ai {
-  align-self: flex-start;
-  background: #fff;
-  border: 1px solid var(--border);
-  color: var(--text-primary);
-  border-bottom-left-radius: 4px;
+.sdm-btn{
+  padding:10px 18px;border-radius:10px;font-size:12px;font-weight:700;
+  border:none;cursor:pointer;font-family:var(--sans);transition:all .15s;
+  display:flex;align-items:center;gap:6px;
 }
+.sdm-btn:hover{transform:translateY(-1px)}
+.sdm-btn-primary{background:var(--grad1);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28)}
+.sdm-btn-green{background:var(--grad2);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.28)}
+.sdm-btn-amber{background:var(--amber2);border:1px solid #fcd34d;color:var(--amber)}
+.sdm-btn-ghost{background:var(--bg);border:1.5px solid var(--border);color:var(--text3)}
+.sdm-btn-ghost:hover{background:var(--border)}
+.sdm-footer-spc{flex:1}
 
-.chat-input-area {
-  padding: 20px 24px;
-  background: #fff;
-  border-top: 1px solid var(--border);
+/* ── LOCATION TRACKER ── */
+.tracker-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
+.tracker-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
+.tracker-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
+.tracker-pct{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--blue)}
+.tracker-bar{height:6px;background:var(--border);border-radius:3px;overflow:visible;position:relative;margin-bottom:6px}
+.tracker-fill{height:100%;border-radius:3px;background:var(--grad2);transition:width .5s ease;position:relative}
+.tracker-dot{width:14px;height:14px;border-radius:50%;background:var(--white);border:2px solid var(--green);position:absolute;right:-7px;top:50%;transform:translateY(-50%);box-shadow:0 0 0 3px rgba(5,150,105,.2);animation:tracker-pulse 2s ease-in-out infinite}
+.tracker-dot.risk{border-color:var(--amber);box-shadow:0 0 0 3px rgba(217,119,6,.2)}
+@keyframes tracker-pulse{0%,100%{box-shadow:0 0 0 3px rgba(5,150,105,.2)}50%{box-shadow:0 0 0 7px rgba(5,150,105,0)}}
+.tracker-cities{display:flex;justify-content:space-between;font-size:9px;color:var(--text4);font-family:var(--mono)}
+.tracker-eta{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-top:3px}
+.tracker-eta span{font-weight:700;color:var(--text)}
+
+/* ── PREDICTION BADGE ── */
+.predict-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;margin-top:5px;font-family:var(--mono)}
+.predict-low{background:#f0fdf4;color:var(--green);border:1px solid #86efac}
+.predict-med{background:var(--amber2);color:var(--amber);border:1px solid #fcd34d}
+.predict-high{background:var(--red2);color:var(--red);border:1px solid #fca5a5}
+
+/* ── FLOATING CHATBOT ── */
+.fab{
+  position:fixed;bottom:28px;left:28px;
+  width:52px;height:52px;
+  border-radius:50%;
+  background:var(--grad1);
+  border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;
+  font-size:22px;
+  box-shadow:0 4px 16px rgba(37,99,235,.4);
+  z-index:150;
+  transition:all .2s;
+  animation:fab-in .4s .5s ease both;
 }
-
-.chat-row {
-  display: flex;
-  gap: 12px;
-  align-items: center;
-  background: var(--surface-2);
-  padding: 8px 8px 8px 16px;
-  border-radius: 30px;
-  border: 1px solid var(--border);
+@keyframes fab-in{from{opacity:0;transform:scale(0)}to{opacity:1;transform:scale(1)}}
+.fab:hover{transform:scale(1.1);box-shadow:0 6px 20px rgba(37,99,235,.5)}
+.fab-badge{
+  position:absolute;top:-3px;right:-3px;
+  width:18px;height:18px;border-radius:50%;
+  background:var(--red);border:2px solid var(--white);
+  font-size:9px;font-weight:700;color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  display:none;
 }
-
-.chat-in {
-  flex: 1;
-  background: transparent;
-  border: none;
-  outline: none;
-  font-size: 14px;
-  color: var(--text-primary);
+.fab-badge.show{display:flex}
+.fab-tooltip{
+  position:absolute;left:62px;top:50%;transform:translateY(-50%);
+  background:var(--text);color:#fff;
+  font-size:11px;font-weight:600;
+  padding:5px 10px;border-radius:6px;white-space:nowrap;
+  opacity:0;pointer-events:none;transition:opacity .2s;
+  font-family:var(--sans);
 }
-
-.chat-send-btn {
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  background: var(--primary);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.chat-send-btn:hover { transform: scale(1.1); background: var(--primary-dark); }
-
-/* ── TOASTS ── */
-.toast-stack {
-  position: fixed;
-  bottom: 32px;
-  right: 32px;
-  z-index: 2000;
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-
-.toast {
-  background: #fff;
-  border-radius: var(--radius-md);
-  padding: 16px 20px;
-  min-width: 320px;
-  box-shadow: var(--shadow-xl);
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  border-left: 4px solid var(--primary);
-  animation: toast-in 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
-  position: relative;
-  overflow: hidden;
-}
-
-@keyframes toast-in {
-  from { transform: translateX(120%); opacity: 0; }
-  to { transform: translateX(0); opacity: 1; }
-}
-
-.toast.success { border-left-color: var(--success); }
-.toast.warning { border-left-color: var(--warning); }
-.toast.error { border-left-color: var(--danger); }
-
-.toast-progress {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  height: 3px;
-  background: rgba(0,0,0,0.1);
-  width: 100%;
-}
-
-.toast-progress-fill {
-  height: 100%;
-  background: inherit;
-  width: 0%;
-  transition: width 3s linear;
-}
-
-/* ── SKELETON ── */
-.skeleton {
-  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
-  background-size: 200% 100%;
-  animation: shimmer 1.5s infinite;
-}
-
-@keyframes shimmer {
-  from { background-position: 200% 0; }
-  to { background-position: -200% 0; }
-}
-
-/* ── RESPONSIVE ── */
-@media (max-width: 1200px) {
-  .kpi-strip { grid-template-columns: repeat(3, 1fr); }
-  .grid { grid-template-columns: 1fr; }
-}
-
-@media (max-width: 768px) {
-  .nav-mid, .nav-hindi { display: none; }
-  .kpi-strip { grid-template-columns: repeat(2, 1fr); }
-  .nav { padding: 0 16px; }
-}
+.fab:hover .fab-tooltip{opacity:1}
 </style>
 </head>
 <body>
 
 <!-- NAVBAR -->
 <nav class="nav">
-  <a href="dashboard.html" class="nav-brand">
+  <div class="nav-brand">
     <div class="nav-icon">🚛</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
-  </a>
-  <div class="nav-hindi">वाणी चेन</div>
+    <div class="nav-hindi">वाणी चेन</div>
+  </div>
   <div class="nav-spc"></div>
   <div class="nav-mid">
     <button class="nav-tab on">Dashboard</button>
@@ -653,6 +529,8 @@ h1, h2, h3, h4, h5, h6 {
   <div class="nav-right">
     <div class="risk-badge risk-low" id="risk-badge">🟢 All Clear</div>
     <button class="nav-btn btn-add" onclick="window.location.href='../add-shipment.html'">+ New Shipment</button>
+    <button class="nav-btn btn-simulate" onclick="simDisrupt()">⚡ Simulate</button>
+    <button class="nav-btn btn-reset" onclick="resetAll()">↺ Reset</button>
     <div class="nav-clock" id="nav-clock">--:--:--</div>
     <div class="user-av" id="user-av" onclick="toggleUserMenu()">D
       <div class="user-menu" id="user-menu">
@@ -666,73 +544,83 @@ h1, h2, h3, h4, h5, h6 {
 </nav>
 
 <!-- KPI STRIP -->
-<div class="kpi-strip" id="kpi-strip">
+<div class="kpi-strip">
   <div class="kpi kpi-1">
     <div class="kpi-label">Total Shipments</div>
     <div class="kpi-value" id="kpi-total">—</div>
     <div class="kpi-sub">Active in network</div>
-    <div class="kpi-icon-circle">📦</div>
+    <div class="kpi-icon" style="background:#eff6ff">📦</div>
   </div>
   <div class="kpi kpi-2">
     <div class="kpi-label">On Time</div>
-    <div class="kpi-value" id="kpi-ontime">—</div>
+    <div class="kpi-value" id="kpi-ontime" style="color:var(--green)">—</div>
     <div class="kpi-sub">Delivering as planned</div>
-    <div class="kpi-icon-circle">✅</div>
+    <div class="kpi-icon" style="background:var(--green2)">✅</div>
   </div>
   <div class="kpi kpi-3">
     <div class="kpi-label">At Risk</div>
-    <div class="kpi-value" id="kpi-risk">—</div>
+    <div class="kpi-value" id="kpi-risk" style="color:var(--amber)">—</div>
     <div class="kpi-sub">Need attention now</div>
-    <div class="kpi-icon-circle">⚠️</div>
+    <div class="kpi-icon" style="background:var(--amber2)">⚠️</div>
   </div>
   <div class="kpi kpi-4">
     <div class="kpi-label">AI Alerts</div>
-    <div class="kpi-value" id="kpi-alerts">—</div>
+    <div class="kpi-value" id="kpi-alerts" style="color:var(--indigo)">—</div>
     <div class="kpi-sub">Auto-detected issues</div>
-    <div class="kpi-icon-circle">🤖</div>
+    <div class="kpi-icon" style="background:#ede9fe">🤖</div>
   </div>
   <div class="kpi kpi-5">
-    <div class="kpi-label">Efficiency</div>
-    <div class="kpi-value" id="kpi-eff">—</div>
+    <div class="kpi-label">Network Efficiency</div>
+    <div class="kpi-value" id="kpi-eff" style="color:var(--sky)">—</div>
     <div class="kpi-sub">Fleet performance</div>
-    <div class="kpi-icon-circle">📊</div>
+    <div class="kpi-icon" style="background:#e0f2fe">📊</div>
   </div>
   <div class="kpi kpi-6">
     <div class="kpi-label">Revenue at Risk</div>
-    <div class="kpi-value" id="kpi-rev" style="font-size:20px">—</div>
+    <div class="kpi-value" id="kpi-rev" style="color:var(--red);font-size:20px">—</div>
     <div class="kpi-sub">Est. exposure</div>
-    <div class="kpi-icon-circle">💸</div>
+    <div class="kpi-icon" style="background:var(--red2)">💸</div>
   </div>
 </div>
 
+<!-- MAIN GRID -->
 <div class="grid">
+
   <!-- LEFT: Shipments -->
   <div class="panel">
     <div class="panel-head">
       <div class="ph-title">🚚 Live Shipments</div>
       <div class="ph-badge" id="ship-count-badge">Loading...</div>
+      <div class="ph-refresh" id="ship-refresh">—</div>
     </div>
-    <div id="ships-grid" class="ships-grid">
-      <!-- Skeletons -->
-      <div class="ship-card skeleton" style="height:200px"></div>
-      <div class="ship-card skeleton" style="height:200px"></div>
-      <div class="ship-card skeleton" style="height:200px"></div>
+    <div class="filter-bar">
+      <button class="filter-btn on" id="fb-all" onclick="setFilter('all','status')">All</button>
+      <button class="filter-btn" id="fb-on_time" onclick="setFilter('on_time','status')">On Time</button>
+      <button class="filter-btn" id="fb-at_risk" onclick="setFilter('at_risk','status')">At Risk</button>
+      <button class="filter-btn" id="fb-delayed" onclick="setFilter('delayed','status')">Delayed</button>
+      <div class="filter-sep"></div>
+      <button class="filter-btn road" id="fm-road" onclick="setFilter('road','mode')">🚛 Road</button>
+      <button class="filter-btn rail" id="fm-rail" onclick="setFilter('rail','mode')">🚂 Rail</button>
+      <button class="filter-btn air"  id="fm-air"  onclick="setFilter('air','mode')">✈️ Air</button>
+      <button class="filter-btn sea"  id="fm-sea"  onclick="setFilter('sea','mode')">🚢 Sea</button>
+      <div class="filter-spc"></div>
+      <input class="search" id="search-inp" placeholder="🔍 Search shipment, city, route..." oninput="renderShipments()">
+    </div>
+    <div class="ships-grid" id="ships-grid">
+      <div class="empty"><div class="empty-icon">🔄</div><div class="empty-text">Loading shipments...</div></div>
     </div>
   </div>
 
-  <!-- RIGHT: Stacked -->
+  <!-- RIGHT: Stacked panels -->
   <div class="right-col">
+
     <!-- Weather -->
     <div class="panel">
       <div class="panel-head">
-        <div class="ph-title">🌦️ Live Weather</div>
-        <div class="ph-badge" id="wx-badge">● Live</div>
+        <div class="ph-title">🌦️ Live Weather — Key Hubs</div>
+        <div class="ph-badge" id="wx-badge" style="background:var(--green2);color:var(--green);border-color:#86efac">⟳ Loading</div>
       </div>
-      <div id="wx-area" class="wx-list">
-        <div class="wx-row skeleton" style="height:60px"></div>
-        <div class="wx-row skeleton" style="height:60px"></div>
-        <div class="wx-row skeleton" style="height:60px"></div>
-      </div>
+      <div id="wx-area"><div class="wx-empty">Fetching live weather from Open-Meteo...</div></div>
     </div>
 
     <!-- AI Alerts -->
@@ -740,191 +628,1701 @@ h1, h2, h3, h4, h5, h6 {
       <div class="panel-head">
         <div class="ph-title">🤖 AI Alert Feed</div>
         <div class="ph-badge" id="alert-count-badge">0 Alerts</div>
+        <div class="ph-refresh" style="font-size:10px;color:var(--text4)">AUTO 15s</div>
       </div>
-      <div id="alerts-body" style="padding:16px 0">
-        <div class="skeleton" style="height:100px; margin:0 24px; border-radius:12px"></div>
+      <div id="alerts-body">
+        <div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>
       </div>
     </div>
 
-    <!-- Chat -->
+    <!-- VaaniChat -->
     <div class="panel">
       <div class="panel-head">
         <div class="ph-title">💬 VaaniChat</div>
         <div class="ph-badge">AI · Hindi + English</div>
       </div>
-      <div class="chat-body">
-        <div class="chat-msgs" id="chat-msgs">
-          <div class="msg-ai">
-            <div class="msg-bubble">नमस्ते! 🙏 I'm VaaniChain AI. Ask me about your shipments in Hindi or English.</div>
-          </div>
-        </div>
-        <div class="chat-input-area">
-          <div class="chat-row">
-            <input class="chat-in" id="chat-inp" placeholder="Ask anything...">
-            <button class="chat-send-btn" onclick="sendChat()">➤</button>
-          </div>
+      <div class="chat-msgs" id="chat-msgs">
+        <div class="msg msg-ai">
+          <div class="msg-bubble">नमस्ते! 🙏 I'm VaaniChain AI monitoring 🚛 Road · 🚂 Rail · ✈️ Air · 🚢 Sea freight. Ask me anything in Hindi or English.</div>
+          <div class="msg-time">Just now</div>
         </div>
       </div>
+      <div class="chat-footer">
+        <div class="quick-qs">
+          <button class="qq" onclick="qa('Mera maal kab aayega?')">Mera maal?</button>
+          <button class="qq" onclick="qa('Which shipment is most at risk?')">Most at risk?</button>
+          <button class="qq" onclick="qa('NH-48 pe kya problem hai?')">NH-48?</button>
+          <button class="qq" onclick="qa('Which rail shipments are delayed?')">🚂 Rail?</button>
+          <button class="qq" onclick="qa('Air cargo status?')">✈️ Air?</button>
+          <button class="qq" onclick="qa('Sea freight kya situation hai?')">🚢 Sea?</button>
+        </div>
+        <div class="chat-lang-row">
+          <button class="lang-toggle-btn on" id="lang-hi" onclick="setVoiceLang('hi')">🇮🇳 हिंदी</button>
+          <button class="lang-toggle-btn" id="lang-en" onclick="setVoiceLang('en')">🇬🇧 English</button>
+          <span class="voice-hint">🎤 click mic to speak</span>
+        </div>
+        <div class="chat-row">
+          <input class="chat-in" id="chat-inp" placeholder="Hindi या English में पूछें... या 🎤 बोलें">
+          <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Speak your question">🎤</button>
+          <button class="chat-send" onclick="sendChat()">➤</button>
+        </div>
+        <div class="voice-status" id="voice-status">🔴 Listening... speak now</div>
+      </div>
     </div>
+
   </div>
 </div>
 
-<div class="toast-stack" id="toast-stack"></div>
+<!-- ══════════════════════════════════════════════
+     SHIPMENT DETAIL MODAL
+══════════════════════════════════════════════ -->
+<div class="sdm-ov" id="sdm-ov" onclick="if(event.target===this)closeSDM()">
+<div class="sdm">
+
+  <!-- HEADER -->
+  <div class="sdm-header">
+    <div class="sdm-h-top">
+      <div class="sdm-mode-icon" id="sdm-mode-icon">📦</div>
+      <div class="sdm-title-block">
+        <div class="sdm-shipid" id="sdm-shipid">—</div>
+        <div class="sdm-route-title" id="sdm-route-title">Origin <span class="sdm-route-arr">→</span> Destination</div>
+        <div class="sdm-badges" id="sdm-badges"></div>
+      </div>
+      <button class="sdm-close" onclick="closeSDM()">✕</button>
+    </div>
+    <!-- TABS -->
+    <div class="sdm-tabs">
+      <button class="sdm-tab on" onclick="switchSDMTab('overview',this)">📍 Overview</button>
+      <button class="sdm-tab" onclick="switchSDMTab('risk',this)">⚠️ Risk Analysis</button>
+      <button class="sdm-tab" onclick="switchSDMTab('driver',this)">🚛 Vehicle & Driver</button>
+      <button class="sdm-tab" onclick="switchSDMTab('routes',this)">🔀 Alt Routes</button>
+    </div>
+  </div>
+
+  <!-- BODY -->
+  <div class="sdm-body">
+
+    <!-- TAB: OVERVIEW -->
+    <div class="sdm-pane on" id="sdm-pane-overview">
+
+      <!-- Progress -->
+      <div class="sdm-section">
+        <div class="sdm-section-title">📍 Live Location & Progress</div>
+        <div class="sdm-progress-wrap">
+          <div class="sdm-progress-label">
+            <span style="font-size:12px;font-weight:700;color:var(--text)" id="sdm-origin-lbl">Origin</span>
+            <span style="font-size:12px;font-weight:700;font-family:var(--mono);color:var(--blue)" id="sdm-pct-lbl">0%</span>
+            <span style="font-size:12px;font-weight:700;color:var(--text)" id="sdm-dest-lbl">Destination</span>
+          </div>
+          <div class="sdm-progress-bar">
+            <div class="sdm-progress-fill" id="sdm-prog-fill">
+              <div class="sdm-progress-dot" id="sdm-prog-dot"></div>
+            </div>
+          </div>
+          <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text4);font-family:var(--mono);margin-top:6px">
+            <span id="sdm-km-covered">— km covered</span>
+            <span id="sdm-eta-left">— h remaining</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPIs -->
+      <div class="sdm-section">
+        <div class="sdm-section-title">📊 Shipment Metrics</div>
+        <div class="sdm-kpi-row">
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-eta">—</div><div class="sdm-kpi-k">ETA Hours</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-weight">—</div><div class="sdm-kpi-k">Weight (kg)</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-km">—</div><div class="sdm-kpi-k">Route km</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-risk">—</div><div class="sdm-kpi-k">Risk Score</div></div>
+        </div>
+      </div>
+
+      <!-- Route Timeline -->
+      <div class="sdm-section">
+        <div class="sdm-section-title">🗺 Route Timeline</div>
+        <div class="sdm-timeline" id="sdm-timeline"></div>
+      </div>
+
+      <!-- Cargo + Supplier -->
+      <div class="sdm-section">
+        <div class="sdm-section-title">📦 Cargo & Supplier</div>
+        <div class="sdm-info-grid" id="sdm-cargo-grid"></div>
+      </div>
+
+    </div><!-- /overview -->
+
+    <!-- TAB: RISK -->
+    <div class="sdm-pane" id="sdm-pane-risk">
+      <div class="sdm-section">
+        <div class="sdm-section-title">🧠 AI Risk Score</div>
+        <div class="sdm-risk-score-row">
+          <div class="sdm-risk-meter" id="sdm-risk-meter">—</div>
+          <div class="sdm-risk-summary">
+            <div class="sdm-risk-level" id="sdm-risk-level-text">Calculating...</div>
+            <div class="sdm-risk-desc" id="sdm-risk-desc">VaaniChain AI is analysing 8 disruption factors across weather, compliance, infrastructure and more.</div>
+          </div>
+        </div>
+      </div>
+      <div class="sdm-section">
+        <div class="sdm-section-title">⚠️ Active Risk Factors</div>
+        <div class="sdm-factor-list" id="sdm-factor-list"></div>
+      </div>
+    </div><!-- /risk -->
+
+    <!-- TAB: DRIVER / VEHICLE -->
+    <div class="sdm-pane" id="sdm-pane-driver">
+      <div class="sdm-section">
+        <div class="sdm-section-title">🚛 Vehicle Information</div>
+        <div class="sdm-info-grid" id="sdm-vehicle-grid"></div>
+      </div>
+      <div class="sdm-section">
+        <div class="sdm-section-title">👤 Driver Details</div>
+        <div class="sdm-info-grid" id="sdm-driver-grid"></div>
+      </div>
+      <div class="sdm-section">
+        <div class="sdm-section-title">📋 Compliance & Documents</div>
+        <div class="sdm-info-grid" id="sdm-docs-grid"></div>
+      </div>
+    </div><!-- /driver -->
+
+    <!-- TAB: ALT ROUTES -->
+    <div class="sdm-pane" id="sdm-pane-routes">
+      <div class="sdm-section">
+        <div class="sdm-section-title">🔀 AI-Recommended Alternate Routes</div>
+        <div class="sdm-alt-routes" id="sdm-alt-routes"></div>
+      </div>
+      <div class="sdm-section" style="margin-top:20px">
+        <div class="sdm-section-title">📝 Disruption Notes</div>
+        <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;font-size:12px;color:var(--text2);line-height:1.7;font-family:var(--mono)" id="sdm-disruption-notes">No active disruption notes.</div>
+      </div>
+    </div><!-- /routes -->
+
+  </div><!-- /sdm-body -->
+
+  <!-- FOOTER ACTIONS -->
+  <div class="sdm-footer">
+    <button class="sdm-btn sdm-btn-green" onclick="sdmApproveReroute()">✓ Approve Reroute</button>
+    <button class="sdm-btn sdm-btn-amber" id="sdm-email-btn" onclick="sdmEmail()">📧 Email Supplier</button>
+    <button class="sdm-btn sdm-btn-primary" onclick="sdmAskAI()">💬 Ask VaaniAI</button>
+    <div class="sdm-footer-spc"></div>
+    <button class="sdm-btn sdm-btn-ghost" onclick="closeSDM()">Close</button>
+  </div>
+
+</div>
+</div>
+
+<!-- EMAIL MODAL -->
+<div class="modal-ov" id="email-modal">
+  <div class="modal">
+    <div class="modal-title">📧 Auto-Generated Supplier Email</div>
+    <div class="modal-sub" id="modal-meta">Powered by VaaniChain AI</div>
+    <div class="email-content" id="email-content">Generating...</div>
+    <div class="modal-btns">
+      <button class="btn-copy-e" onclick="copyEmail()">📋 Copy Email</button>
+      <button class="btn-close-e" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"></div>
+
+<!-- FLOATING CHAT BUTTON -->
+<button class="fab" id="fab" onclick="focusChat()" title="Open VaaniChat">
+  💬
+  <span class="fab-badge" id="fab-badge">1</span>
+  <span class="fab-tooltip">VaaniChat — Ask AI</span>
+</button>
+
 
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
 <script src="js/chat.js"></script>
 <script src="js/shipments.js"></script>
 
+
 <script>
-// --- CORE LOGIC ---
-const CONFIG_BASE = CONFIG.BASE_URL;
-let allShips = [];
+// ── AUTH GUARD ──
+(function(){
+  const token = localStorage.getItem('vc_token');
+  if (!token || token.length < 3) window.location.href = '../index.html';
+})();
+
+const BASE_URL = CONFIG.BASE_URL || 'http://localhost:5000';
+let allShips = [], latestAnalysis = {alerts:[], overall_risk:'low'};
+let filterStatus = 'all', filterModeVal = 'all', emailText = '';
+
+const WEATHER_CITIES = [
+  {name:'Mumbai',   lat:19.076, lon:72.878},
+  {name:'Delhi',    lat:28.614, lon:77.209},
+  {name:'Chennai',  lat:13.083, lon:80.271},
+  {name:'Kolkata',  lat:22.573, lon:88.364},
+  {name:'Bengaluru',lat:12.972, lon:77.594},
+  {name:'Hyderabad',lat:17.385, lon:78.487},
+];
+
+const MODE_ICONS = {road:'🚛', rail:'🚂', air:'✈️', sea:'🚢'};
+
+// ── SIMULATE SCENARIOS ──
+const SCENARIOS = [
+  {route:'NH-48',      toast:'🚛 Monsoon flooding on NH-48!',         chat:'⚠️ 🚛 ROAD: Heavy monsoon rains on NH-48. SHP-1001 (Mumbai→Delhi) and SHP-1003 (JNPT→Pune) are AT RISK. Rerouting via Delhi-Mumbai Expressway available.'},
+  {route:'Howrah-Delhi Main Line', toast:'🚂 Derailment on Howrah-Delhi line!', chat:'⚠️ 🚂 RAIL: Freight derailment near Mughalsarai. RLY-2002 (Kolkata→Delhi) is AT RISK. Eastern DFC alternate — est. delay 6h.'},
+  {route:'IndiGo Cargo 6E-F201',  toast:'✈️ Dense fog at IGI Delhi!',          chat:'⚠️ ✈️ AIR: Dense fog at IGI Delhi. AIR-3001 (Mumbai→Delhi, Medical Devices) is AT RISK. Rerouting via Ahmedabad or next slot.'},
+  {mode:'sea',                     toast:'🚢 Cyclone alert — Sea freight disrupted!', chat:'⚠️ 🚢 SEA: Cyclone Vayu alert in Bay of Bengal. SEA-4001 and SEA-4003 are AT RISK. Colombo transshipment recommended.'},
+];
+let scenarioIdx = 0;
 
 window.onload = () => {
+  // auth check
   const user = localStorage.getItem('vc_user') || 'demo';
-  document.getElementById('user-av').textContent = user[0].toUpperCase();
+  document.getElementById('user-av').childNodes[0].textContent = user[0].toUpperCase();
+  document.getElementById('um-name').textContent = 'Signed in as ' + user;
   startClock();
-  loadAllData();
-  setInterval(loadAllData, 30000);
+  fetchAllWeather();
+  loadShipments();
+  loadStatus();
+  setInterval(loadShipments, 30000);
+  setInterval(loadStatus, 60000);
+  setInterval(fetchAllWeather, 900000);
+  document.getElementById('chat-inp').addEventListener('keydown', e => {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendChat(); }
+  });
+  document.getElementById('email-modal').addEventListener('click', e => {
+    if (e.target.id === 'email-modal') closeModal();
+  });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.user-av')) document.getElementById('user-menu').classList.remove('open');
+  });
 };
 
 function startClock() {
-  const u = () => document.getElementById('nav-clock').textContent = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+  const u = () => document.getElementById('nav-clock').textContent =
+    new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit', timeZone:'Asia/Kolkata'});
   u(); setInterval(u, 1000);
 }
 
-function toggleUserMenu() { document.getElementById('user-menu').classList.toggle('open'); }
-function logout() { localStorage.clear(); window.location.href = '../index.html'; }
-
-async function loadAllData() {
-  await Promise.all([loadShipments(), loadStatus(), fetchWeather()]);
+function toggleUserMenu() {
+  document.getElementById('user-menu').classList.toggle('open');
 }
 
+function logout() {
+  localStorage.removeItem('vc_token');
+  localStorage.removeItem('vc_user');
+  localStorage.removeItem('owner_shipments');
+  window.location.replace('../index.html');
+}
+
+// ── WEATHER ──
+async function fetchAllWeather() {
+  document.getElementById('wx-badge').textContent = '⟳ Loading';
+  const results = [];
+  for (const c of WEATHER_CITIES) {
+    try {
+      const r = await fetch(
+        `https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=temperature_2m,precipitation,rain,weather_code,wind_speed_10m&forecast_days=1`,
+        {signal: AbortSignal.timeout(7000)}
+      );
+      const d = await r.json(); const cur = d.current;
+      results.push({
+        city: c.name,
+        temperature_c: cur.temperature_2m,
+        rain_mm: cur.rain || 0,
+        wind_kmh: cur.wind_speed_10m,
+        weather_code: cur.weather_code,
+        is_dangerous: (cur.rain || 0) > 5 || cur.weather_code >= 80,
+        description: cur.rain > 0 ? `${Math.round(cur.rain)}mm rain` : 'Clear'
+      });
+    } catch {}
+  }
+  if (results.length) renderWeather(results);
+}
+
+function renderWeather(cities) {
+  const anyDanger = cities.some(c => c.is_dangerous);
+  const badge = document.getElementById('wx-badge');
+  badge.textContent = anyDanger ? '⚠ Alert' : '● Live';
+  badge.style.background = anyDanger ? 'var(--red2)' : 'var(--green2)';
+  badge.style.color = anyDanger ? 'var(--red)' : 'var(--green)';
+  badge.style.borderColor = anyDanger ? '#fca5a5' : '#86efac';
+  document.getElementById('wx-area').innerHTML = `<div class="wx-grid">${cities.slice(0,6).map(c => {
+    const rain = c.rain_mm || 0;
+    const isHeavy = rain > 5 || c.is_dangerous;
+    const isLight = rain > 0 && rain <= 5;
+    const cls = isHeavy ? 'wxr-heavy' : isLight ? 'wxr-light' : 'wxr-clear';
+    const label = isHeavy ? `${Math.round(rain)}mm Heavy` : isLight ? `${Math.round(rain)}mm Light` : 'Clear';
+    const icon = isHeavy ? '🌧️' : isLight ? '🌦️' : '☀️';
+    const iconBg = isHeavy ? '#fee2e2' : isLight ? '#dbeafe' : '#d1fae5';
+    return `<div class="wx-card">
+      <div class="wx-left"><div class="wx-icon" style="background:${iconBg}">${icon}</div>
+        <div><div class="wx-city">${c.city}</div><div class="wx-desc">${c.description||'Clear'} · ${Math.round(c.wind_kmh||0)} km/h</div></div>
+      </div>
+      <div class="wx-right"><div class="wx-temp">${Math.round(c.temperature_c||0)}°C</div><div class="wx-rain ${cls}">${label}</div></div>
+    </div>`;
+  }).join('')}</div>`;
+}
+
+// ── DEMO SHIPMENTS (shown when backend is offline) ──
+const DEMO_SHIPMENTS = [
+  {id:'SHP-1001',origin:'Mumbai',destination:'Delhi',route:'NH-48',mode:'road',status:'on_time',eta_hours:18,weight_kg:4200,cargo:'Electronics',supplier:'Reliance Retail',priority:'high'},
+  {id:'SHP-1002',origin:'Delhi',destination:'Bengaluru',route:'NH-44',mode:'road',status:'at_risk',eta_hours:28,weight_kg:8500,cargo:'Pharmaceuticals',supplier:'Sun Pharma',priority:'critical'},
+  {id:'SHP-1003',origin:'JNPT Mumbai',destination:'Pune',route:'NH-48 Expressway',mode:'road',status:'on_time',eta_hours:5,weight_kg:12000,cargo:'Auto Parts',supplier:'Tata Motors',priority:'normal'},
+  {id:'SHP-1004',origin:'Chennai',destination:'Hyderabad',route:'NH-16',mode:'road',status:'delayed',eta_hours:14,weight_kg:3100,cargo:'Textiles',supplier:'Arvind Mills',priority:'normal'},
+  {id:'SHP-1005',origin:'Kolkata',destination:'Delhi',route:'NH-19',mode:'road',status:'at_risk',eta_hours:32,weight_kg:6700,cargo:'Steel Coils',supplier:'SAIL',priority:'high'},
+  {id:'RLY-2001',origin:'Mumbai CONCOR',destination:'Delhi ICD',route:'Western DFC',mode:'rail',status:'on_time',eta_hours:22,weight_kg:42000,cargo:'FMCG Goods',supplier:'HUL',priority:'normal'},
+  {id:'RLY-2002',origin:'Kolkata',destination:'Delhi',route:'Howrah-Delhi Main Line',mode:'rail',status:'on_time',eta_hours:30,weight_kg:35000,cargo:'Coal',supplier:'Coal India',priority:'normal'},
+  {id:'RLY-2003',origin:'Chennai',destination:'Mumbai',route:'South Central Railway',mode:'rail',status:'delayed',eta_hours:36,weight_kg:28000,cargo:'Cement',supplier:'UltraTech',priority:'high'},
+  {id:'AIR-3001',origin:'Mumbai',destination:'Delhi',route:'IndiGo Cargo 6E-F201',mode:'air',status:'on_time',eta_hours:2,weight_kg:850,cargo:'Medical Devices',supplier:'Medtronic',priority:'critical'},
+  {id:'AIR-3002',origin:'Delhi',destination:'Bengaluru',route:'Blue Dart BD-101',mode:'air',status:'on_time',eta_hours:3,weight_kg:420,cargo:'Semiconductor Chips',supplier:'Samsung',priority:'critical'},
+  {id:'AIR-3003',origin:'Hyderabad',destination:'Mumbai',route:'SpiceXpress SG-F88',mode:'air',status:'at_risk',eta_hours:2,weight_kg:310,cargo:'Vaccines',supplier:'Dr Reddys',priority:'critical'},
+  {id:'SEA-4001',origin:'JNPT Mumbai',destination:'Singapore',route:'JNPT–SIN via Colombo',mode:'sea',status:'on_time',eta_hours:144,weight_kg:240000,cargo:'Garments',supplier:'Gokaldas Exports',priority:'normal'},
+  {id:'SEA-4002',origin:'Chennai',destination:'Rotterdam',route:'Chennai–RTM via Suez',mode:'sea',status:'on_time',eta_hours:360,weight_kg:185000,cargo:'Engineering Goods',supplier:'L&T',priority:'high'},
+  {id:'SEA-4003',origin:'Mundra',destination:'Dubai',route:'Mundra–DXB Arabian Sea',mode:'sea',status:'at_risk',eta_hours:96,weight_kg:92000,cargo:'Chemicals',supplier:'Reliance Industries',priority:'high'},
+  {id:'SHP-1006',origin:'Ahmedabad',destination:'Mumbai',route:'NH-48',mode:'road',status:'on_time',eta_hours:8,weight_kg:5500,cargo:'Processed Food',supplier:'Amul',priority:'normal'},
+  {id:'SHP-1007',origin:'Bengaluru',destination:'Chennai',route:'NH-44',mode:'road',status:'on_time',eta_hours:6,weight_kg:2800,cargo:'IT Hardware',supplier:'Infosys',priority:'high'},
+  {id:'RLY-2004',origin:'Ahmedabad',destination:'Kolkata',route:'Gujarat Mail Freight',mode:'rail',status:'on_time',eta_hours:42,weight_kg:51000,cargo:'Cotton Bales',supplier:'Arvind Ltd',priority:'normal'},
+  {id:'AIR-3004',origin:'Mumbai',destination:'Kolkata',route:'Air India Cargo AI-C21',mode:'air',status:'on_time',eta_hours:2,weight_kg:680,cargo:'Perishables',supplier:'Future Fresh',priority:'high'},
+  {id:'SEA-4004',origin:'Kolkata',destination:'Bangladesh',route:'Kolkata–Chittagong',mode:'sea',status:'delayed',eta_hours:48,weight_kg:38000,cargo:'Jute Products',supplier:'Cheviot Co',priority:'normal'},
+  {id:'SHP-1008',origin:'Jaipur',destination:'Delhi',route:'NH-48',mode:'road',status:'on_time',eta_hours:5,weight_kg:1900,cargo:'Handicrafts',supplier:'Rajasthali',priority:'normal'},
+];
+
+// ── SHIPMENTS ──
 async function loadShipments() {
   try {
-    const res = await fetch(`${CONFIG_BASE}/shipments`);
-    const data = await res.json();
-    allShips = data;
-    renderShipments();
-    updateKPIs();
-  } catch (e) {
-    console.error(e);
-    // show toast
+    const r = await fetch(`${CONFIG.BASE_URL}/shipments`, {signal: AbortSignal.timeout(4000)});
+    const data = await r.json();
+    const owner = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
+    allShips = [...data, ...owner];
+    if (!allShips.length) { allShips = [...DEMO_SHIPMENTS]; }
+    renderShipments(); updateKPIs();
+    document.getElementById('ship-refresh').textContent = 'Live · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  } catch {
+    // Backend offline — load demo data so dashboard is always functional
+    if (!allShips.length) {
+      const owner = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
+      allShips = [...DEMO_SHIPMENTS, ...owner];
+      renderShipments(); updateKPIs();
+      document.getElementById('ship-refresh').textContent = 'Demo mode · backend offline';
+    }
   }
 }
 
 function renderShipments() {
-  const grid = document.getElementById('ships-grid');
-  grid.innerHTML = allShips.map(s => {
-    const status = s.status || 'on_time';
-    const mode = s.mode || 'road';
-    const progress = Math.floor(Math.random() * 60) + 20; // Simulated for now
-    return `
-      <div class="ship-card ${status}">
-        <div class="sc-header">
-          <div class="sc-mode-pill mc-${mode}">${mode}</div>
-          <div class="sc-id">${s.id}</div>
-        </div>
-        <div class="sc-route">${s.origin} → ${s.destination}</div>
-        <div class="sc-prog-label">
-          <span>In Transit</span>
-          <span>${progress}%</span>
-        </div>
-        <div class="sc-prog-bar"><div class="sc-prog-fill" style="width:${progress}%"></div></div>
-        <div class="sc-footer">
-          <span style="font-size:12px; color:var(--text-secondary)">${s.carrier || 'Fleet A1'}</span>
-          <button class="btn-details" onclick="openSDM('${s.id}')">Details →</button>
+  const q = document.getElementById('search-inp').value.toLowerCase();
+  let s = allShips;
+  if (filterStatus !== 'all') s = s.filter(x => x.status === filterStatus);
+  if (filterModeVal !== 'all') s = s.filter(x => x.mode === filterModeVal);
+  if (q) s = s.filter(x => [x.id, x.origin, x.destination, x.supplier, x.route, x.cargo, x.mode].join(' ').toLowerCase().includes(q));
+  document.getElementById('ship-count-badge').textContent = s.length + ' shipments';
+  document.getElementById('ships-grid').innerHTML = s.length
+    ? s.map(mkShipCard).join('')
+    : `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No shipments match your filter.</div></div>`;
+}
+
+function getShipProgress(s) {
+  // Normalise id to string so JSON round-trip doesn't change the seed
+  const idStr = String(s.id || '');
+  const seed  = idStr.split('').reduce((a, c) => a + c.charCodeAt(0), 0);
+  const st    = s.status || 'on_time';
+  const pct   = st === 'on_time'
+    ? Math.min(90, 10 + (seed % 70))
+    : Math.min(60, 5  + (seed % 50));
+  const eta   = parseInt(s.eta_hours) || 12;
+  const km    = Math.round(eta * 65);
+  const covKm = Math.round(pct / 100 * km);
+  const etaLeft = Math.round(eta * (1 - pct / 100));
+  return { seed, pct, eta, km, covKm, etaLeft };
+}
+
+function mkShipCard(s) {
+  const st = s.status || 'on_time';
+  const mode = s.mode || 'road';
+  const priCls = s.priority === 'critical' ? 'pri-critical' : s.priority === 'high' ? 'pri-high' : 'pri-normal';
+
+  // ── Location tracker simulation ──
+  // owner_added = just registered → 0% progress (hasn't departed yet)
+  // existing shipments → deterministic seed-based progress
+  const { seed, pct, eta, km: totalKm, covKm: coveredKm, etaLeft } = getShipProgress(s);
+  const dotClass  = st === 'at_risk' ? 'tracker-dot risk' : 'tracker-dot';
+
+  // ── Multi-factor risk badge ──
+  const predict = RISK_ENGINE.getFullRisk(s, null);
+  const factorCount = predict.factors.length;
+  const predBadge = predict.level === 'low'
+    ? `<span class="predict-badge predict-low">✅ Risk clear · ${factorCount} factors checked</span>`
+    : predict.level === 'medium'
+    ? `<span class="predict-badge predict-med">${predict.topIcon} ${predict.factors.length} risk factors · ${predict.topReason.substring(0,40)}...</span>`
+    : `<span class="predict-badge predict-high">🔴 ${predict.factors.length} risks · ${predict.topReason.substring(0,38)}...</span>`;
+
+  return `<div class="ship-card ${st}" onclick="openSDM(${JSON.stringify(s).replace(/"/g,'&quot;')})" style="cursor:pointer">
+    <div class="sc-mode-chip mc-${mode}">${MODE_ICONS[mode]||'📦'} ${mode.toUpperCase()}</div>
+    <div class="sc-header" style="margin-top:16px">
+      <span class="sc-id">${s.id}</span>
+      <span class="sc-status s-${st}">${st.replace('_',' ')}</span>
+    </div>
+    <div class="sc-route">${s.origin||'?'}<span class="sc-arr">→</span>${s.destination||'?'}</div>
+    <div class="sc-highway">${s.route||'—'}</div>
+    <div class="sc-stats">
+      <div class="sc-stat"><div class="sc-stat-k">ETA</div><div class="sc-stat-v">${s.eta_hours}h</div></div>
+      <div class="sc-stat"><div class="sc-stat-k">Cargo</div><div class="sc-stat-v">${s.cargo||'—'}</div></div>
+      <div class="sc-stat"><div class="sc-stat-k">Weight</div><div class="sc-stat-v">${s.weight_kg?(s.weight_kg).toLocaleString()+'kg':'—'}</div></div>
+      <div class="sc-stat"><div class="sc-stat-k">Priority</div><div class="sc-stat-v"><span class="sc-pri ${priCls}">${s.priority||'normal'}</span></div></div>
+    </div>
+
+    <!-- LOCATION TRACKER -->
+    <div class="tracker-wrap">
+      <div class="tracker-header">
+        <span class="tracker-label">${s.owner_added ? '🕐 Awaiting departure' : '📍 In transit'}</span>
+        <span class="tracker-pct">${pct}% covered</span>
+      </div>
+      <div class="tracker-bar">
+        <div class="tracker-fill" style="width:${pct}%">
+          <div class="${dotClass}"></div>
         </div>
       </div>
-    `;
-  }).join('');
-  document.getElementById('ship-count-badge').textContent = allShips.length + ' shipments';
+      <div class="tracker-cities">
+        <span>${s.origin||'Origin'}</span>
+        <span>${s.destination||'Destination'}</span>
+      </div>
+      <div class="tracker-eta">
+        📦 ~${coveredKm} km covered &nbsp;·&nbsp; ⏱ ~${etaLeft}h remaining
+      </div>
+      ${predBadge}
+    </div>
+
+    <!-- E-WAY BILL DOWNLOAD -->
+    ${(s.eway_bill_no) ? `
+    <div style="display:flex;align-items:center;justify-content:space-between;
+      background:linear-gradient(to right,#fffbeb,#fefce8);
+      border:1.5px solid #fcd34d;border-radius:8px;padding:7px 10px;margin-top:8px">
+      <div style="display:flex;align-items:center;gap:6px">
+        <span style="font-size:13px">📋</span>
+        <div>
+          <div style="font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.04em">E-Way Bill</div>
+          <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text)">${s.eway_bill_no}</div>
+        </div>
+        ${s.eway_bill_expiry ? `<span style="font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;
+          background:${new Date(s.eway_bill_expiry) < new Date() ? 'var(--red2)' : new Date(s.eway_bill_expiry) < new Date(Date.now()+86400000*2) ? '#fef3c7' : 'var(--green2)'};
+          color:${new Date(s.eway_bill_expiry) < new Date() ? 'var(--red)' : new Date(s.eway_bill_expiry) < new Date(Date.now()+86400000*2) ? '#92400e' : 'var(--green)'}">${
+            new Date(s.eway_bill_expiry) < new Date() ? '⚠ EXPIRED' : 'Valid till ' + s.eway_bill_expiry
+          }</span>` : ''}
+      </div>
+      <button onclick="event.stopPropagation();downloadEwayBill('${s.id}','${s.eway_bill_no}','${s.eway_bill_expiry||''}','${s.supplier||''}','${s.origin||''}','${s.destination||''}','${s.cargo||''}','${s.weight_kg||0}')"
+        style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;border:1.5px solid #fcd34d;
+        background:var(--white);color:#92400e;cursor:pointer;font-family:var(--sans);transition:all .15s;flex-shrink:0"
+        onmouseover="this.style.background='#fef3c7'" onmouseout="this.style.background='var(--white)'">
+        ⬇ Download
+      </button>
+    </div>` : ''}
+
+    <div class="sc-footer" style="margin-top:8px">
+      <span class="sc-supplier">🏢 ${s.supplier||'—'}</span>
+      ${s.owner_added ? '<span class="sc-owner">owner added</span>' : ''}
+    </div>
+  </div>`;
+}
+
+function downloadEwayBill(id, ewayNo, expiry, supplier, origin, dest, cargo, weight) {
+  // Generate a printable E-Way Bill PDF-style HTML page and trigger download
+  const now = new Date().toLocaleString('en-IN', {timeZone:'Asia/Kolkata'});
+  const html = `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>E-Way Bill — ${ewayNo}</title>
+<style>
+  body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;margin:0;padding:20px}
+  .bill{background:#fff;max-width:800px;margin:auto;border:2px solid #1d4ed8;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1)}
+  .header{background:linear-gradient(135deg,#1d4ed8,#4f46e5);color:#fff;padding:20px 28px;display:flex;justify-content:space-between;align-items:center}
+  .header h1{margin:0;font-size:22px;font-weight:800}.header .sub{font-size:12px;opacity:.8;margin-top:3px}
+  .header-right{text-align:right}
+  .eway-num{font-family:monospace;font-size:18px;font-weight:700;background:rgba(255,255,255,.2);padding:6px 14px;border-radius:6px}
+  .section{padding:16px 28px;border-bottom:1px solid #e5e7eb}
+  .section:last-child{border-bottom:none}
+  .section-title{font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.08em;margin-bottom:10px}
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+  .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+  .field{background:#f9fafb;border-radius:6px;padding:10px 14px;border:1px solid #e5e7eb}
+  .field-k{font-size:10px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+  .field-v{font-size:14px;font-weight:600;color:#111827;font-family:monospace}
+  .validity{text-align:center;padding:20px;background:${new Date(expiry) < new Date() ? '#fee2e2' : '#f0fdf4'};border-radius:6px;border:1.5px solid ${new Date(expiry) < new Date() ? '#fca5a5' : '#86efac'}}
+  .validity h2{font-size:28px;font-weight:800;color:${new Date(expiry) < new Date() ? '#dc2626' : '#059669'};margin:0 0 5px 0}
+  .validity p{color:#374151;font-size:13px;margin:0}
+  .footer{background:#f9fafb;padding:14px 28px;font-size:11px;color:#9ca3af;display:flex;justify-content:space-between}
+  .badge{display:inline-block;background:#eff6ff;color:#1d4ed8;border:1px solid #bfdbfe;border-radius:4px;padding:2px 8px;font-size:11px;font-weight:700}
+  @media print{body{background:#fff}.bill{box-shadow:none;border:1px solid #000}}
+</style>
+</head>
+<body>
+<div class="bill">
+  <div class="header">
+    <div>
+      <h1>🚛 E-Way Bill</h1>
+      <div class="sub">GST E-Way Bill · VaaniChain Supply Chain Intelligence</div>
+    </div>
+    <div class="header-right">
+      <div class="eway-num">${ewayNo}</div>
+      <div style="font-size:11px;margin-top:6px;opacity:.8">Generated: ${now}</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Shipment Details</div>
+    <div class="grid3">
+      <div class="field"><div class="field-k">Shipment ID</div><div class="field-v">${id}</div></div>
+      <div class="field"><div class="field-k">Origin</div><div class="field-v">${origin}</div></div>
+      <div class="field"><div class="field-k">Destination</div><div class="field-v">${dest}</div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Consigner & Cargo</div>
+    <div class="grid">
+      <div class="field"><div class="field-k">Supplier / Consigner</div><div class="field-v">${supplier}</div></div>
+      <div class="field"><div class="field-k">Cargo Description</div><div class="field-v">${cargo}</div></div>
+      <div class="field"><div class="field-k">Weight</div><div class="field-v">${Number(weight).toLocaleString('en-IN')} kg</div></div>
+      <div class="field"><div class="field-k">Mode of Transport</div><div class="field-v"><span class="badge">Road Freight</span></div></div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">E-Way Bill Validity</div>
+    <div class="validity">
+      <h2>${new Date(expiry) < new Date() ? '⚠ EXPIRED' : '✓ VALID'}</h2>
+      <p>Valid until: <strong>${expiry || 'Not specified'}</strong></p>
+      <p style="margin-top:6px;font-size:12px;color:#6b7280">GST Rule: 1 day validity per 100km travelled · Renew 4h before expiry</p>
+    </div>
+  </div>
+
+  <div class="footer">
+    <span>VaaniChain AI · Hack2skill Smart Supply Chains 2026</span>
+    <span>This is a demo E-Way Bill for hackathon demonstration purposes</span>
+  </div>
+</div>
+<script>window.onload=()=>{window.print();}<\/script>
+</body>
+</html>`;
+
+  const blob = new Blob([html], {type:'text/html'});
+  const a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'EWayBill_' + ewayNo + '.html';
+  a.click();
+  showToast('E-Way Bill downloaded: ' + ewayNo, 'ok');
 }
 
 function updateKPIs() {
-  document.getElementById('kpi-total').textContent = allShips.length;
-  document.getElementById('kpi-ontime').textContent = allShips.filter(s => s.status === 'on_time').length;
-  document.getElementById('kpi-risk').textContent = allShips.filter(s => s.status === 'at_risk').length;
-  document.getElementById('kpi-alerts').textContent = allShips.filter(s => s.status === 'at_risk').length;
-  document.getElementById('kpi-eff').textContent = '94%';
-  document.getElementById('kpi-rev').textContent = '₹' + (allShips.filter(s => s.status === 'at_risk').length * 50000).toLocaleString();
+  const total = allShips.length;
+  const ontime = allShips.filter(s => s.status === 'on_time').length;
+  const risk = allShips.filter(s => s.status === 'at_risk').length;
+  const alerts = latestAnalysis.alerts?.length || 0;
+  const eff = total ? Math.round((ontime / total) * 100) : 100;
+  const rev = risk * 50000;
+  document.getElementById('kpi-total').textContent = total;
+  document.getElementById('kpi-ontime').textContent = ontime;
+  document.getElementById('kpi-risk').textContent = risk;
+  document.getElementById('kpi-alerts').textContent = alerts;
+  document.getElementById('kpi-eff').textContent = eff + '%';
+  document.getElementById('kpi-rev').textContent = rev > 0 ? '₹' + rev.toLocaleString('en-IN') : '₹0';
 }
 
+// ── STATUS / ALERTS ──
 async function loadStatus() {
   try {
-    const res = await fetch(`${CONFIG_BASE}/status`);
-    const data = await res.json();
-    const badge = document.getElementById('risk-badge');
-    badge.className = `risk-badge risk-${data.overall_risk}`;
-    badge.textContent = data.overall_risk === 'low' ? '🟢 All Clear' : data.overall_risk === 'medium' ? '🟡 At Risk' : '🔴 Critical';
-    renderAlerts(data.alerts);
-  } catch (e) {}
+    const r = await fetch(`${CONFIG.BASE_URL}/status`);
+    const data = await r.json();
+    latestAnalysis = data;
+    renderAlerts(data); updateRiskBadge(data.overall_risk); updateKPIs();
+  } catch {}
 }
 
-function renderAlerts(alerts) {
-  const body = document.getElementById('alerts-body');
-  if (!alerts || !alerts.length) {
-    body.innerHTML = '<div style="text-align:center; color:var(--text-muted); font-size:13px; padding:20px">No active alerts</div>';
-    return;
-  }
-  body.innerHTML = alerts.map(a => `
-    <div class="alert-card">
-      <div class="alert-head">
-        <span class="ah-id">${a.shipment_id}</span>
-        <span class="tag" style="background:#FEE2E2; color:#EF4444">Risk</span>
-      </div>
+function updateRiskBadge(risk) {
+  const el = document.getElementById('risk-badge');
+  if (risk === 'high')   { el.className = 'risk-badge risk-high'; el.textContent = '🔴 High Risk'; }
+  else if (risk === 'medium') { el.className = 'risk-badge risk-med'; el.textContent = '🟡 Medium Risk'; }
+  else                   { el.className = 'risk-badge risk-low';  el.textContent = '🟢 All Clear'; }
+}
+
+function renderAlerts(data) {
+  const alerts = data.alerts || [];
+  const badge = document.getElementById('alert-count-badge');
+  badge.textContent = alerts.length + ' Alert' + (alerts.length !== 1 ? 's' : '');
+  badge.style.background = alerts.length > 0 ? 'var(--red2)' : 'var(--green2)';
+  badge.style.color = alerts.length > 0 ? 'var(--red)' : 'var(--green)';
+  badge.style.borderColor = alerts.length > 0 ? '#fca5a5' : '#86efac';
+  document.getElementById('alerts-body').innerHTML = alerts.length
+    ? alerts.map(mkAlertCard).join('')
+    : `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
+}
+
+function mkAlertCard(a) {
+  const modeIcon = a.mode_icon || '📦';
+  const mode = a.mode || 'road';
+  const modeBadgeColors = {
+    road:{bg:'#fef3c7',color:'#92400e',border:'#fcd34d'},
+    rail:{bg:'#dbeafe',color:'#1447be',border:'#93c5fd'},
+    air: {bg:'#ede9fe',color:'#6d28d9',border:'#c4b5fd'},
+    sea: {bg:'#d1fae5',color:'#065f46',border:'#6ee7b7'},
+  };
+  const mbc = modeBadgeColors[mode] || modeBadgeColors.road;
+  const actionVerbs = {
+    road:'✓ Approve Reroute',
+    rail:'✓ Approve Alt Corridor',
+    air: '✓ Approve Alt Hub/Slot',
+    sea: '✓ Approve Port Diversion',
+  };
+  const approveLabel = actionVerbs[mode] || '✓ Approve Action';
+
+  const recLabels = {best:'BEST',acceptable:'VIABLE',modal_shift:'MODAL SHIFT',time_critical:'URGENT',non_urgent:'ECONOMY',last_resort:'LAST RESORT'};
+  const altRoutesHtml = (a.alternate_routes||[]).slice(0,2).map((r,i) => {
+    const extra_h = r.extra_hours !== undefined ? r.extra_hours : (r.extraH||0);
+    const extra_cost = r.extra_cost_inr !== undefined ? r.extra_cost_inr : (r.extraCost||0);
+    const costStr = extra_cost<0 ? `−₹${Math.abs(extra_cost).toLocaleString('en-IN')}` : `+₹${extra_cost.toLocaleString('en-IN')}`;
+    const timeStr = extra_h<0 ? `−${Math.abs(extra_h)}h` : `+${extra_h}h`;
+    const recLabel = recLabels[r.recommendation||r.rec] || (i===0?'BEST':'ALT');
+    return `<div class="a-route ${i===0?'best':''}">
+      <span class="ar-name">${r.name||r.via||'Alternate option'}<span class="ar-best">${recLabel}</span></span>
+      <span class="ar-meta">${timeStr} &nbsp;<span class="ar-cost">${costStr}</span></span>
+    </div>`;
+  }).join('');
+
+  return `<div class="alert-card ${a.risk_level||'medium'}">
+    <div class="alert-head">
+      <span class="ah-id">${modeIcon} ${a.shipment_id} · ${a.supplier||''}</span>
+      <span class="ah-conf">${a.confidence_pct||'—'}% confidence</span>
+    </div>
+    <div class="alert-body">
+      <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:${mbc.bg};color:${mbc.color};border:1px solid ${mbc.border};margin-bottom:6px">${modeIcon} ${(a.mode_label||mode).toUpperCase()} FREIGHT</span>
+      ${a.weather_confirmed?'<span class="a-weather-badge">⛈ Weather-confirmed</span><br>':''}
+      <span class="a-level al-${a.risk_level||'medium'}">${a.risk_level||'medium'} risk</span>
       <div class="a-reason">${a.risk_reason}</div>
+      <div class="a-action">→ ${a.recommended_action||'Review recommended'}</div>
+      <div class="a-routes">${altRoutesHtml||'<div style="font-size:11px;color:var(--text4);padding:4px 0">No pre-filed alternate on record.</div>'}</div>
       <div class="a-btns">
-        <button class="btn-approve" onclick="toast('Reroute approved')">Approve</button>
-        <button class="btn-email-a">Email</button>
+        <button class="btn-approve" onclick="approveAlert('${a.shipment_id}',this)">${approveLabel}</button>
+        <button class="btn-email-a" onclick="showEmail('${a.shipment_id}','${a.supplier||''}')">📧 Email</button>
+        <button class="btn-dismiss" onclick="this.closest('.alert-card').style.opacity='0.4'">✕</button>
       </div>
     </div>
-  `).join('');
+  </div>`;
 }
 
-async function fetchWeather() {
-  const cities = ['Mumbai', 'Delhi', 'Chennai'];
-  const area = document.getElementById('wx-area');
-  // Simple mock for now, actual fetch in js/weather.js pattern
-  area.innerHTML = cities.map(c => `
-    <div class="wx-row">
-      <div class="wx-icon-circle">☀️</div>
-      <div class="wx-info">
-        <div class="wx-city">${c}</div>
-        <div class="wx-desc">Clear Skies</div>
-      </div>
-      <div class="wx-temp">32°C</div>
-    </div>
-  `).join('');
+function approveAlert(id, btn) {
+  btn.textContent = '✓ Approved!'; btn.disabled = true; btn.style.opacity = '.5';
+  showToast('Reroute approved for ' + id, 'ok');
+  addMsg('ai', '✓ Reroute for ' + id + ' approved. Supplier notified and new route activated.');
 }
 
-function sendChat() {
+async function showEmail(id, sup) {
+  document.getElementById('modal-meta').textContent = id + ' · ' + sup;
+  document.getElementById('email-content').textContent = 'Generating with AI...';
+  document.getElementById('email-modal').classList.add('open');
+  try {
+    const r = await fetch(`${CONFIG.BASE_URL}/email/${id}`);
+    const d = await r.json();
+    emailText = d.email_draft;
+    document.getElementById('email-content').textContent = emailText;
+  } catch {
+    document.getElementById('email-content').textContent = 'Backend error. Run python app.py';
+  }
+}
+
+function closeModal() { document.getElementById('email-modal').classList.remove('open'); }
+function copyEmail() { navigator.clipboard.writeText(emailText); showToast('Email copied!','ok'); }
+
+// ── FILTERS ──
+function setFilter(val, type) {
+  if (type === 'status') {
+    filterStatus = val;
+    ['all','on_time','at_risk','delayed'].forEach(f => {
+      document.getElementById('fb-' + f)?.classList.toggle('on', f === val);
+    });
+  } else {
+    filterModeVal = filterModeVal === val ? 'all' : val;
+    ['road','rail','air','sea'].forEach(m => {
+      document.getElementById('fm-' + m)?.classList.toggle('on', m === filterModeVal);
+    });
+  }
+  renderShipments();
+}
+
+// ── SIMULATE ──
+async function simDisrupt() {
+  const s = SCENARIOS[scenarioIdx % SCENARIOS.length]; scenarioIdx++;
+  try {
+    const body = s.mode ? {mode: s.mode} : {route: s.route};
+    await fetch(`${CONFIG.BASE_URL}/trigger`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
+    showToast(s.toast, 'err');
+    addMsg('ai', s.chat);
+    pingFAB();
+    setTimeout(() => { loadShipments(); loadStatus(); }, 1500);
+  } catch { showToast('Backend not connected','err'); }
+}
+
+let _lastDisruptionTime = null;
+ 
+// Call this at the end of simDisrupt() to track when disruptions happened:
+function _markDisruption() {
+  _lastDisruptionTime = Date.now();
+  document.getElementById('reset-btn-label').textContent =
+    '↺ Reset (' + allShips.filter(s => s.status === 'at_risk').length + ' at risk)';
+}
+ 
+async function resetAll() {
+  try {
+    await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
+    _lastDisruptionTime = null;
+    document.getElementById('reset-btn-label').textContent = '↺ Reset';
+    showToast('All disruptions cleared ✓', 'ok');
+    loadShipments();
+    loadStatus();
+    addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
+  } catch {
+    showToast('Backend not connected', 'err');
+  }
+}
+
+// ── CHAT ──
+function qa(q) { document.getElementById('chat-inp').value = q; sendChat(); }
+
+async function sendChat() {
+    const input = document.getElementById('chat-inp');
+    const msg = input.value.trim();
+    if (!msg) return;
+    addMsg('user', msg);
+    input.value = '';
+    try {
+        const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({message: msg})  // was broken — `message` was undefined
+        });
+        const d = await r.json();
+        addMsg('ai', d.reply || 'No response');
+    } catch {
+        addMsg('ai', 'Backend offline — run python app.py');
+    }
+}
+
+function addMsg(role, text) {
+  const cm = document.getElementById('chat-msgs');
+  const d = document.createElement('div');
+  d.className = 'msg msg-' + (role === 'user' ? 'user' : 'ai');
+  const t = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+  d.innerHTML = `<div class="msg-bubble">${text}</div><div class="msg-time">${t}</div>`;
+  cm.appendChild(d); cm.scrollTop = cm.scrollHeight;
+}
+
+function showToast(m, t='info') {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.className = `toast ${t} show`;
+  setTimeout(() => el.classList.remove('show'), 3500);
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// VAANICHAIN — MULTI-FACTOR DISRUPTION INTELLIGENCE ENGINE
+// Factors: Weather · Festival · E-way Bill · Driver Fatigue ·
+//          Port Congestion · Strike · Breakdown · Regulatory
+// ═══════════════════════════════════════════════════════════════
+
+const RISK_ENGINE = {
+
+  // ── 1. FESTIVAL / EVENT CONGESTION ──
+  // Traffic on Indian highways spikes 2-3x during these windows
+  FESTIVALS: [
+    {name:'Diwali',        month:10, days:[1,15],  impact:40, modes:['road'],           note:'3x road congestion, transporter shortage'},
+    {name:'Durga Puja',    month:9,  days:[1,15],  impact:30, modes:['road','rail'],     note:'Heavy movement in East India'},
+    {name:'Eid ul-Fitr',   month:3,  days:[28,31], impact:25, modes:['road'],           note:'Pan-India road congestion'},
+    {name:'Holi',          month:2,  days:[24,26], impact:20, modes:['road'],           note:'North India highway slowdown'},
+    {name:'Ganesh Chaturthi',month:8,days:[20,31], impact:30, modes:['road','sea'],     note:'Mumbai port area congestion'},
+    {name:'Pongal',        month:0,  days:[13,16], impact:20, modes:['road'],           note:'South India freight slowdown'},
+    {name:'New Year',      month:11, days:[29,31], impact:15, modes:['air'],            note:'Air cargo capacity squeeze'},
+    {name:'Republic Day',  month:0,  days:[24,27], impact:15, modes:['road','air'],     note:'Delhi route restrictions'},
+    {name:'Independence Day',month:7,days:[13,16], impact:10, modes:['road','air'],     note:'Route diversions near capitals'},
+    {name:'Harvest Season (Kharif)',month:9,days:[1,30],impact:20,modes:['road'],       note:'Agri trucks flood NH-44, NH-48'},
+    {name:'Harvest Season (Rabi)',  month:3,days:[1,30],impact:15,modes:['road'],       note:'Wheat harvest — NH-1, NH-19 slow'},
+  ],
+
+  getFestivalRisk(month, day, mode) {
+    const hits = this.FESTIVALS.filter(f =>
+      f.month === month &&
+      day >= f.days[0] && day <= f.days[1] &&
+      (f.modes.includes(mode) || f.modes.includes('all'))
+    );
+    if (!hits.length) return null;
+    const top = hits.sort((a,b)=>b.impact-a.impact)[0];
+    return { score: top.impact, name: top.name, note: top.note };
+  },
+
+  // ── 2. E-WAY BILL EXPIRY ──
+  // GST e-way bill validity = 1 day per 100km (min 1 day)
+  // Over 400km needs extension — heavy penalty if expired at checkpost
+  getEwayRisk(etaHours, routeKm) {
+    if (!routeKm || !etaHours) return null;
+    const validityDays = Math.max(1, Math.floor(routeKm / 100));
+    const validityHours = validityDays * 24;
+    const bufferHours = validityHours - etaHours;
+    if (bufferHours < 4) {
+      return {
+        score: 45,
+        note: `E-way bill expires in <${Math.max(0,Math.round(bufferHours))}h — renew before departure`,
+        critical: true
+      };
+    } else if (bufferHours < 12) {
+      return { score: 20, note: `E-way bill tight — ${Math.round(bufferHours)}h buffer only` };
+    }
+    return null;
+  },
+
+  // ── 3. DRIVER FATIGUE & MANDATORY REST ──
+  // MoRTH rule: max 10h continuous driving, mandatory 8h rest after
+  // Long hauls >500km need driver change or overnight stop
+  getDriverFatigueRisk(etaHours, mode) {
+    if (mode !== 'road') return null;
+    if (etaHours > 20) {
+      return {
+        score: 35,
+        note: `${etaHours}h journey — mandatory rest stop required (MoRTH rule)`,
+        stops: Math.floor(etaHours / 10)
+      };
+    } else if (etaHours > 10) {
+      return {
+        score: 20,
+        note: `${etaHours}h journey — single driver at fatigue limit`
+      };
+    }
+    return null;
+  },
+
+  // ── 4. PORT CONGESTION INDEX ──
+  // Simulates real JNPT/Chennai port congestion patterns
+  // JNPT: high congestion Oct–Dec (pre-Christmas exports)
+  // Monsoon: Jun–Aug affects loading/unloading
+  getPortCongestionRisk(month, mode, destination) {
+    if (mode !== 'sea') return null;
+    const dest = (destination || '').toLowerCase();
+    let score = 0, note = '';
+
+    // JNPT seasonal patterns
+    if (month >= 9 && month <= 11) {
+      score = 40; note = 'JNPT pre-Christmas export surge — 3-5 day berth wait';
+    } else if (month >= 5 && month <= 7) {
+      score = 30; note = 'Monsoon slows port operations — crane stoppages';
+    } else {
+      score = 10; note = 'Normal port operations';
+    }
+
+    // Chennai port — known for slower customs
+    if (dest.includes('chennai') || dest.includes('colombo')) {
+      score += 10; note += ' · Chennai customs: 24-48h avg clearance';
+    }
+    // International routes: longer customs
+    if (dest.includes('singapore') || dest.includes('rotterdam') || dest.includes('dubai')) {
+      score += 15; note += ' · EXIM documentation required';
+    }
+    return score > 0 ? { score: Math.min(score, 60), note } : null;
+  },
+
+  // ── 5. STRIKE / BANDH INTELLIGENCE ──
+  // Based on known recurring patterns in India
+  getStrikeRisk(month, route, mode) {
+    const r = (route || '').toLowerCase();
+    const risks = [];
+
+    // Truckers' strike — happens 2-3x a year typically
+    // Last major: July 2023, Feb 2024
+    if (month === 1 || month === 6) {
+      if (mode === 'road') {
+        risks.push({ score: 35, note: "Truckers' strike season — monitor AITWA alerts" });
+      }
+    }
+    // State bandhs — Karnataka (March election), Bengal (various)
+    if (month === 2 && (r.includes('bengaluru') || r.includes('karnataka'))) {
+      risks.push({ score: 25, note: 'Karnataka election season — possible bandh' });
+    }
+    // Port workers — JNPT workers' strikes historically in monsoon
+    if (month >= 5 && month <= 8 && mode === 'sea') {
+      risks.push({ score: 20, note: 'Port worker union activity — possible go-slow' });
+    }
+    // Delhi NCR protest routes — NH-44, NH-48 blocked historically
+    if ((month === 11 || month === 0) && (r.includes('delhi') || r.includes('nh-44') || r.includes('nh-48'))) {
+      risks.push({ score: 30, note: 'NH-44/NH-48 protest blockade risk (Delhi border)' });
+    }
+
+    return risks.length ? risks[0] : null;
+  },
+
+  // ── 6. VEHICLE BREAKDOWN PROBABILITY ──
+  // Based on: route km, vehicle type, road condition index
+  getBreakdownRisk(etaHours, mode, cargo) {
+    if (mode !== 'road') return null;
+    const routeKm = etaHours * 65;
+
+    // Long distance = higher breakdown probability
+    if (routeKm > 1200) {
+      return {
+        score: 25,
+        note: `${routeKm.toLocaleString('en-IN')}km haul — tyre blowout / engine risk on NH`
+      };
+    } else if (routeKm > 600) {
+      return {
+        score: 12,
+        note: `${routeKm.toLocaleString('en-IN')}km — standard maintenance check required`
+      };
+    }
+    return null;
+  },
+
+  // ── 7. REGULATORY / PERMIT RISK ──
+  // Inter-state permits, hazmat, oversized load
+  getRegulatoryRisk(cargo, route, mode) {
+    const c = (cargo || '').toLowerCase();
+    const r = (route || '').toLowerCase();
+    const risks = [];
+
+    if (c.includes('chemical') || c.includes('fuel') || c.includes('hazmat')) {
+      risks.push({ score: 30, note: 'ADG permit required — MoRTH · hazmat restricted zones' });
+    }
+    if (c.includes('pharma') || c.includes('medical')) {
+      risks.push({ score: 15, note: 'Cold chain compliance · drug license at checkpost' });
+    }
+    // Night driving ban on certain highways
+    if (mode === 'road' && (r.includes('nh-66') || r.includes('coastal'))) {
+      risks.push({ score: 10, note: 'NH-66 night driving restrictions on ghat sections' });
+    }
+    return risks.length ? risks[0] : null;
+  },
+
+  // ── 8. INFRASTRUCTURE RISK ──
+  // Known bad stretches, accident-prone zones
+  getInfrastructureRisk(route, mode) {
+    const r = (route || '').toLowerCase();
+    const infraRisks = {
+      'nh-48':  { score: 20, note: 'NH-48: highest accident density in India (NHAI data)' },
+      'nh-19':  { score: 25, note: 'NH-19: Bihar section — pothole density, flooding risk' },
+      'nh-66':  { score: 20, note: 'NH-66 ghat: landslide-prone, narrow carriageway' },
+      'nh-44':  { score: 15, note: 'NH-44: construction delays near Nagpur interchange' },
+      'ghat':   { score: 25, note: 'Ghat section: speed limit 30 km/h, overloaded trucks' },
+      'kazigund':{ score:30, note: 'Kazigund-Banihal: J&K snowfall blocks' },
+      'nathu la':{ score:35, note: 'Nathu La: high altitude, weather closure' },
+    };
+    for (const [key, val] of Object.entries(infraRisks)) {
+      if (r.includes(key)) return val;
+    }
+    return null;
+  },
+
+  // ── MASTER SCORER ──
+  // Aggregates all 8 factors + weather into a single risk profile
+  getFullRisk(shipment, weatherData) {
+    const month = new Date().getMonth();
+    const day   = new Date().getDate();
+    const mode  = shipment.mode  || 'road';
+    const route = shipment.route || '';
+    const cargo = shipment.cargo || '';
+    const eta   = shipment.eta_hours || 12;
+    const km    = eta * 65;
+    const dest  = shipment.destination || '';
+
+    const factors = [];
+    let totalScore = 0;
+
+    // Weather (existing)
+    if (weatherData) {
+      const ow = weatherData[shipment.origin];
+      const dw = weatherData[shipment.destination];
+      if (ow?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${shipment.origin} — ${Math.round(ow.rain_mm)}mm`, score:30, severity:'high' }); totalScore+=30; }
+      else if (ow?.rain_mm > 0) { factors.push({ icon:'🌦', label:'Weather', detail:`Light rain at ${shipment.origin}`, score:10, severity:'medium' }); totalScore+=10; }
+      if (dw?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${dest} — ${Math.round(dw.rain_mm)}mm`, score:25, severity:'high' }); totalScore+=25; }
+    }
+
+    // Seasonal weather
+    if (month>=5&&month<=8) {
+      if (mode==='road'&&(route.toLowerCase().includes('nh-48')||route.toLowerCase().includes('nh-19'))) {
+        factors.push({icon:'🌊',label:'Monsoon',detail:'Highway flooding risk (Jun–Sep)',score:25,severity:'high'}); totalScore+=25;
+      } else if (mode==='sea') {
+        factors.push({icon:'🌀',label:'Cyclone Season',detail:'Bay of Bengal — Jun–Sep',score:20,severity:'high'}); totalScore+=20;
+      }
+    }
+    if ((month===11||month<=1)&&(mode==='air'||route.toLowerCase().includes('delhi'))) {
+      factors.push({icon:'🌫',label:'Dense Fog',detail:'IGI Delhi fog season Dec–Feb',score:25,severity:'high'}); totalScore+=25;
+    }
+
+    // Festival
+    const fest = this.getFestivalRisk(month, day, mode);
+    if (fest) { factors.push({icon:'🎉',label:'Festival Congestion',detail:`${fest.name} — ${fest.note}`,score:fest.score,severity:fest.score>30?'high':'medium'}); totalScore+=fest.score; }
+
+    // E-way bill
+    const eway = this.getEwayRisk(eta, km);
+    if (eway) { factors.push({icon:'📋',label:'E-way Bill',detail:eway.note,score:eway.score,severity:eway.critical?'high':'medium'}); totalScore+=eway.score; }
+
+    // Driver fatigue
+    const fatigue = this.getDriverFatigueRisk(eta, mode);
+    if (fatigue) { factors.push({icon:'😴',label:'Driver Fatigue',detail:fatigue.note,score:fatigue.score,severity:fatigue.score>25?'high':'medium'}); totalScore+=fatigue.score; }
+
+    // Port congestion
+    const port = this.getPortCongestionRisk(month, mode, dest);
+    if (port&&port.score>10) { factors.push({icon:'⚓',label:'Port Congestion',detail:port.note,score:port.score,severity:port.score>35?'high':'medium'}); totalScore+=port.score; }
+
+    // Strike
+    const strike = this.getStrikeRisk(month, route, mode);
+    if (strike) { factors.push({icon:'🚧',label:'Strike Risk',detail:strike.note,score:strike.score,severity:strike.score>30?'high':'medium'}); totalScore+=strike.score; }
+
+    // Breakdown
+    const breakdown = this.getBreakdownRisk(eta, mode, cargo);
+    if (breakdown) { factors.push({icon:'🔧',label:'Breakdown Risk',detail:breakdown.note,score:breakdown.score,severity:'medium'}); totalScore+=breakdown.score; }
+
+    // Regulatory
+    const reg = this.getRegulatoryRisk(cargo, route, mode);
+    if (reg) { factors.push({icon:'📑',label:'Regulatory',detail:reg.note,score:reg.score,severity:reg.score>25?'high':'medium'}); totalScore+=reg.score; }
+
+    // Infrastructure
+    const infra = this.getInfrastructureRisk(route, mode);
+    if (infra) { factors.push({icon:'🛣',label:'Infrastructure',detail:infra.note,score:infra.score,severity:'medium'}); totalScore+=infra.score; }
+
+    // Cargo sensitivity multiplier
+    if (cargo.toLowerCase().includes('pharma')||cargo.toLowerCase().includes('medical')) {
+      totalScore = Math.round(totalScore * 1.3);
+    }
+
+    totalScore = Math.min(totalScore, 100);
+    const level = totalScore >= 60 ? 'high' : totalScore >= 30 ? 'medium' : 'low';
+
+    return {
+      score: totalScore,
+      level,
+      factors: factors.sort((a,b)=>b.score-a.score),
+      topReason: factors[0]?.detail || 'All conditions normal',
+      topIcon:   factors[0]?.icon   || '✅',
+    };
+  }
+};
+
+// ── Backward-compat wrapper (used by ship cards) ──
+function getPredictiveRisk(shipment) {
+  const r = RISK_ENGINE.getFullRisk(shipment, null);
+  return { level: r.level, score: r.score, reason: r.topReason };
+}
+
+// ── FOCUS CHAT (FAB button) ──
+function focusChat() {
+  // scroll to chat panel and focus input
+  const chatPanel = document.querySelector('.right-col');
+  const chatInput = document.getElementById('chat-inp');
+  if (chatPanel) chatPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  setTimeout(() => {
+    if (chatInput) { chatInput.focus(); chatInput.select(); }
+  }, 400);
+  // hide FAB badge
+  document.getElementById('fab-badge').classList.remove('show');
+}
+
+// Show FAB badge when new AI alert fires
+function pingFAB() {
+  const badge = document.getElementById('fab-badge');
+  badge.classList.add('show');
+  setTimeout(() => badge.classList.remove('show'), 8000);
+}
+
+// ── VOICE INPUT (Web Speech API) ──
+let recognition = null;
+let isRecording = false;
+let voiceLang = 'hi'; 
+
+function setVoiceLang(lang) {
+  voiceLang = lang;
+  document.getElementById('lang-hi').classList.toggle('on', lang === 'hi');
+  document.getElementById('lang-en').classList.toggle('on', lang === 'en');
   const inp = document.getElementById('chat-inp');
-  const txt = inp.value.trim();
-  if (!txt) return;
-  addMsg('user', txt);
-  inp.value = '';
-  setTimeout(() => addMsg('ai', 'I am processing your request for ' + txt), 600);
+  inp.placeholder = lang === 'hi' ? 'Hindi में पूछें... या 🎤 बोलें' : 'Ask in English... or 🎤 speak';
 }
 
-function addMsg(role, txt) {
+function toggleMic() {
+  if (!('webkitSpeechRecognition' in window) && !('SpeechRecognition' in window)) {
+    showToast('Voice not supported in this browser. Use Chrome or Edge.', 'err'); return;
+  }
+  if (isRecording) { stopMic(); return; }
+  startMic();
+}
+
+function startMic() {
+  const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+  recognition = new SR();
+  // support Hindi, Hinglish and English in one go
+  recognition.lang = voiceLang === 'hi' ? 'hi-IN' : 'en-IN';
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.maxAlternatives = 1;
+
+  recognition.onstart = () => {
+    isRecording = true;
+    document.getElementById('mic-btn').classList.add('recording');
+    document.getElementById('mic-btn').textContent = '⏹';
+    document.getElementById('voice-status').classList.add('show');
+    document.getElementById('chat-inp').value = '';
+    document.getElementById('chat-inp').placeholder = '🔴 Listening...';
+  };
+
+  recognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    document.getElementById('chat-inp').value = transcript;
+  };
+
+  recognition.onend = () => {
+    stopMic();
+    // auto-send if we got something
+    const msg = document.getElementById('chat-inp').value.trim();
+    if (msg) sendChat();
+  };
+
+  recognition.onerror = (e) => {
+    stopMic();
+    const msgs = {
+      'not-allowed': 'Microphone permission denied. Allow mic in browser settings.',
+      'no-speech':   'No speech detected. Try again.',
+      'network':     'Network error during voice recognition.',
+    };
+    showToast(msgs[e.error] || 'Voice error: ' + e.error, 'err');
+  };
+
+  recognition.start();
+}
+
+function stopMic() {
+  isRecording = false;
+  if (recognition) { try { recognition.stop(); } catch {} recognition = null; }
+  document.getElementById('mic-btn').classList.remove('recording');
+  document.getElementById('mic-btn').textContent = '🎤';
+  document.getElementById('voice-status').classList.remove('show');
+  document.getElementById('chat-inp').placeholder = voiceLang === 'hi'
+    ? 'Hindi या English में पूछें... या 🎤 बोलें'
+    : 'Ask in English... or 🎤 speak';
+}
+
+// ── VOICE OUTPUT (Web Speech Synthesis) ──
+let currentUtterance = null;
+
+function speakText(text, btnEl) {
+  if (!('speechSynthesis' in window)) {
+    showToast('Text-to-speech not supported in this browser.', 'err'); return;
+  }
+
+  // if already speaking this, stop it
+  if (currentUtterance && window.speechSynthesis.speaking) {
+    window.speechSynthesis.cancel();
+    currentUtterance = null;
+    document.querySelectorAll('.speak-btn.speaking').forEach(b => {
+      b.classList.remove('speaking'); b.textContent = '🔊';
+    });
+    if (btnEl) return; // toggle off
+  }
+
+  const utt = new SpeechSynthesisUtterance(text);
+
+  // detect Hindi script in text
+  const hasHindi = /[ऀ-ॿ]/.test(text);
+  utt.lang = hasHindi ? 'hi-IN' : 'en-IN';
+  utt.rate = 0.92;
+  utt.pitch = 1;
+
+  // pick best available voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v =>
+    (hasHindi && v.lang === 'hi-IN') ||
+    (!hasHindi && (v.lang === 'en-IN' || v.lang === 'en-GB'))
+  );
+  if (preferred) utt.voice = preferred;
+
+  utt.onstart = () => {
+    currentUtterance = utt;
+    if (btnEl) { btnEl.classList.add('speaking'); btnEl.textContent = '⏹'; }
+  };
+  utt.onend = utt.onerror = () => {
+    currentUtterance = null;
+    if (btnEl) { btnEl.classList.remove('speaking'); btnEl.textContent = '🔊'; }
+  };
+
+  window.speechSynthesis.speak(utt);
+}
+
+// patch addMsg to add speak button on AI messages
+const _origAddMsg = addMsg;
+addMsg = function(role, text) {
+  _origAddMsg(role, text);
+  if (role !== 'ai') return;
+  // find the last AI message and add a speak button
   const msgs = document.getElementById('chat-msgs');
-  const div = document.createElement('div');
-  div.className = `msg-bubble msg-${role}`;
-  div.textContent = txt;
-  msgs.appendChild(div);
-  msgs.scrollTop = msgs.scrollHeight;
+  const lastAI = [...msgs.querySelectorAll('.msg-ai')].pop();
+  if (!lastAI) return;
+  const bubble = lastAI.querySelector('.msg-bubble');
+  if (!bubble) return;
+  const btn = document.createElement('button');
+  btn.className = 'speak-btn';
+  btn.textContent = '🔊';
+  btn.title = 'Listen to this response';
+  btn.onclick = () => speakText(text, btn);
+  lastAI.querySelector('.msg-time')?.after(btn) || lastAI.appendChild(btn);
+};
+
+// preload voices on page load (some browsers need this)
+window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+
+// ══════════════════════════════════════════════════════════════
+// SHIPMENT DETAIL MODAL — VaaniChain
+// ══════════════════════════════════════════════════════════════
+
+let _sdmShipment = null;
+
+// ── Deterministic faux driver/vehicle data from shipment ID seed ──
+function genDriverData(s) {
+  const seed = s.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const mode = s.mode || 'road';
+
+  // Driver names pool
+  const drivers = ['Rajan Kumar','Suresh Yadav','Pankaj Sharma','Mohan Singh','Deepak Verma','Arjun Patel','Ramesh Gupta','Vijay Mehta','Sanjay Tiwari','Ashok Rao'];
+  const driver = drivers[seed % drivers.length];
+  const dPhone = `+91 ${9000000000 + (seed % 999999999)}`;
+  const dExp   = 3 + (seed % 15);
+  const dLic   = `DL-${String(10 + (seed%20)).padStart(2,'0')}20${String(seed%99).padStart(2,'0')}${String(1000000 + seed%9000000)}`;
+
+  // Vehicle data by mode
+  const roadVehicles  = ['Tata 407','Ashok Leyland Dost','Eicher Pro 3015','Mahindra Supro','Tata LPT 1615','Bharat Benz 1415R'];
+  const railContainers = ['CONCOR BCN Wagon','DFCCIL BLCA Container','IR BCX Flat Wagon'];
+  const airCarriers   = ['IndiGo Cargo 6E-F','Blue Dart B757F','SpiceXpress SG-F'];
+  const seaVessels    = ['MV Pratap Indus','MV Shreyas Express','MV Trans Oceanic','MSC Asha'];
+
+  let vehicle, regno, vehicleType;
+  if (mode === 'road') {
+    vehicle = roadVehicles[seed % roadVehicles.length];
+    vehicleType = 'Heavy Goods Vehicle';
+    const states = ['MH','DL','KA','TN','GJ','RJ','UP','WB'];
+    regno = `${states[seed%states.length]} ${String(10+(seed%90)).padStart(2,'0')} ${String.fromCharCode(65+(seed%26))}${String.fromCharCode(65+((seed+3)%26))} ${String(1000+(seed%8999)).padStart(4,'0')}`;
+  } else if (mode === 'rail') {
+    vehicle = railContainers[seed % railContainers.length];
+    vehicleType = 'Rail Freight Wagon';
+    regno = `DFCCIL-${String(4000 + (seed % 5000))}`;
+  } else if (mode === 'air') {
+    vehicle = airCarriers[seed % airCarriers.length] + String(100 + (seed%900));
+    vehicleType = 'Air Cargo Flight';
+    regno = `VT-${String.fromCharCode(65+(seed%26))}${String.fromCharCode(65+((seed+5)%26))}${String.fromCharCode(65+((seed+9)%26))}`;
+  } else {
+    vehicle = seaVessels[seed % seaVessels.length];
+    vehicleType = 'Container Vessel';
+    regno = `IMO ${9000000 + (seed % 999999)}`;
+  }
+
+  // E-way bill
+  const ewayBill = `EWB-${String(1000000000 + seed).substring(0,10)}`;
+  const eta = s.eta_hours || 12;
+  const km = Math.round(eta * 65);
+  const validityDays = Math.max(1, Math.floor(km/100));
+  const ewayExpiry = new Date(Date.now() + validityDays * 86400000);
+  const ewayStatus = validityDays < 1 ? 'Expired' : validityDays === 1 ? 'Expiring Soon' : 'Valid';
+
+  // GST / LR
+  const lr = `LR-${String(seed).substring(0,6).padStart(6,'0')}/${new Date().getFullYear()}`;
+  const gst = `27${String.fromCharCode(65+(seed%26))}${String.fromCharCode(65+((seed+2)%26))}${String.fromCharCode(65+((seed+4)%26))}${String(1000+(seed%8999))}${String.fromCharCode(65+((seed+7)%26))}Z${String(seed%9)}`;
+
+  return {
+    driver, dPhone, dExp, dLic,
+    vehicle, vehicleType, regno,
+    ewayBill, ewayExpiry: ewayExpiry.toLocaleDateString('en-IN'), ewayStatus,
+    lr, gst,
+    capacity: mode==='road' ? `${3+(seed%12)} Ton` : mode==='sea' ? `${20+(seed%60)} TEU` : mode==='air' ? `${500+(seed%4500)} kg` : `${20+(seed%40)} Wagon`,
+    trackingGPS: `${(18 + (seed%12)).toFixed(4)}°N, ${(72 + (seed%20)).toFixed(4)}°E`,
+    lastPing: `${Math.floor(seed%59)} min ago`,
+    fuel: mode==='road' ? `${40+(seed%60)}%` : '—',
+  };
 }
 
-function toast(msg, type='success') {
-  const stack = document.getElementById('toast-stack');
-  const t = document.createElement('div');
-  t.className = `toast ${type}`;
-  t.innerHTML = `<span>${msg}</span><div class="toast-progress"><div class="toast-progress-fill"></div></div>`;
-  stack.appendChild(t);
-  setTimeout(() => t.querySelector('.toast-progress-fill').style.width = '100%', 10);
-  setTimeout(() => { t.style.opacity = '0'; setTimeout(() => t.remove(), 400); }, 3000);
+function genAltRoutes(s) {
+  // ── MODE-AWARE REAL-WORLD ALTERNATE ROUTE ENGINE ──
+  // Road: actual alternate highway paths
+  // Rail: different corridor / DFC / modal shift (NOT map reroute)
+  // Air: hub airport change / next slot / carrier swap (NOT flight path)
+  // Sea: port diversion / transshipment hub / canal route (NOT map reroute)
+  const mode = s.mode || 'road';
+  const route = s.route || '';
+  const origin = s.origin || '';
+
+  const ALTS = {
+    road: {
+      'NH-48': [
+        {name:'Delhi–Mumbai Expressway (DMIC)',via:'Sohna → Dausa → Kota → Vadodara → Mumbai',extraH:2,extraCost:3800,rec:'best',note:'Greenfield 8-lane, no flood risk. Toll ₹480 premium over NH-48.'},
+        {name:'NH-52 via Ahmedabad',via:'Delhi → Jaipur → Ahmedabad → Surat → Mumbai',extraH:4,extraCost:5200,rec:'acceptable',note:'Longer but fully open. Avoids Vadodara flood zone entirely.'},
+      ],
+      'NH-44': [
+        {name:'NH-75 via Kolar–Vellore',via:'Bangalore → Kolar → Vellore → Chennai',extraH:2,extraCost:1400,rec:'best',note:'Avoids Krishnagiri landslide zone. Smooth 6-lane stretch.'},
+        {name:'Old Madras Road (SH-4)',via:'Bangalore → Hoskote → Ambur → Chennai',extraH:3,extraCost:900,rec:'acceptable',note:'State highway, single lane stretches. Cheaper but slower.'},
+      ],
+      'NH-19': [
+        {name:'NH-31 via Hajipur',via:'Kolkata → Durgapur → NH-31 → Hajipur → Patna',extraH:3,extraCost:2800,rec:'best',note:'Avoids NH-19 flood submergence near Patna.'},
+        {name:'Rail freight (Howrah–Patna)',via:'Howrah Junction → Patna Junction (Indian Railways)',extraH:5,extraCost:1800,rec:'modal_shift',note:'Modal shift to rail. Cheaper, valid if road flooded beyond 24h.'},
+      ],
+      'NH-48 Expressway': [
+        {name:'Old Mumbai–Pune Highway via Khopoli',via:'JNPT → Khopoli → Khandala Ghat → Pune',extraH:2,extraCost:800,rec:'best',note:'Port congestion workaround. Ghat section manageable in daylight.'},
+        {name:'Panvel → Alternate Expressway Lane',via:'Panvel → Khalapur → Pune (NHAI diversion lane)',extraH:1,extraCost:1200,rec:'acceptable',note:'NHAI has opened diversion lane on expressway itself.'},
+      ],
+      'NH-21': [
+        {name:'NH-248A via Alwar',via:'Delhi → Gurugram → Alwar → Shahpura → Jaipur',extraH:1,extraCost:600,rec:'best',note:'Avoids NH-48 fog-prone stretch. NH-248A is fully lit.'},
+      ],
+      default: [
+        {name:'State Highway Diversion',via:'Alternate state highway — consult NHAI 1033',extraH:2,extraCost:1500,rec:'best',note:'Contact NHAI helpline 1033 for live diversion updates on your corridor.'},
+        {name:'Modal Shift to Rail',via:'Nearest rail freight terminal — DFCCIL booking',extraH:8,extraCost:-2000,rec:'modal_shift',note:'Rail is cheaper for routes >600km. Consider if road delay >12h.'},
+      ],
+    },
+    rail: {
+      'Howrah': [
+        {name:'Eastern DFC — DFCCIL',via:'Dankuni (Kolkata) → Sonnagar → Ludhiana → Tughlakabad (Delhi)',extraH:6,extraCost:11000,rec:'best',note:'Dedicated freight corridor. No passenger conflict. Priority slot available.'},
+        {name:'Road via NH-19 (partial)',via:'Kolkata → Varanasi → Delhi — road bridge for blocked segment',extraH:12,extraCost:18000,rec:'modal_shift',note:'Partial road transfer for derailed section only. Last resort.'},
+      ],
+      'Western': [
+        {name:'Western DFC — DFCCIL',via:'Dadri (Delhi) → Rewari → Palanpur → Mundra/Mumbai port',extraH:3,extraCost:8500,rec:'best',note:'DFCCIL dedicated corridor. 25% faster than main line. Priority slot.'},
+        {name:'Road freight via NH-48 (partial)',via:'Delhi → Mumbai via NH-48 — truck for blocked rail segment',extraH:14,extraCost:24000,rec:'modal_shift',note:'Road modal shift. Use only if DFC is also unavailable.'},
+      ],
+      'Grand Trunk': [
+        {name:'Air freight upgrade MAA → DEL',via:'Chennai MAA → Delhi DEL direct (air cargo)',extraH:-30,extraCost:45000,rec:'time_critical',note:'Save 30h if cargo is refrigerated or time-critical. 3× cost premium.'},
+        {name:'Road via NH-44 (partial)',via:'Chennai → Nagpur → Delhi — road bypass around signal failure zone',extraH:8,extraCost:18000,rec:'modal_shift',note:'Partial road transfer around Nagpur junction signal failure.'},
+      ],
+      'Central': [
+        {name:'NH-27 Road Segment',via:'Ahmedabad → Nagpur → Kolkata — road bypass for Bhusawal yard',extraH:5,extraCost:14000,rec:'best',note:'Road bypass around Bhusawal flood-affected yard. Available immediately.'},
+      ],
+      'South Central': [
+        {name:'NH-44 Road Transfer',via:'Bangalore → Kolar → Hyderabad — short 180km road segment',extraH:2,extraCost:3500,rec:'best',note:'Short road segment around Wadi track fracture. Fastest option.'},
+      ],
+      default: [
+        {name:'Dedicated Freight Corridor (DFC)',via:'DFCCIL slot on parallel corridor',extraH:4,extraCost:9000,rec:'best',note:'Contact DFCCIL control room for priority allocation on alternate corridor.'},
+        {name:'Road freight transfer',via:'Nearest truck terminal — road bridge for blocked section',extraH:10,extraCost:15000,rec:'modal_shift',note:'Partial road transfer for disrupted segment only.'},
+      ],
+    },
+    air: {
+      DEL: [
+        {name:'Reroute via Jaipur (JAI) hub',via:'Surface feeder Mumbai → JAI → Delhi DEL',extraH:4,extraCost:8500,rec:'best',note:'JAI unaffected by IGI fog. 2 daily cargo slots open.'},
+        {name:'Next DEL slot (+5h)',via:'Same route — next ATC slot after fog lifts',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Cat III ops clear by 0900h IST.'},
+        {name:'Surface Express (Blue Dart)',via:'Mumbai → Delhi via surface priority road freight',extraH:18,extraCost:-6000,rec:'non_urgent',note:'Save ₹6,000 if delivery allows 18h surface transit.'},
+      ],
+      BOM: [
+        {name:'Reroute via Pune (PNQ)',via:'Surface truck Mumbai → PNQ → destination flight',extraH:3,extraCost:7000,rec:'best',note:'PNQ is 150km from Mumbai. Independent ATC from BOM.'},
+        {name:'Next BOM slot',via:'Same route — next available BOM ATC slot',extraH:4,extraCost:0,rec:'acceptable',note:'Standard rebook. No extra cost.'},
+      ],
+      MAA: [
+        {name:'Reroute via Coimbatore (CJB)',via:'Surface truck Chennai → CJB → Mumbai BOM flight',extraH:3,extraCost:8500,rec:'best',note:'Avoids Bay of Bengal cyclone impact on MAA. CJB inland airport fully operational.'},
+        {name:'Reroute via Trichy (TRZ)',via:'Surface to TRZ → charter to BOM',extraH:5,extraCost:14000,rec:'acceptable',note:'Limited slots at TRZ. Charter option only.'},
+      ],
+      HYD: [
+        {name:'Reroute via Bhubaneswar (BBI)',via:'HYD → Bhubaneswar BBI tech stop → Kolkata CCU',extraH:2,extraCost:9000,rec:'best',note:'Single runway at HYD under maintenance. BBI fully operational.'},
+        {name:'Next HYD slot',via:'Same route — wait for HYD runway to reopen post-maintenance',extraH:3,extraCost:0,rec:'acceptable',note:'Runway opens post 1400h IST.'},
+      ],
+      COK: [
+        {name:'Hold at COK — next weather window',via:'Hold cargo at Kochi COK until DXB sandstorm clears',extraH:6,extraCost:15000,rec:'best',note:'DXB sandstorm advisory 0600–1200 GST. Hold + crew standby cost.'},
+        {name:'Reroute via Muscat (MCT)',via:'COK → Muscat MCT → Dubai DXB (next day)',extraH:12,extraCost:28000,rec:'acceptable',note:'Oman Air cargo slot available if DXB closure extends >8h.'},
+      ],
+      default: [
+        {name:'Alternate hub airport',via:'Nearest unaffected airport within 300km — surface feeder',extraH:4,extraCost:10000,rec:'best',note:'Contact Blue Dart / IndiGo Cargo for next available hub slot.'},
+        {name:'Next available slot',via:'Same city pair — next ATC slot with same carrier',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Rebook with same carrier.'},
+        {name:'Surface freight (non-urgent)',via:'Priority road or rail surface freight',extraH:20,extraCost:-8000,rec:'non_urgent',note:'Save significantly if 1-day delay is acceptable.'},
+      ],
+    },
+    sea: {
+      JNPT: [
+        {name:'Colombo Transshipment (SLPA)',via:'JNPT → Colombo CMB → Singapore',extraH:48,extraCost:85000,rec:'best',note:"Avoid Bay of Bengal cyclone route. Colombo is South Asia's largest transship hub."},
+        {name:'Mundra Port Diversion',via:'Road drayage to Mundra → Mundra → Singapore direct',extraH:24,extraCost:42000,rec:'acceptable',note:'Mundra berths open. Drayage cost ₹18,000 included.'},
+      ],
+      Mundra: [
+        {name:'NSICT Alternate Berth (JNPT)',via:'Mundra → road drayage to JNPT NSICT → Suez Canal → Rotterdam',extraH:12,extraCost:35000,rec:'best',note:'JNPT NSICT has 3 open berth slots this week.'},
+        {name:'Cape of Good Hope Route',via:'Mundra → Cape of Good Hope → Rotterdam (bypass Suez)',extraH:168,extraCost:280000,rec:'last_resort',note:'Only if Suez Canal is blocked. Adds 7 days + heavy bunker fuel.'},
+      ],
+      Chennai: [
+        {name:'Tuticorin Port (VOC)',via:'Road drayage Chennai → Tuticorin VOC Port → Colombo',extraH:18,extraCost:28000,rec:'best',note:'Chennai cyclone warning active. Tuticorin 180km inland, unaffected.'},
+        {name:'Wait for port reopening',via:'Hold cargo at Chennai CFS — port resumes post-cyclone',extraH:36,extraCost:12000,rec:'acceptable',note:'CFS demurrage applies. Viable if cyclone passes within 24h.'},
+      ],
+      Kolkata: [
+        {name:'Rail freight via NER',via:'Kolkata → Patna via North Eastern Railway',extraH:24,extraCost:18000,rec:'best',note:'Low Ganga water levels — draft restriction <1.5m. Rail is the viable option.'},
+        {name:'Road freight via NH-19',via:'Kolkata → Patna by road (NH-19)',extraH:10,extraCost:8500,rec:'acceptable',note:'Check NH-19 flood status before committing.'},
+      ],
+      Kochi: [
+        {name:'Air freight upgrade (COK → MLE)',via:'Kochi COK → Male MLE by air (Maldivian / IndiGo)',extraH:-68,extraCost:95000,rec:'time_critical',note:'4m wave height — vessel held. Air is only viable for essential supplies.'},
+        {name:'Wait for weather window',via:'Hold at Kochi Port — depart next window (est. 36h)',extraH:36,extraCost:8000,rec:'acceptable',note:'Port holding + crew standby. Wave height expected below 2.5m in 36h.'},
+      ],
+      default: [
+        {name:'Nearest alternate port',via:'Divert to nearest unaffected port in same region',extraH:24,extraCost:40000,rec:'best',note:'Contact shipping line for berth availability at alternate port.'},
+        {name:'Colombo transshipment hub',via:'Colombo CMB — Asia primary transshipment hub',extraH:48,extraCost:75000,rec:'acceptable',note:"Colombo handles diversions from India's east or west coast."},
+        {name:'Hold at origin CFS',via:'Hold cargo at origin port CFS — wait for disruption to clear',extraH:36,extraCost:15000,rec:'non_urgent',note:'CFS demurrage applies. Cheapest if disruption is short-lived.'},
+      ],
+    },
+  };
+
+  const recBadges = {
+    best:       {label:'AI BEST',     bg:'#d1fae5',color:'#065f46',border:'#86efac'},
+    acceptable: {label:'VIABLE',      bg:'#dbeafe',color:'#1447be',border:'#93c5fd'},
+    modal_shift:{label:'MODAL SHIFT', bg:'#ede9fe',color:'#6d28d9',border:'#c4b5fd'},
+    time_critical:{label:'URGENT',   bg:'#fee2e2',color:'#991b1b',border:'#fca5a5'},
+    non_urgent: {label:'ECONOMY',    bg:'#fef3c7',color:'#92400e',border:'#fcd34d'},
+    last_resort:{label:'LAST RESORT',bg:'#f1f5f9',color:'#475569',border:'#cbd5e1'},
+  };
+
+  // Resolve lookup key by mode
+  let key = 'default';
+  if (mode === 'road') {
+    const nhMatch = route.match(/NH-\d+[A-Z]*/);
+    if (nhMatch && ALTS.road[nhMatch[0]]) key = nhMatch[0];
+  } else if (mode === 'rail') {
+    for (const k of Object.keys(ALTS.rail)) {
+      if (k !== 'default' && route.toLowerCase().includes(k.toLowerCase())) { key = k; break; }
+    }
+  } else if (mode === 'air') {
+    const iataMap = {
+      'Delhi':'DEL','IGI':'DEL','DEL':'DEL','Mumbai':'BOM','BOM':'BOM',
+      'Chennai':'MAA','MAA':'MAA','Hyderabad':'HYD','HYD':'HYD',
+      'Kochi':'COK','COK':'COK','Bangalore':'BLR','BLR':'BLR',
+    };
+    for (const [kw, code] of Object.entries(iataMap)) {
+      if (origin.includes(kw) && ALTS.air[code]) { key = code; break; }
+    }
+  } else if (mode === 'sea') {
+    const portMap = {
+      'JNPT':'JNPT','Mundra':'Mundra','Chennai':'Chennai',
+      'Kolkata':'Kolkata','Kochi':'Kochi',
+    };
+    for (const [kw, pk] of Object.entries(portMap)) {
+      if (origin.includes(kw)) { key = pk; break; }
+    }
+  }
+
+  const modeAlts = ALTS[mode] || ALTS.road;
+  return { alts: modeAlts[key] || modeAlts.default, recBadges };
+}
+
+function genTimeline(s) {
+  const mode = s.mode || 'road';
+  const eta = s.eta_hours || 12;
+  const km = Math.round(eta * 65);
+  const seed = s.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
+  const pct = s.status === 'on_time' ? Math.min(90, 10 + (seed % 70)) : Math.min(60, 5 + (seed % 50));
+
+  const stops = [];
+  // Origin (done)
+  stops.push({ name: s.origin || 'Origin', meta: 'Departed', eta: 'Departed ✓', state: 'done' });
+
+  // Mid stops based on distance
+  if (km > 400) {
+    const mid1Km = Math.round(km * 0.3);
+    const mid1State = pct > 35 ? 'done' : pct > 20 ? 'current' : 'pending';
+    stops.push({ name: `Checkpoint — ${Math.round(km*0.3)} km`, meta: mode === 'road' ? 'Toll + rest stop' : mode === 'rail' ? 'Rail junction' : 'Waypoint', eta: mid1State === 'done' ? 'Cleared ✓' : `~${Math.round(eta*0.3)}h from origin`, state: mid1State });
+  }
+  if (km > 800) {
+    const mid2State = pct > 65 ? 'done' : pct > 50 ? 'current' : 'pending';
+    stops.push({ name: `Midpoint — ${Math.round(km*0.6)} km`, meta: mode === 'road' ? 'Driver change / fuel stop' : 'Major junction', eta: mid2State === 'done' ? 'Cleared ✓' : `~${Math.round(eta*0.6)}h from origin`, state: mid2State });
+  }
+
+  // Current position (if mid-journey)
+  const hasCurrentStop = stops.every(s => s.state !== 'current');
+  if (hasCurrentStop && pct > 10 && pct < 85) {
+    const curKm = Math.round(pct / 100 * km);
+    stops.splice(stops.length - (km > 400 ? 0 : 0), 0, {
+      name: `📍 Current Position — ~${curKm} km`, meta: `Live GPS · ${Math.floor(seed%59)} min ago`, eta: `${Math.round(eta * (1 - pct/100))}h to destination`, state: 'current'
+    });
+  }
+
+  // Destination
+  stops.push({ name: s.destination || 'Destination', meta: s.status === 'delayed' ? '⚠️ Delayed' : `ETA ~${Math.round(eta*(1-pct/100))}h`, eta: s.status === 'on_time' ? `On-time delivery` : s.status === 'delayed' ? 'Delayed arrival' : 'At risk', state: 'pending' });
+
+  return stops;
+}
+
+function openSDM(s) {
+  _sdmShipment = s;
+  const mode = s.mode || 'road';
+  const st   = s.status || 'on_time';
+  const { seed, pct, eta, km, covKm, etaLeft } = getShipProgress(s);
+  const risk = RISK_ENGINE.getFullRisk(s, null);
+
+  // Mode styling
+  const modeStyle = { road:'background:#fef3c7;color:#92400e', rail:'background:#dbeafe;color:#1447be', air:'background:#ede9fe;color:#6d28d9', sea:'background:#d1fae5;color:#065f46' };
+
+  // ── Header ──
+  document.getElementById('sdm-shipid').textContent = s.id + ' · ' + (s.route || '—');
+  document.getElementById('sdm-route-title').innerHTML = `${s.origin||'?'} <span class="sdm-route-arr">→</span> ${s.destination||'?'}`;
+  document.getElementById('sdm-mode-icon').textContent = MODE_ICONS[mode] || '📦';
+  document.getElementById('sdm-mode-icon').style.cssText = `${modeStyle[mode]||''};width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:var(--shadow2)`;
+
+  const priCls = s.priority === 'critical' ? 'pri-critical' : s.priority === 'high' ? 'pri-high' : 'pri-normal';
+  document.getElementById('sdm-badges').innerHTML = `
+    <span class="sdm-status-badge s-${st}">${st.replace('_',' ')}</span>
+    <span class="sdm-mode-badge" style="${modeStyle[mode]}">${MODE_ICONS[mode]} ${mode.toUpperCase()}</span>
+    <span class="sc-pri ${priCls}">${s.priority||'normal'} priority</span>
+    ${s.owner_added ? '<span class="sc-owner">owner added</span>' : ''}
+  `;
+
+  // ── Overview Tab ──
+  // Progress
+  document.getElementById('sdm-origin-lbl').textContent = s.origin || 'Origin';
+  document.getElementById('sdm-dest-lbl').textContent   = s.destination || 'Destination';
+  document.getElementById('sdm-pct-lbl').textContent    = pct + '% covered';
+  document.getElementById('sdm-prog-fill').style.width  = pct + '%';
+  const dot = document.getElementById('sdm-prog-dot');
+  dot.className = 'sdm-progress-dot' + (st === 'at_risk' ? ' risk' : '');
+  document.getElementById('sdm-km-covered').textContent = `~${covKm.toLocaleString('en-IN')} km covered`;
+  document.getElementById('sdm-eta-left').textContent   = `~${etaLeft}h remaining`;
+
+  // KPIs
+  document.getElementById('sdm-k-eta').textContent    = eta + 'h';
+  document.getElementById('sdm-k-weight').textContent = s.weight_kg ? s.weight_kg.toLocaleString('en-IN') : '—';
+  document.getElementById('sdm-k-km').textContent     = km.toLocaleString('en-IN');
+  document.getElementById('sdm-k-risk').innerHTML     = `<span style="color:${risk.level==='high'?'var(--red)':risk.level==='medium'?'var(--amber)':'var(--green)'}">${risk.score}</span>`;
+
+  // Timeline
+  const stops = genTimeline(s);
+  document.getElementById('sdm-timeline').innerHTML = stops.map(stop => `
+    <div class="sdm-tstop">
+      <div class="sdm-tdot ${stop.state === 'current' ? 'current' : stop.state === 'pending' ? 'pending' : ''}"></div>
+      <div class="sdm-tstop-name">${stop.name}</div>
+      <div class="sdm-tstop-meta">${stop.meta}</div>
+      <span class="sdm-tstop-eta">${stop.eta}</span>
+    </div>
+  `).join('');
+
+  // Cargo + Supplier
+  document.getElementById('sdm-cargo-grid').innerHTML = `
+    <div class="sdm-info-card"><div class="sdm-info-k">Cargo Type</div><div class="sdm-info-v normal">${s.cargo||'—'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Supplier</div><div class="sdm-info-v normal">${s.supplier||'—'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Weight</div><div class="sdm-info-v">${s.weight_kg?s.weight_kg.toLocaleString('en-IN')+' kg':'—'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Highway / Route</div><div class="sdm-info-v">${s.route||'—'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Transport Mode</div><div class="sdm-info-v">${MODE_ICONS[mode]} ${mode.toUpperCase()}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Status</div><div class="sdm-info-v normal">${st.replace('_',' ').toUpperCase()}</div></div>
+  `;
+
+  // ── Risk Tab ──
+  const rLevel = risk.level;
+  const meter = document.getElementById('sdm-risk-meter');
+  meter.textContent = risk.score;
+  meter.className = `sdm-risk-meter ${rLevel}`;
+  document.getElementById('sdm-risk-level-text').textContent =
+    rLevel === 'high' ? '🔴 High Risk — Immediate action needed' :
+    rLevel === 'medium' ? '🟡 Medium Risk — Monitor closely' : '🟢 Low Risk — All conditions normal';
+  document.getElementById('sdm-risk-desc').textContent =
+    risk.factors.length > 0
+      ? `${risk.factors.length} disruption factor${risk.factors.length>1?'s':''} detected. Top concern: ${risk.topReason}`
+      : 'VaaniChain AI checked 8 disruption factors — weather, compliance, infrastructure, festivals, strikes, driver fatigue, port congestion, and regulatory. All clear.';
+
+  if (risk.factors.length > 0) {
+    document.getElementById('sdm-factor-list').innerHTML = risk.factors.map(f => `
+      <div class="sdm-factor ${f.severity}">
+        <div class="sdm-factor-icon">${f.icon}</div>
+        <div class="sdm-factor-body">
+          <div class="sdm-factor-label">${f.label}</div>
+          <div class="sdm-factor-detail">${f.detail}</div>
+        </div>
+        <div class="sdm-factor-score fs-${f.severity}">${f.score > 35 ? '🔴' : f.score > 20 ? '🟡' : '🟢'} ${f.score}/100</div>
+      </div>
+    `).join('');
+  } else {
+    document.getElementById('sdm-factor-list').innerHTML = `
+      <div class="sdm-factor-empty">✅ No active risk factors.<br>All 8 intelligence modules returned clear signals for this shipment.</div>
+    `;
+  }
+
+  // ── Driver / Vehicle Tab ──
+  const d = genDriverData(s);
+  document.getElementById('sdm-vehicle-grid').innerHTML = `
+    <div class="sdm-info-card"><div class="sdm-info-k">Vehicle</div><div class="sdm-info-v normal">${d.vehicle}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Vehicle Type</div><div class="sdm-info-v normal">${d.vehicleType}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Registration No.</div><div class="sdm-info-v">${d.regno}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Capacity</div><div class="sdm-info-v">${d.capacity}</div></div>
+    ${mode === 'road' ? `<div class="sdm-info-card"><div class="sdm-info-k">Fuel Level</div><div class="sdm-info-v" style="color:${parseInt(d.fuel)>30?'var(--green)':'var(--red)'}">${d.fuel}</div></div>` : ''}
+    <div class="sdm-info-card"><div class="sdm-info-k">Last GPS Ping</div><div class="sdm-info-v">${d.lastPing}</div></div>
+    <div class="sdm-info-card" style="grid-column:1/-1"><div class="sdm-info-k">GPS Coordinates</div><div class="sdm-info-v">${d.trackingGPS}</div></div>
+  `;
+  document.getElementById('sdm-driver-grid').innerHTML = mode !== 'road' && mode !== 'rail' ? `
+    <div class="sdm-info-card" style="grid-column:1/-1"><div class="sdm-info-k">Operator</div><div class="sdm-info-v normal">${d.driver} · ${d.dPhone}</div></div>
+  ` : `
+    <div class="sdm-info-card"><div class="sdm-info-k">Driver Name</div><div class="sdm-info-v normal">${d.driver}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Contact</div><div class="sdm-info-v">${d.dPhone}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Driving License</div><div class="sdm-info-v">${d.dLic}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Experience</div><div class="sdm-info-v normal">${d.dExp} years</div></div>
+  `;
+  const ewayColor = d.ewayStatus === 'Expired' ? 'var(--red)' : d.ewayStatus === 'Expiring Soon' ? 'var(--amber)' : 'var(--green)';
+  document.getElementById('sdm-docs-grid').innerHTML = `
+    <div class="sdm-info-card"><div class="sdm-info-k">Lorry Receipt No.</div><div class="sdm-info-v">${d.lr}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">GST / GSTIN</div><div class="sdm-info-v">${d.gst}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">E-Way Bill No.</div><div class="sdm-info-v">${d.ewayBill}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">E-Way Expiry</div><div class="sdm-info-v" style="color:${ewayColor}">${d.ewayExpiry} · ${d.ewayStatus}</div></div>
+  `;
+
+  // ── Alt Routes Tab ──
+  const { alts, recBadges } = genAltRoutes(s);
+  const modeCtx = {
+    road: {heading:'🛣️ Alternate Highway Options', sub:'Different road paths avoiding the disrupted segment. Map reroute IS valid for road.'},
+    rail: {heading:'🚂 Rail Corridor Alternatives', sub:'Rail runs on fixed tracks — alternatives are different corridors (DFC/alternate line) or modal shift to road/air.'},
+    air:  {heading:'✈️ Air Cargo Strategic Options', sub:'Flights follow fixed ATC airways — alternatives are hub airport changes, next slot, or different airline.'},
+    sea:  {heading:'🚢 Ocean Freight Strategic Options', sub:'Port, canal, and transshipment hub decisions — not map path changes.'},
+  }[mode] || {heading:'Alternative Options', sub:''};
+
+  document.getElementById('sdm-alt-routes').innerHTML = `
+    <div style="background:linear-gradient(135deg,#eff6ff,#f0fdf4);border:1.5 solid var(--border);border-radius:12px;padding:14px 16px;margin-bottom:14px">
+      <div style="font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px">${modeCtx.heading}</div>
+      <div style="font-size:11px;color:var(--text3);line-height:1.6">${modeCtx.sub}</div>
+    </div>
+  ` + alts.map((r, i) => {
+    const rec = r.rec || (i===0?'best':'acceptable');
+    const badge = recBadges[rec] || recBadges.acceptable;
+    const costStr = r.extraCost < 0 ? `−₹${Math.abs(r.extraCost).toLocaleString('en-IN')}` : `+₹${r.extraCost.toLocaleString('en-IN')}`;
+    const timeStr = r.extraH < 0 ? `−${Math.abs(r.extraH)}h` : `+${r.extraH}h`;
+    return `<div class="sdm-alt-route ${i===0?'best':''}" style="${i===0?`background:${badge.bg}22;border-color:${badge.border};`:''}">
+      <div class="sar-left" style="flex:1">
+        <div class="sar-name" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
+          ${r.name}
+          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:${badge.bg};color:${badge.color};border:1px solid ${badge.border}">${badge.label}</span>
+        </div>
+        <div class="sar-desc" style="margin-top:3px">${r.via}</div>
+        <div style="font-size:10px;color:var(--text3);margin-top:2px;font-style:italic">${r.note}</div>
+      </div>
+      <div class="sar-right" style="flex-shrink:0;text-align:right;min-width:80px">
+        <div class="sar-cost" style="color:${r.extraCost<0?'var(--green)':'var(--text)'}">${costStr}</div>
+        <div class="sar-time">${timeStr}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  const disruptions = risk.factors.map(f => `• [${f.label}] ${f.detail}`).join('\n') || '• No active disruptions detected on this route.';
+  document.getElementById('sdm-disruption-notes').textContent = disruptions;
+
+  // Update email button
+  document.getElementById('sdm-email-btn').onclick = () => { closeSDM(); showEmail(s.id, s.supplier||''); };
+
+  // ── Reset to overview tab ──
+  switchSDMTab('overview', document.querySelector('.sdm-tab'));
+  document.getElementById('sdm-ov').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeSDM() {
+  document.getElementById('sdm-ov').classList.remove('open');
+  document.body.style.overflow = '';
+  _sdmShipment = null;
+}
+
+function switchSDMTab(id, btn) {
+  document.querySelectorAll('.sdm-pane').forEach(p => p.classList.remove('on'));
+  document.querySelectorAll('.sdm-tab').forEach(t => t.classList.remove('on'));
+  document.getElementById('sdm-pane-' + id).classList.add('on');
+  if (btn) btn.classList.add('on');
+}
+
+function sdmApproveReroute() {
+  if (!_sdmShipment) return;
+  showToast('✓ Reroute approved for ' + _sdmShipment.id, 'ok');
+  addMsg('ai', `✓ Reroute for ${_sdmShipment.id} approved. Supplier ${_sdmShipment.supplier||''} notified. New route activated.`);
+  closeSDM();
+}
+
+function sdmAskAI() {
+  if (!_sdmShipment) return;
+  closeSDM();
+  const inp = document.getElementById('chat-inp');
+  inp.value = `What is the status and risk for ${_sdmShipment.id}?`;
+  sendChat();
 }
 </script>
 </body>
