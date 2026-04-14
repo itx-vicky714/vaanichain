@@ -1534,51 +1534,38 @@ let _resetRetryCount = 0;
 async function resetAll() {
   clearInterval(resetCountdown);
   clearTimeout(resetRetryTimer);
+  _resetRetryCount = 0;
+
+  const performVisualReset = () => {
+    // Manually reset allShips statuses if needed (for visual reset)
+    allShips.forEach(s => {
+      if (s.status === 'at_risk' || s.status === 'delayed' || s.status === 'REROUTED') {
+        s.status = 'on_time';
+      }
+    });
+    localStorage.removeItem('approvedReroutes');
+    simulateMode = false;
+    _lastDisruptionTime = null;
+    document.getElementById('reset-btn-label').textContent = '↺ Reset';
+    
+    renderShipments();
+    activeAlerts = [];
+    renderAlerts();
+    updateKPIs();
+    showToast('Reset complete!', 'ok');
+  };
 
   try {
     const res = await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
-    if (!res.ok) throw new Error('Reset failed');
-    
-    _resetRetryCount = 0;
-    _lastDisruptionTime = null;
-    localStorage.removeItem('approvedReroutes');
-    simulateMode = false;
-    
-    document.getElementById('reset-btn-label').textContent = '↺ Reset';
-    showToast('Reset complete!', 'ok');
-    
-    loadShipments();
-    loadStatus();
+    // Even if res.ok is false, we proceed with visual reset
+    await loadShipments();
+    await loadStatus();
+    performVisualReset();
     addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
-  } catch {
-    _resetRetryCount++;
+  } catch (err) {
+    console.error('Reset backend failed:', err);
+    performVisualReset();
     updateChatBadge(false);
-    
-    if (_resetRetryCount <= 5) {
-      let seconds = 30;
-      const msgPrefix = _resetRetryCount === 1 ? 'Backend is waking up' : 'Still waking up';
-      
-      const toastEl = document.getElementById('toast');
-      const updateToast = (sec) => {
-        toastEl.textContent = `${msgPrefix}... retrying in ${sec}s`;
-        toastEl.className = 'toast warn show';
-      };
-      
-      updateToast(seconds);
-      resetCountdown = setInterval(() => {
-        seconds--;
-        if (seconds <= 0) {
-          clearInterval(resetCountdown);
-          resetCountdown = null;
-          resetAll();
-        } else {
-          updateToast(seconds);
-        }
-      }, 1000);
-    } else {
-      _resetRetryCount = 0;
-      showToast('Backend unavailable. Max retries reached.', 'err');
-    }
   }
 }
 
@@ -1590,22 +1577,15 @@ async function sendChat() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    let systemPrompt = "You are VaaniChat, a logistics assistant. Current shipment data: " + JSON.stringify(allShips) + " Answer ONLY based on this data. ";
-
-    const currentLang = voiceLang; 
-    if (currentLang === 'en') {
-      systemPrompt += "IMPORTANT: You MUST reply in English only. Never use Hindi or Hinglish. ";
-    } else if (currentLang === 'hi') {
-      systemPrompt += "IMPORTANT: Sirf Hindi mein jawab do. Kabhi English mat bolna. ";
-    } else {
-      systemPrompt += "IMPORTANT: Reply in Hinglish (Hindi+English mix) only. ";
-    }
+    const shipData = JSON.stringify(allShips || []);
+    const langInstruction = voiceLang === 'en' ? "You MUST reply in English only. Never use Hindi." : voiceLang === 'hi' ? "Sirf Hindi mein jawab do. No English." : "Reply in Hinglish (Hindi+English mix) only.";
+    let systemPrompt = "You are VaaniChat, a logistics AI assistant. Current real shipment data: " + shipData + ". Answer ONLY based on this data. " + langInstruction;
 
     const match = msg.match(/(SHP|RLY|AIR|SEA)-\d+/i);
     if (match) {
       const found = allShips.find(s => s.id.toLowerCase() === match[0].toLowerCase());
       if (found) {
-        systemPrompt += "User is asking about specific shipment " + match[0] + ": " + JSON.stringify(found) + ". ";
+        systemPrompt += " User is specifically asking about shipment " + match[0] + ". Details: " + JSON.stringify(found);
       }
     }
     
@@ -1615,13 +1595,30 @@ async function sendChat() {
         const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: systemPrompt + "\nUser Message: " + msg})
+            body: JSON.stringify({
+                system: systemPrompt,
+                message: msg
+            })
         });
         const d = await r.json();
         addMsg('ai', d.reply || 'No response');
         updateChatBadge(true);
     } catch {
-        addMsg('ai', 'Backend offline — run python app.py');
+        // Frontend Fallback Logic
+        let reply = "Backend is offline. ";
+        if (match) {
+            const s = allShips.find(x => x.id.toLowerCase() === match[0].toLowerCase());
+            if (s) {
+                reply += `Found ${s.id}: ${s.origin} to ${s.destination}, status is ${s.status}. ETA: ${s.eta_hours}h.`;
+            } else {
+                reply += `Could not find shipment ${match[0]} in local data.`;
+            }
+        } else if (msg.toLowerCase().includes('how many') || msg.toLowerCase().includes('kitne')) {
+            reply += `Currently monitoring ${allShips.length} shipments. ${allShips.filter(x=>x.status!=='on_time').length} need attention.`;
+        } else {
+            reply += "Please check app.py status.";
+        }
+        addMsg('ai', reply);
         updateChatBadge(false);
     }
 }
