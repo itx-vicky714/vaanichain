@@ -1246,7 +1246,7 @@ function updateKPIs() {
   const total = allShips.length;
   const ontime = allShips.filter(s => s.status === 'on_time').length;
   const risk = allShips.filter(s => s.status === 'at_risk').length;
-  const alerts = latestAnalysis.alerts?.length || 0;
+  const alerts = activeAlerts.length;
   const eff = total ? Math.round((ontime / total) * 100) : 100;
   const rev = risk * 50000;
   document.getElementById('kpi-total').textContent = total;
@@ -1317,6 +1317,9 @@ function renderAlerts(data) {
   document.getElementById('alerts-body').innerHTML = count
     ? activeAlerts.map(mkAlertCard).join('')
     : `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
+  
+  // BUG 1 - Sync KPI count
+  updateKPIs();
 }
 
 function mkAlertCard(a) {
@@ -1406,7 +1409,10 @@ function approveAlert(id, btn) {
         badge.style.color = 'var(--green)';
         badge.style.borderColor = '#86efac';
       }
+      // BUG 1 - Sync KPI count
+      updateKPIs();
     }, 400);
+
   }
 
   // BUG 4 - Connect to Map
@@ -1560,10 +1566,15 @@ async function sendChat() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    // BUG 4 - VaaniChat language instruction
-    const langInstruction = voiceLang === 'en' 
-      ? "[REPLY IN ENGLISH ONLY] " 
-      : "[REPLY IN HINDI/HINGLISH] ";
+    // BUG 2 - VaaniChat strict language enforcement
+    let langInstruction = "";
+    if (voiceLang === 'en') {
+      langInstruction = "You MUST reply in English only. Do not use Hindi or Hinglish under any circumstances. ";
+    } else if (voiceLang === 'hi') {
+      langInstruction = "You MUST reply in Hindi only. Do not use English or Hinglish. ";
+    } else if (voiceLang === 'hinglish') {
+      langInstruction = "You MUST reply in Hinglish (Hindi+English mix). ";
+    }
     
     addMsg('user', msg);
     input.value = '';
