@@ -196,13 +196,23 @@ document.getElementById('data-date').textContent =
 async function loadData() {
   let ships = [], status = {};
   
-  const localReroutes = localStorage.getItem('approvedReroutes');
-  if (localReroutes) {
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  if (savedShips) {
     try {
-      ships = JSON.parse(localReroutes);
-      console.log("Using rerouted shipment data from localStorage");
+      ships = JSON.parse(savedShips);
+      console.log("Using synced shipment data from dashboard state");
     } catch(e) {
-      console.error("Failed to parse local reroutes", e);
+      console.error("Failed to parse synced ships", e);
+    }
+  }
+
+  // Fallback to approvedReroutes if vaanichain_ships is not yet set (legacy/compatibility)
+  if (!ships.length) {
+    const localReroutes = localStorage.getItem('approvedReroutes');
+    if (localReroutes) {
+      try {
+        ships = JSON.parse(localReroutes);
+      } catch(e) {}
     }
   }
 
@@ -217,13 +227,14 @@ async function loadData() {
 
   const total   = ships.length || 20;
   const ontime  = ships.filter(s=>s.status==='on_time').length || 15;
-  const atRisk  = ships.filter(s=>s.status==='at_risk').length || 0;
-  const rate    = total ? Math.round((ontime/total)*100) : 100;
-  const saved   = atRisk > 0 ? 0 : Math.round(Math.random()*2+3) * 50000; // saved by avoiding disruptions
-  const caught  = status.alerts?.length || 0;
+  const atRisk  = ships.filter(s=>s.status==='at_risk' || s.status==='delayed').length || 0;
+  const rerouted = ships.filter(s=>s.status==='REROUTED').length || 0;
+  const rate    = total ? Math.round(((ontime + rerouted)/total)*100) : 100;
+  const saved   = (atRisk === 0 && rerouted > 0) ? (rerouted * 42000) : (atRisk > 0 ? 0 : Math.round(Math.random()*2+3) * 50000); 
+  const caught  = status.alerts?.length || rerouted;
 
   document.getElementById('a-total').textContent  = total;
-  document.getElementById('a-rate').textContent   = rate + '%';
+  document.getElementById('a-rate').textContent   = Math.min(100, rate) + '%';
   document.getElementById('a-saved').textContent  = '₹' + (saved||150000).toLocaleString('en-IN');
   document.getElementById('a-caught').textContent = caught + (caught===0?' (all clear)':'');
 
@@ -233,8 +244,16 @@ async function loadData() {
   if(!ships.length){modeCounts.road=5;modeCounts.rail=5;modeCounts.air=5;modeCounts.sea=5;}
 
   buildCharts(modeCounts, atRisk);
-  buildRiskTable();
+  buildRiskTable(ships);
 }
+
+// Re-render on storage change
+window.addEventListener("storage", (e) => {
+  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
+    loadData();
+    buildDynamicInsights();
+  }
+});
 
 function buildCharts(modeCounts, atRisk) {
   const font = { family:"'Plus Jakarta Sans',sans-serif", size:12 };

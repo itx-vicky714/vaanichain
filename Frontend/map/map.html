@@ -391,13 +391,23 @@ map = L.map('map', {
 async function loadAll() {
   let ships = [];
   
-  const localReroutes = localStorage.getItem('approvedReroutes');
-  if (localReroutes) {
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  if (savedShips) {
     try {
-      ships = JSON.parse(localReroutes);
-      console.log("Using rerouted shipment data from localStorage for Map");
+      ships = JSON.parse(savedShips);
+      console.log("Using synced shipment data from dashboard state for Map");
     } catch(e) {
-      console.error("Failed to parse local reroutes", e);
+      console.error("Failed to parse synced ships for Map", e);
+    }
+  }
+
+  // Fallback to approvedReroutes if vaanichain_ships is not yet set
+  if (!ships.length) {
+    const localReroutes = localStorage.getItem('approvedReroutes');
+    if (localReroutes) {
+      try {
+        ships = JSON.parse(localReroutes);
+      } catch(e) {}
     }
   }
 
@@ -421,6 +431,13 @@ async function loadAll() {
   renderMap(ships);
   fetchWeather();
 }
+
+// Re-render on storage change
+window.addEventListener("storage", (e) => {
+  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
+    loadAll();
+  }
+});
 
 function getDefaultShips() {
   return [
@@ -450,14 +467,14 @@ function getDefaultShips() {
 // ── RENDER SIDEBAR ──
 function renderSidebar(ships) {
   let filtered = ships;
-  if (currentFilter === 'risk') filtered = ships.filter(s=>s.status==='at_risk');
+  if (currentFilter === 'risk') filtered = ships.filter(s=>s.status==='at_risk' || s.status==='delayed');
   else if (currentFilter !== 'all') filtered = ships.filter(s=>s.mode===currentFilter);
 
   document.getElementById('ship-list').innerHTML = filtered.length
     ? filtered.map(s => {
         const isActive = s.id === activeShipId;
         const seed = s.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-        const pct = s.status==='on_time' ? Math.min(90,10+(seed%70)) : Math.min(60,5+(seed%50));
+        const pct = (s.status==='on_time' || s.status==='REROUTED') ? Math.min(90,10+(seed%70)) : Math.min(60,5+(seed%50));
         return `<div class="ship-item ${isActive?'active':''} ${s.status}" onclick="focusShip('${s.id}')">
           <div class="si-icon si-${s.mode||'road'}">${MODE_ICON[s.mode]||'📦'}</div>
           <div class="si-info">
@@ -483,39 +500,45 @@ function renderMap(ships) {
   markers = []; polylines = [];
 
   let filtered = ships;
-  if (currentView === 'active') filtered = ships.filter(s=>s.status==='on_time');
-  if (currentView === 'risk')   filtered = ships.filter(s=>s.status==='at_risk');
+  if (currentView === 'active') filtered = ships.filter(s=>s.status==='on_time' || s.status==='REROUTED');
+  if (currentView === 'risk')   filtered = ships.filter(s=>s.status==='at_risk' || s.status==='delayed');
 
   filtered.forEach(s => drawShipment(s));
 }
 
 function drawShipment(s) {
-  const wps = WAYPOINTS[s.id];
   const originCoord = resolveCoord(s.origin);
   const destCoord   = resolveCoord(s.destination);
-  if (!originCoord || !destCoord) {
-    console.warn('No coords for', s.id, s.origin, '→', s.destination);
-    return;
-  }
+  if (!originCoord || !destCoord) return;
 
-  // Build path from waypoints or direct O→D
+  // Build path
   let path = [];
-  if (wps) {
-    wps.forEach(stop => {
-      const c = resolveCoord(stop);
-      if (c) path.push(c);
-    });
+  if (s.selectedRoute && s.selectedRoute.via) {
+    // If rerouted, we might want to show the new route. 
+    // For simplicity in this UI, we just map O -> VIA -> D
+    const viaCoord = resolveCoord(s.selectedRoute.via);
+    path = [originCoord, viaCoord || originCoord, destCoord].filter(c => c);
+  } else {
+    const wps = WAYPOINTS[s.id];
+    if (wps) {
+      wps.forEach(stop => {
+        const c = resolveCoord(stop);
+        if (c) path.push(c);
+      });
+    }
   }
-  // Fallback: if waypoints gave us nothing or only 1 point, use O→D direct
   if (path.length < 2) path = [originCoord, destCoord];
 
-  const color   = s.status === 'at_risk' ? '#dc2626' : (MODE_COLOR[s.mode] || '#6b7280');
+  const color = s.status === 'at_risk' || s.status === 'delayed' ? '#dc2626' : 
+                s.status === 'REROUTED' ? '#2563eb' : (MODE_COLOR[s.mode] || '#6b7280');
+  
   const weight  = activeShipId === s.id ? 5 : 3;
   const opacity = activeShipId === null || activeShipId === s.id ? 0.85 : 0.3;
-  // Air = dashed, at_risk = longer dash, sea = dotted, rail = solid
-  const dash    = s.status === 'at_risk' ? '10 5' :
-                  s.mode === 'air'        ? '6 6'  :
-                  s.mode === 'sea'        ? '2 8'  : null;
+  
+  const dash = s.status === 'at_risk' || s.status === 'delayed' ? '10 5' :
+               s.status === 'REROUTED' ? '5 5' :
+               s.mode === 'air' ? '6 6' :
+               s.mode === 'sea' ? '2 8' : null;
 
   const poly = L.polyline(path, {
     color, weight, opacity,
@@ -524,7 +547,7 @@ function drawShipment(s) {
   }).addTo(map);
 
   poly.on('click', () => focusShip(s.id));
-  poly.bindTooltip(`${s.id} — ${s.origin} → ${s.destination}`, {sticky:true, className:'leaflet-tooltip'});
+  poly.bindTooltip(`${s.id} — ${s.origin} → ${s.destination} (${s.status})`, {sticky:true});
   polylines.push(poly);
 
   // Origin marker
@@ -532,7 +555,6 @@ function drawShipment(s) {
     radius: 7, fillColor: color, color: '#fff', weight: 2,
     fillOpacity: 1, opacity: opacity
   }).addTo(map);
-  oMarker.bindPopup(makePopup(s, 'origin'));
   oMarker.on('click', () => focusShip(s.id));
   markers.push(oMarker);
 
@@ -541,13 +563,12 @@ function drawShipment(s) {
     radius: 7, fillColor: color, color: '#fff', weight: 2,
     fillOpacity: 0.5, opacity: opacity
   }).addTo(map);
-  dMarker.bindPopup(makePopup(s, 'dest'));
   dMarker.on('click', () => focusShip(s.id));
   markers.push(dMarker);
 
-  // Current position marker (animated dot along route)
+  // Current position
   const seed = s.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
-  const pct  = s.status==='on_time' ? Math.min(0.9,(10+(seed%70))/100) : Math.min(0.6,(5+(seed%50))/100);
+  const pct  = (s.status==='on_time' || s.status==='REROUTED') ? Math.min(0.9,(10+(seed%70))/100) : Math.min(0.6,(5+(seed%50))/100);
   const posIdx = Math.min(Math.floor(pct * (path.length - 1)), path.length - 2);
   const t      = (pct * (path.length - 1)) - posIdx;
   const p1     = path[posIdx], p2 = path[posIdx + 1];
@@ -555,11 +576,10 @@ function drawShipment(s) {
 
   const curIcon = L.divIcon({
     className: '',
-    html: `<div style="width:14px;height:14px;background:${s.status==='at_risk'?'#d97706':'#059669'};border:3px solid white;border-radius:50%;box-shadow:0 0 0 3px ${s.status==='at_risk'?'rgba(217,119,6,.4)':'rgba(5,150,105,.4)'},0 2px 6px rgba(0,0,0,.25)"></div>`,
+    html: `<div style="width:14px;height:14px;background:${s.status==='at_risk' || s.status==='delayed'?'#dc2626':s.status==='REROUTED'?'#2563eb':'#059669'};border:3px solid white;border-radius:50%;box-shadow:0 0 0 3px rgba(0,0,0,0.1),0 2px 6px rgba(0,0,0,0.2)"></div>`,
     iconSize: [14,14], iconAnchor: [7,7]
   });
   const curMarker = L.marker(curPos, {icon: curIcon, zIndexOffset: 1000}).addTo(map);
-  curMarker.bindTooltip(`${s.id} · ${Math.round(pct*100)}% done · ${MODE_ICON[s.mode]} ${s.mode}`, {sticky:true});
   curMarker.on('click', () => focusShip(s.id));
   markers.push(curMarker);
 }

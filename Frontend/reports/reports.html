@@ -226,13 +226,23 @@ let allShips = [];
 let statusData = {};
 
 async function loadData() {
-  const localReroutes = localStorage.getItem('approvedReroutes');
-  if (localReroutes) {
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  if (savedShips) {
     try {
-      allShips = JSON.parse(localReroutes);
-      console.log("Using rerouted shipment data from localStorage");
+      allShips = JSON.parse(savedShips);
+      console.log("Using synced shipment data from dashboard state for Reports");
     } catch(e) {
-      console.error("Failed to parse local reroutes", e);
+      console.error("Failed to parse synced ships for Reports", e);
+    }
+  }
+
+  // Fallback to legacy key if vaanichain_ships is empty
+  if (!allShips.length) {
+    const localReroutes = localStorage.getItem('approvedReroutes');
+    if (localReroutes) {
+      try {
+        allShips = JSON.parse(localReroutes);
+      } catch(e) {}
     }
   }
 
@@ -244,7 +254,7 @@ async function loadData() {
     const serverShips = await rs.json();
     statusData = await st.json();
     
-    // If we don't have local reroutes, use server data
+    // If we don't have local synced ships, use server data
     if (!allShips.length) {
       allShips = serverShips;
     }
@@ -261,6 +271,23 @@ async function loadData() {
     statusData = { alerts: [{shipment_id:'SHP-1002', risk_reason:'Monsoon Flooding', recommended_action:'Reroute via NH-52'}] };
   }
 }
+
+// Re-render on storage change
+window.addEventListener("storage", (e) => {
+  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
+    // Determine current report type
+    const activeItem = document.querySelector('.sb-item.on');
+    const type = activeItem ? activeItem.textContent.toLowerCase() : 'daily';
+    const finalType = type.includes('daily') ? 'daily' : 
+                      type.includes('disruption') ? 'disruption' :
+                      type.includes('cost') ? 'cost' :
+                      type.includes('weather') ? 'weather' :
+                      type.includes('mode') ? 'mode' : 'predict';
+    
+    const idx = Array.from(document.querySelectorAll('.sb-item')).indexOf(activeItem);
+    genReport(finalType, idx >= 0 ? idx : 0);
+  }
+});
 
 // BUG 5 - Modal logic for Review Route
 function showReviewModal(shipId) {
