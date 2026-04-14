@@ -849,6 +849,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 const BASE_URL = CONFIG.BASE_URL || 'http://localhost:5000';
 let allShips = [], latestAnalysis = {alerts:[], overall_risk:'low'};
 let filterStatus = 'all', filterModeVal = 'all', emailText = '';
+let simulateMode = false;
 
 const WEATHER_CITIES = [
   {name:'Mumbai',   lat:19.076, lon:72.878},
@@ -878,7 +879,7 @@ window.onload = () => {
   
   // BUG 2 - All Clear button click handler
   document.getElementById('risk-badge').style.cursor = 'pointer';
-  document.getElementById('risk-badge').onclick = () => resetAll();
+  document.getElementById('risk-badge').onclick = () => allClear();
 
   startClock();
   fetchAllWeather();
@@ -1489,6 +1490,7 @@ function setFilter(val, type) {
 // ── SIMULATE ──
 async function simDisrupt() {
   const s = SCENARIOS[scenarioIdx % SCENARIOS.length]; scenarioIdx++;
+  simulateMode = true;
   try {
     const body = s.mode ? {mode: s.mode} : {route: s.route};
     await fetch(`${CONFIG.BASE_URL}/trigger`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
@@ -1511,6 +1513,20 @@ function _markDisruption() {
     '↺ Reset (' + allShips.filter(s => s.status === 'at_risk').length + ' at risk)';
 }
  
+function allClear() {
+  allShips.forEach(s => {
+    if (s.status === 'at_risk' || s.status === 'delayed') {
+      s.status = 'on_time';
+    }
+  });
+  renderShipments();
+  activeAlerts = [];
+  renderAlerts();
+  updateKPIs();
+  showToast('All Clear — No active disruptions', 'ok');
+  simulateMode = false;
+}
+
 let _resetRetryCount = 0;
 let _countdownInterval = null;
 
@@ -1523,8 +1539,12 @@ async function resetAll() {
     
     _resetRetryCount = 0;
     _lastDisruptionTime = null;
+    localStorage.removeItem('approvedReroutes');
+    simulateMode = false;
+    
     document.getElementById('reset-btn-label').textContent = '↺ Reset';
     showToast('Reset complete!', 'ok');
+    
     loadShipments();
     loadStatus();
     addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
