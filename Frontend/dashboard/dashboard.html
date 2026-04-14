@@ -883,7 +883,19 @@ window.onload = () => {
 
   startClock();
   fetchAllWeather();
-  loadShipments();
+
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  const savedSim = localStorage.getItem("vaanichain_simulate");
+  if (savedShips) {
+    allShips = JSON.parse(savedShips);
+    simulateMode = savedSim ? JSON.parse(savedSim) : false;
+    renderShipments();
+    renderAlerts();
+    updateKPIs();
+  } else {
+    loadShipments();
+  }
+
   loadStatus();
   setInterval(loadShipments, 30000);
   setInterval(loadStatus, 60000);
@@ -989,6 +1001,11 @@ const DEMO_SHIPMENTS = [
   {id:'SHP-1008',origin:'Jaipur',destination:'Delhi',route:'NH-48',mode:'road',status:'on_time',eta_hours:5,weight_kg:1900,cargo:'Handicrafts',supplier:'Rajasthali',priority:'normal'},
 ];
 
+function saveDashboardState() {
+  localStorage.setItem("vaanichain_ships", JSON.stringify(allShips));
+  localStorage.setItem("vaanichain_simulate", JSON.stringify(simulateMode));
+}
+
 // ── SHIPMENTS ──
 async function loadShipments() {
   try {
@@ -997,6 +1014,7 @@ async function loadShipments() {
     const owner = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
     allShips = [...data, ...owner];
     if (!allShips.length) { allShips = [...DEMO_SHIPMENTS]; }
+    saveDashboardState();
     renderShipments(); updateKPIs();
     document.getElementById('ship-refresh').textContent = 'Live · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     updateChatBadge(true);
@@ -1005,6 +1023,7 @@ async function loadShipments() {
     if (!allShips.length) {
       const owner = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
       allShips = [...DEMO_SHIPMENTS, ...owner];
+      saveDashboardState();
       renderShipments(); updateKPIs();
       document.getElementById('ship-refresh').textContent = 'Demo mode · backend offline';
     }
@@ -1388,6 +1407,7 @@ function approveAlert(id, btn) {
   const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === id);
   if (s) {
     s.status = 'REROUTED';
+    saveDashboardState();
     renderShipments();
   }
 
@@ -1491,6 +1511,7 @@ function setFilter(val, type) {
 async function simDisrupt() {
   const s = SCENARIOS[scenarioIdx % SCENARIOS.length]; scenarioIdx++;
   simulateMode = true;
+  saveDashboardState();
   try {
     const body = s.mode ? {mode: s.mode} : {route: s.route};
     await fetch(`${CONFIG.BASE_URL}/trigger`, {method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body)});
@@ -1519,12 +1540,13 @@ function allClear() {
       s.status = 'on_time';
     }
   });
+  simulateMode = false;
+  saveDashboardState();
   renderShipments();
   activeAlerts = [];
   renderAlerts();
   updateKPIs();
   showToast('All Clear — No active disruptions', 'ok');
-  simulateMode = false;
 }
 
 let resetRetryTimer = null;
@@ -1544,6 +1566,8 @@ async function resetAll() {
       }
     });
     localStorage.removeItem('approvedReroutes');
+    localStorage.removeItem("vaanichain_ships");
+    localStorage.removeItem("vaanichain_simulate");
     simulateMode = false;
     _lastDisruptionTime = null;
     document.getElementById('reset-btn-label').textContent = '↺ Reset';
@@ -2566,6 +2590,7 @@ function sdmApproveReroute() {
     ship.route = _selectedRoute.name;
     ship.eta_hours = (_sdmShipment.eta_hours || 0) + (_selectedRoute.extraH || 0);
     
+    saveDashboardState();
     localStorage.setItem("approvedReroutes", JSON.stringify(allShips));
     
     renderShipments();
