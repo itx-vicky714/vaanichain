@@ -993,6 +993,7 @@ async function loadShipments() {
     if (!allShips.length) { allShips = [...DEMO_SHIPMENTS]; }
     renderShipments(); updateKPIs();
     document.getElementById('ship-refresh').textContent = 'Live · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    updateChatBadge(true);
   } catch {
     // Backend offline — load demo data so dashboard is always functional
     if (!allShips.length) {
@@ -1001,6 +1002,34 @@ async function loadShipments() {
       renderShipments(); updateKPIs();
       document.getElementById('ship-refresh').textContent = 'Demo mode · backend offline';
     }
+    updateChatBadge(false);
+  }
+}
+
+function updateChatBadge(online) {
+  const badge = document.querySelector('.ph-badge:not([id])') || document.getElementById('chat-badge');
+  if (!badge && !document.getElementById('chat-badge')) {
+    // Try to find the badge by its text content if ID doesn't exist
+    const badges = document.querySelectorAll('.ph-badge');
+    for (const b of badges) {
+      if (b.textContent.includes('AI · Hindi')) {
+        b.id = 'chat-badge';
+        updateChatBadge(online);
+        return;
+      }
+    }
+  }
+  const target = document.getElementById('chat-badge');
+  if (!target) return;
+
+  if (online) {
+    target.textContent = 'AI · Hindi + English';
+    target.style.color = '';
+    target.style.background = '';
+  } else {
+    target.textContent = 'AI is waking up... please wait';
+    target.style.color = '#92400e';
+    target.style.background = '#fef3c7';
   }
 }
 
@@ -1230,7 +1259,10 @@ async function loadStatus() {
     const data = await r.json();
     latestAnalysis = data;
     renderAlerts(data); updateRiskBadge(data.overall_risk); updateKPIs();
-  } catch {}
+    updateChatBadge(true);
+  } catch {
+    updateChatBadge(false);
+  }
 }
 
 function updateRiskBadge(risk) {
@@ -1320,7 +1352,28 @@ async function showEmail(id, sup) {
     emailText = d.email_draft;
     document.getElementById('email-content').textContent = emailText;
   } catch {
-    document.getElementById('email-content').textContent = 'Backend error. Run python app.py';
+    // BUG 1 - Fallback email generation
+    const s = allShips.find(x => x.id === id);
+    if (s) {
+      const { etaLeft } = getShipProgress(s);
+      emailText = `Subject: URGENT: Shipment Update ${s.id} (${s.cargo})
+Dear ${s.supplier || 'Supplier'},
+
+This is an automated operational alert from VaaniChain regarding Shipment ${s.id}.
+
+Current Details:
+- Route: ${s.origin} to ${s.destination}
+- Cargo: ${s.cargo || 'General Freight'}
+- ETA: ${etaLeft} hours remaining
+
+We have detected a potential disruption on your current route. Please confirm the status of the vehicle and if any immediate assistance is required.
+
+Best regards,
+VaaniChain Operations Team`;
+      document.getElementById('email-content').textContent = emailText;
+    } else {
+      document.getElementById('email-content').textContent = 'Backend error. Run python app.py';
+    }
   }
 }
 
@@ -1353,7 +1406,10 @@ async function simDisrupt() {
     addMsg('ai', s.chat);
     pingFAB();
     setTimeout(() => { loadShipments(); loadStatus(); }, 1500);
-  } catch { showToast('Backend not connected','err'); }
+  } catch { 
+    showToast('Reset scheduled - backend is waking up, please try again in 30 seconds', 'warn'); 
+    updateChatBadge(false);
+  }
 }
 
 let _lastDisruptionTime = null;
@@ -1365,17 +1421,33 @@ function _markDisruption() {
     '↺ Reset (' + allShips.filter(s => s.status === 'at_risk').length + ' at risk)';
 }
  
+let _resetRetryCount = 0;
 async function resetAll() {
   try {
-    await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
+    const res = await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
+    if (!res.ok) throw new Error('Reset failed');
+    
+    _resetRetryCount = 0;
     _lastDisruptionTime = null;
     document.getElementById('reset-btn-label').textContent = '↺ Reset';
-    showToast('All disruptions cleared ✓', 'ok');
+    showToast('Reset complete!', 'ok');
     loadShipments();
     loadStatus();
     addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
   } catch {
-    showToast('Backend not connected', 'err');
+    _resetRetryCount++;
+    updateChatBadge(false);
+    
+    if (_resetRetryCount <= 5) {
+      const msg = _resetRetryCount === 1 
+        ? 'Backend is waking up... retrying in 30s' 
+        : 'Backend is still waking up... retrying in 30s';
+      showToast(msg, 'warn');
+      setTimeout(resetAll, 30000);
+    } else {
+      _resetRetryCount = 0;
+      showToast('Backend unavailable. Try again later', 'err');
+    }
   }
 }
 
@@ -1396,8 +1468,10 @@ async function sendChat() {
         });
         const d = await r.json();
         addMsg('ai', d.reply || 'No response');
+        updateChatBadge(true);
     } catch {
         addMsg('ai', 'Backend offline — run python app.py');
+        updateChatBadge(false);
     }
 }
 
