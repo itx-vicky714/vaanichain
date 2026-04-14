@@ -5,433 +5,318 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>VaaniChain — Reports</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
-  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
-  --blue:#2563eb;--indigo:#4f46e5;--green:#059669;--green2:#d1fae5;
-  --amber:#d97706;--amber2:#fef3c7;--red:#dc2626;--red2:#fee2e2;
-  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
-  --grad2:linear-gradient(135deg,#059669,#0ea5e9);
-  --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --shadow2:0 4px 16px rgba(0,0,0,.1);--r:12px;
+
+:root {
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-2: #F1F5F9;
+  --border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
 }
-html{font-size:14px;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
 
-/* NAVBAR */
-.nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
-.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
-.nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px}
-.nav-name{font-size:18px;font-weight:800;color:var(--text)}
-.nav-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-spc{flex:1}
-.nav-mid{display:flex;align-items:center;gap:4px}
-.nav-tab{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:var(--sans);text-decoration:none}
-.nav-tab:hover{background:var(--bg);color:var(--text2)}
-.nav-tab.on{background:var(--grad1);color:#fff}
-
-/* MAIN CONTENT */
-.main-wrap{padding:24px 28px;max-width:1400px;margin:0 auto;width:100%}
-
-/* TOP CARDS */
-.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
-.report-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
-.report-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
-.rc-blue::before{background:var(--grad1)}.rc-green::before{background:var(--grad2)}
-.rc-amber::before{background:linear-gradient(135deg,#d97706,#dc2626)}.rc-purple::before{background:var(--grad4)}
-.rc-sky::before{background:linear-gradient(135deg,#0ea5e9,#6366f1)}.rc-teal::before{background:linear-gradient(135deg,#059669,#0891b2)}
-.report-card:hover{box-shadow:var(--shadow2);transform:translateY(-2px)}
-.rc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
-.rc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
-.rc-sub{font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:12px}
-.rc-meta{display:flex;align-items:center;justify-content:space-between}
-.rc-freq{font-size:11px;font-family:var(--mono);color:var(--text4)}
-.rc-btn{font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;border:none;background:var(--grad1);color:#fff;cursor:pointer;font-family:var(--sans)}
-
-/* SIDEBAR LAYOUT */
-.layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
-.sidebar{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;position:sticky;top:84px}
-.sb-head{padding:18px 20px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--text)}
-.sb-item{padding:14px 20px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:1px solid var(--bg);transition:all .15s;display:flex;align-items:center;gap:10px}
-.sb-item:hover{background:var(--bg);color:var(--text)}
-.sb-item.on{background:var(--bg);color:var(--blue);border-left:4px solid var(--blue)}
-.sb-item:last-child{border-bottom:none}
-
-/* REPORT PANEL */
-.report-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);min-height:600px;display:flex;flex-direction:column}
-.rp-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fafbfc}
-.rp-title-wrap{flex:1}
-.rp-title{font-size:18px;font-weight:800;color:var(--text)}
-.rp-sub{font-size:12px;color:var(--text4);font-family:var(--mono);margin-top:2px}
-.rp-actions{display:flex;gap:8px}
-.rp-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);border:1px solid var(--border);background:var(--white);color:var(--text2);transition:all .15s}
-.rp-btn:hover{background:var(--bg)}
-.rp-btn-primary{background:var(--grad1);color:#fff;border:none}
-.rp-body{padding:24px;flex:1}
-
-/* DATA TABLES & CONTENT */
-.report-section{margin-bottom:32px}
-.rs-title{font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-.data-table{width:100%;border-collapse:collapse;font-size:13px}
-.data-table th{text-align:left;padding:12px;background:var(--bg);color:var(--text3);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--border)}
-.data-table td{padding:12px;border-bottom:1px solid var(--border);color:var(--text2)}
-.data-table tr:last-child td{border-bottom:none}
-.data-table tr:hover td{background:#f8fafc}
-
-/* KPI CELLS */
-.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
-.sum-cell{background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center}
-.sum-val{font-size:24px;font-weight:800;font-family:var(--mono);color:var(--text);margin-bottom:4px}
-.sum-key{font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.05em}
-
-/* BADGES */
-.status-pill{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase}
-.s-ok{background:var(--green2);color:var(--green)}
-.s-risk{background:var(--amber2);color:var(--amber)}
-.s-del{background:var(--red2);color:var(--red)}
-
-.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow2);z-index:999;transform:translateY(100px);transition:all .3s}
-.toast.show{transform:translateY(0)}
-
-@media print{
-  .nav, .sidebar, .reports-grid, .rp-actions{display:none !important}
-  .layout{display:block}
-  .main-wrap{padding:0}
-  .report-panel{border:none;box-shadow:none}
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
+
+/* ── NAVBAR ── */
+.nav {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 24px;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.nav-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.nav-name span {
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-spc { flex: 1; }
+
+.nav-mid {
+  display: flex;
+  align-items: center; gap: 8px;
+}
+
+.nav-tab {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover { color: var(--text-primary); }
+.nav-tab.on { color: var(--primary); }
+
+.nav-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 16px; right: 16px;
+  height: 2px;
+  background: var(--primary);
+  border-radius: 2px;
+  transform: scaleX(0);
+  transition: transform 0.2s ease;
+}
+
+.nav-tab.on::after { transform: scaleX(1); }
+
+/* ── MAIN CONTENT ── */
+.main {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 300px 1fr;
+  gap: 0;
+}
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: #fff;
+  border-right: 1px solid var(--border);
+  padding: 32px 24px;
+}
+
+.sb-title { font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 24px; }
+
+.sb-nav { display: flex; flex-direction: column; gap: 8px; }
+.sb-item {
+  padding: 12px 16px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.sb-item:hover { background: var(--surface-2); color: var(--text-primary); }
+.sb-item.on { background: #eff6ff; color: var(--primary); }
+
+/* ── REPORT PANEL ── */
+.content {
+  padding: 48px;
+  overflow-y: auto;
+}
+
+.report-panel {
+  background: #fff;
+  border-radius: 24px;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+  min-height: 800px;
+  display: flex;
+  flex-direction: column;
+}
+
+.rp-header {
+  padding: 32px 40px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: #fafbfc;
+}
+
+.rp-title { font-size: 24px; font-weight: 800; color: var(--text-primary); font-family: 'Plus Jakarta Sans', sans-serif; }
+.rp-sub { font-size: 13px; color: var(--text-muted); margin-top: 4px; font-family: 'JetBrains Mono'; }
+
+.rp-actions { display: flex; gap: 12px; }
+.rp-btn {
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-primary { background: var(--grad-primary); color: #fff; border: none; box-shadow: var(--shadow-md); }
+.btn-primary:hover { transform: translateY(-1px); box-shadow: var(--shadow-lg); }
+
+.rp-body { padding: 40px; flex: 1; }
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 12px 16px;
+  background: var(--surface-2);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.data-table td {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+tr:nth-child(even) td { background: #fafbfc; }
+
+.status-pill { padding: 4px 12px; border-radius: 20px; font-size: 11px; font-weight: 700; }
+.s-ok { background: #DCFCE7; color: var(--success); }
+.s-risk { background: #FEF3C7; color: var(--warning); }
+
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a class="nav-brand" href="../dashboard/dashboard.html">
+  <a href="../dashboard/dashboard.html" class="nav-brand">
     <div class="nav-icon">🚛</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
   </a>
   <div class="nav-spc"></div>
   <div class="nav-mid">
-    <a href="../dashboard/dashboard.html" class="nav-tab">Dashboard</a>
-    <a href="../map/map.html" class="nav-tab">🗺 Map</a>
-    <a href="../analytics/analytics.html" class="nav-tab">Analytics</a>
-    <a href="reports.html" class="nav-tab on">Reports</a>
+    <button class="nav-tab" onclick="location.href='../dashboard/dashboard.html'">Dashboard</button>
+    <button class="nav-tab" onclick="location.href='../map/map.html'">🗺 Map</button>
+    <button class="nav-tab" onclick="location.href='../analytics/analytics.html'">Analytics</button>
+    <button class="nav-tab on">Reports</button>
   </div>
   <div class="nav-spc"></div>
-  <div style="font-family:var(--mono);font-size:12px;color:var(--text3);background:var(--bg);padding:6px 14px;border-radius:8px;border:1px solid var(--border)" id="nav-clock">--:--:--</div>
+  <div style="font-size:13px; font-weight:700; color:var(--text-secondary)">D</div>
 </nav>
 
-<div class="main-wrap">
-  
-  <!-- TOP CARDS -->
-  <div class="reports-grid">
-    <div class="report-card rc-blue" onclick="genReport('daily', 0)">
-      <div class="rc-icon" style="background:#eff6ff">📊</div>
-      <div class="rc-title">Daily Operations Summary</div>
-      <div class="rc-sub">Complete snapshot of current network status, shipments and system health.</div>
-      <div class="rc-meta"><span class="rc-freq">Daily</span><button class="rc-btn">Generate →</button></div>
+<div class="main">
+  <aside class="sidebar">
+    <div class="sb-title">Generate Reports</div>
+    <div class="sb-nav">
+      <div class="sb-item on" onclick="genReport('daily', this)">📊 Daily Operations</div>
+      <div class="sb-item" onclick="genReport('disruption', this)">⚠️ Disruption Analysis</div>
+      <div class="sb-item" onclick="genReport('cost', this)">💰 Cost Impact</div>
+      <div class="sb-item" onclick="genReport('weather', this)">🌦️ Weather Intelligence</div>
+      <div class="sb-item" onclick="genReport('mode', this)">🚛 Mode Performance</div>
     </div>
-    <div class="report-card rc-green" onclick="genReport('disruption', 1)">
-      <div class="rc-icon" style="background:#f0fdf4">⚠️</div>
-      <div class="rc-title">Disruption Analysis</div>
-      <div class="rc-sub">Deep dive into active disruptions, root causes and rerouting efficiency.</div>
-      <div class="rc-meta"><span class="rc-freq">On Demand</span><button class="rc-btn">Generate →</button></div>
-    </div>
-    <div class="report-card rc-amber" onclick="genReport('cost', 2)">
-      <div class="rc-icon" style="background:#fffbeb">💰</div>
-      <div class="rc-title">Cost Impact Report</div>
-      <div class="rc-sub">Financial overview including revenue at risk and cost savings from AI rerouting.</div>
-      <div class="rc-meta"><span class="rc-freq">Weekly</span><button class="rc-btn">Generate →</button></div>
-    </div>
-    <div class="report-card rc-purple" onclick="genReport('weather', 3)">
-      <div class="rc-icon" style="background:#faf5ff">🌦️</div>
-      <div class="rc-title">Weather 72h Forecast</div>
-      <div class="rc-sub">Forward-looking weather risk intelligence for all active corridors.</div>
-      <div class="rc-meta"><span class="rc-freq">3x Daily</span><button class="rc-btn">Generate →</button></div>
-    </div>
-    <div class="report-card rc-sky" onclick="genReport('mode', 4)">
-      <div class="rc-icon" style="background:#f0f9ff">🚛</div>
-      <div class="rc-title">Mode Performance</div>
-      <div class="rc-sub">Comparative reliability and cost analysis across Road, Rail, Air and Sea.</div>
-      <div class="rc-meta"><span class="rc-freq">Monthly</span><button class="rc-btn">Generate →</button></div>
-    </div>
-    <div class="report-card rc-teal" onclick="genReport('predict', 5)">
-      <div class="rc-icon" style="background:#f0fdf4">🔮</div>
-      <div class="rc-title">Predictive Risk Assessment</div>
-      <div class="rc-sub">7-day risk trajectory based on seasonal patterns and historical data.</div>
-      <div class="rc-meta"><span class="rc-freq">AI Generated</span><button class="rc-btn">Generate →</button></div>
-    </div>
-  </div>
+  </aside>
 
-  <div class="layout">
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-      <div class="sb-head">Generate Reports</div>
-      <div class="sb-item on" onclick="genReport('daily', 0)">📊 Daily Operations Summary</div>
-      <div class="sb-item" onclick="genReport('disruption', 1)">⚠️ Disruption Analysis</div>
-      <div class="sb-item" onclick="genReport('cost', 2)">💰 Cost Impact Report</div>
-      <div class="sb-item" onclick="genReport('weather', 3)">🌦️ Weather 72h Forecast</div>
-      <div class="sb-item" onclick="genReport('mode', 4)">🚛 Mode Performance</div>
-      <div class="sb-item" onclick="genReport('predict', 5)">🔮 Predictive Risk Assessment</div>
-    </div>
-
-    <!-- MAIN PANEL -->
+  <main class="content">
     <div class="report-panel">
       <div class="rp-header">
-        <div class="rp-title-wrap">
-          <div class="rp-title" id="rp-title">Select a report to generate</div>
-          <div class="rp-sub" id="rp-sub">VaaniChain Intelligence Engine</div>
+        <div>
+          <div class="rp-title" id="rp-title">Daily Operations Report</div>
+          <div class="rp-sub" id="rp-sub">Generated: 14 APR 2026 01:45 IST</div>
         </div>
         <div class="rp-actions">
-          <button class="rp-btn" onclick="showToast('Report sent to email')">📧 Email Report</button>
-          <button class="rp-btn rp-btn-primary" onclick="window.print()">📥 Download PDF</button>
+          <button class="rp-btn btn-ghost" onclick="window.print()">Print</button>
+          <button class="rp-btn btn-primary">Download PDF</button>
         </div>
       </div>
       <div class="rp-body" id="rp-body">
-        <div style="text-align:center;padding:100px 0;color:var(--text4)">
-          <div style="font-size:40px;margin-bottom:16px">📄</div>
-          <p>Click a report card or sidebar item to generate full data report</p>
-        </div>
+        <!-- Default Content -->
+        <table class="data-table">
+          <thead>
+            <tr><th>Shipment ID</th><th>Route</th><th>Status</th><th>Priority</th></tr>
+          </thead>
+          <tbody id="reportData">
+            <!-- Data will be loaded here -->
+          </tbody>
+        </table>
       </div>
     </div>
-  </div>
-
+  </main>
 </div>
-
-<div class="toast" id="toast"></div>
 
 <script src="js/config.js"></script>
 <script src="js/api.js"></script>
 
 <script>
-(function(){
-  const token = localStorage.getItem('vc_token');
-  if (!token) window.location.href = '../index.html';
-})();
-
-function updateClock() {
-  document.getElementById('nav-clock').textContent = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
-}
-setInterval(updateClock, 1000); updateClock();
-
-function showToast(m) {
-  const el = document.getElementById('toast');
-  el.textContent = m; el.classList.add('show');
-  setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-let allShips = [];
-let statusData = {};
-
 async function loadData() {
   try {
-    const [rs, st] = await Promise.all([
-      fetch(`${CONFIG.BASE_URL}/shipments`),
-      fetch(`${CONFIG.BASE_URL}/status`)
-    ]);
-    allShips = await rs.json();
-    statusData = await st.json();
-  } catch(e) {
-    console.warn("Backend offline, using fallback data");
-    allShips = [
-      {id:'SHP-1001',mode:'road',route:'NH-48',origin:'Mumbai',destination:'Delhi',eta_hours:18,status:'on_time',cargo:'Electronics'},
-      {id:'SHP-1002',mode:'road',route:'NH-44',origin:'Delhi',destination:'Bengaluru',eta_hours:28,status:'at_risk',cargo:'Pharma'},
-      {id:'RLY-2001',mode:'rail',route:'Western DFC',origin:'Mumbai',destination:'Delhi',eta_hours:22,status:'on_time',cargo:'FMCG'},
-      {id:'AIR-3001',mode:'air',route:'IndiGo Cargo',origin:'Mumbai',destination:'Delhi',eta_hours:2,status:'on_time',cargo:'Medical'}
-    ];
-    statusData = { alerts: [{shipment_id:'SHP-1002', risk_reason:'Monsoon Flooding', recommended_action:'Reroute via NH-52'}] };
-  }
+    const res = await fetch(`${CONFIG.BASE_URL}/shipments`);
+    const data = await res.json();
+    const body = document.getElementById('reportData');
+    body.innerHTML = data.map(s => `
+      <tr>
+        <td style="font-weight:700">${s.id}</td>
+        <td>${s.origin} → ${s.destination}</td>
+        <td><span class="status-pill s-${s.status === 'on_time' ? 'ok' : 'risk'}">${s.status.replace('_', ' ')}</span></td>
+        <td>${s.priority || 'Normal'}</td>
+      </tr>
+    `).join('');
+  } catch(e) {}
 }
 
-async function genReport(type, idx) {
-  const body = document.getElementById('rp-body');
-  const title = document.getElementById('rp-title');
-  const sub = document.getElementById('rp-sub');
-  
-  // Update UI
-  document.querySelectorAll('.sb-item').forEach((item, i) => {
-    item.classList.toggle('on', i === idx);
-  });
-  
-  title.textContent = "Generating Report...";
-  body.innerHTML = '<div style="text-align:center;padding:100px 0"><div class="spinner"></div><p>Aggregating live supply chain data...</p></div>';
-  
-  await loadData();
-  
-  const now = new Date().toLocaleString('en-IN');
-  sub.textContent = "Generated: " + now + " IST · Real-time Intelligence";
-
-  if (type === 'daily') {
-    title.textContent = "Daily Operations Summary";
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Summary Metrics</div>
-        <div class="summary-grid">
-          <div class="sum-cell"><div class="sum-val">${allShips.length}</div><div class="sum-key">Total Shipments</div></div>
-          <div class="sum-cell"><div class="sum-val" style="color:var(--green)">${allShips.filter(s=>s.status==='on_time').length}</div><div class="sum-key">On Time</div></div>
-          <div class="sum-cell"><div class="sum-val" style="color:var(--amber)">${allShips.filter(s=>s.status==='at_risk').length}</div><div class="sum-key">At Risk</div></div>
-          <div class="sum-cell"><div class="sum-val" style="color:var(--red)">${allShips.filter(s=>s.status==='delayed').length}</div><div class="sum-key">Delayed</div></div>
-        </div>
-      </div>
-      <div class="report-section">
-        <div class="rs-title">Active Shipment Log</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>ID</th><th>Mode</th><th>Route</th><th>Origin</th><th>Destination</th><th>ETA</th><th>Status</th><th>Cargo</th></tr>
-          </thead>
-          <tbody>
-            ${allShips.map(s => `
-              <tr>
-                <td style="font-family:var(--mono);font-weight:700">${s.id}</td>
-                <td>${s.mode.toUpperCase()}</td>
-                <td>${s.route || '—'}</td>
-                <td>${s.origin}</td>
-                <td>${s.destination}</td>
-                <td style="font-family:var(--mono)">${s.eta_hours}h</td>
-                <td><span class="status-pill ${s.status==='on_time'?'s-ok':s.status==='at_risk'?'s-risk':'s-del'}">${s.status.replace('_',' ')}</span></td>
-                <td>${s.cargo}</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-    `;
-  } else if (type === 'disruption') {
-    title.textContent = "Disruption Analysis Report";
-    const alerts = statusData.alerts || [];
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Active Disruption Map</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Shipment</th><th>Detected Threat</th><th>Impacted Area</th><th>AI Suggested Alternative</th><th>Savings (Est)</th></tr>
-          </thead>
-          <tbody>
-            ${alerts.length ? alerts.map(a => `
-              <tr>
-                <td style="font-family:var(--mono);font-weight:700">${a.shipment_id}</td>
-                <td style="color:var(--red);font-weight:600">${a.risk_reason}</td>
-                <td>${a.route || 'Network Node'}</td>
-                <td style="color:var(--blue);font-weight:600">${a.recommended_action}</td>
-                <td style="font-weight:700">₹42,000</td>
-              </tr>
-            `).join('') : '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text4)">No active disruptions in network</td></tr>'}
-          </tbody>
-        </table>
-      </div>
-    `;
-  } else if (type === 'cost') {
-    title.textContent = "Cost Impact Analysis";
-    const atRiskCount = allShips.filter(s=>s.status==='at_risk').length;
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Financial Summary</div>
-        <div class="summary-grid">
-          <div class="sum-cell"><div class="sum-val" style="color:var(--red)">₹${(atRiskCount * 85000).toLocaleString()}</div><div class="sum-key">Revenue at Risk</div></div>
-          <div class="sum-cell"><div class="sum-val" style="color:var(--green)">₹${(atRiskCount * 42000).toLocaleString()}</div><div class="sum-key">Saved by AI</div></div>
-          <div class="sum-cell"><div class="sum-val">₹${(allShips.length * 4200).toLocaleString()}</div><div class="sum-key">Toll Charges</div></div>
-          <div class="sum-cell"><div class="sum-val">₹${(allShips.length * 12500).toLocaleString()}</div><div class="sum-key">Fuel Costs</div></div>
-        </div>
-      </div>
-      <div class="report-section">
-        <div class="rs-title">Disruption Cost Breakdown</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Disruption Type</th><th>Avg Delay</th><th>Cost per Incident</th><th>AI Reroute Saving</th><th>Net Loss Avoided</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>Monsoon Road Flooding</td><td>12.5h</td><td>₹85,000</td><td>₹62,000</td><td style="color:var(--green);font-weight:700">73%</td></tr>
-            <tr><td>Rail Track Maintenance</td><td>8.0h</td><td>₹45,000</td><td>₹38,000</td><td style="color:var(--green);font-weight:700">84%</td></tr>
-            <tr><td>Port Congestion</td><td>48.0h</td><td>₹1,20,000</td><td>₹70,000</td><td style="color:var(--green);font-weight:700">58%</td></tr>
-          </tbody>
-        </table>
-      </div>
-    `;
-  } else if (type === 'weather') {
-    title.textContent = "Weather Intelligence (72h)";
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Corridor Risk Forecast</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Route/Corridor</th><th>Mode</th><th>24H Risk</th><th>48H Risk</th><th>72H Risk</th><th>Primary Threat</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>NH-48 (Mumbai-Jaipur)</td><td>Road</td><td><b style="color:var(--red)">HIGH</b></td><td><b style="color:var(--red)">HIGH</b></td><td><b>MED</b></td><td>Heavy Rain / Flood</td></tr>
-            <tr><td>Western Dedicated Freight</td><td>Rail</td><td><b>LOW</b></td><td><b>LOW</b></td><td><b>LOW</b></td><td>Nominal</td></tr>
-            <tr><td>Bay of Bengal NW-2</td><td>Sea</td><td><b>MED</b></td><td><b style="color:var(--red)">HIGH</b></td><td><b style="color:var(--red)">HIGH</b></td><td>Cyclone Warning</td></tr>
-            <tr><td>IGI Delhi Air Hub</td><td>Air</td><td><b>LOW</b></td><td><b>MED</b></td><td><b>LOW</b></td><td>Fog Probability</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="report-section">
-        <div class="rs-title">AI Recommendations</div>
-        <ul style="list-style:none; padding:0">
-          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">1. <b>Road:</b> Delay departures from JNPT by 6 hours to avoid peak rainfall window on NH-48.</li>
-          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">2. <b>Sea:</b> Port vessels at Ennore to secure additional draft or move to holding area by 48H.</li>
-          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">3. <b>Rail:</b> Western DFC is clear; recommended for pharma cargo originally planned for road.</li>
-        </ul>
-      </div>
-    `;
-  } else if (type === 'mode') {
-    title.textContent = "Mode Performance Comparison";
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Network Efficiency by Mode</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Mode</th><th>Shipments</th><th>On-Time Rate</th><th>Avg Delay Risk</th><th>Avg Cost/kg</th><th>Reliability Score</th></tr>
-          </thead>
-          <tbody>
-            <tr><td>🚛 Road</td><td>12</td><td>72%</td><td>14.2%</td><td>₹12.50</td><td>7.2/10</td></tr>
-            <tr><td>🚂 Rail</td><td>5</td><td>94%</td><td>2.1%</td><td>₹4.20</td><td>9.4/10</td></tr>
-            <tr><td>✈️ Air</td><td>2</td><td>88%</td><td>5.5%</td><td>₹145.00</td><td>8.5/10</td></tr>
-            <tr><td>🚢 Sea</td><td>1</td><td>78%</td><td>12.0%</td><td>₹2.80</td><td>7.0/10</td></tr>
-          </tbody>
-        </table>
-      </div>
-    `;
-  } else if (type === 'predict') {
-    title.textContent = "7-Day Predictive Risk Assessment";
-    body.innerHTML = `
-      <div class="report-section">
-        <div class="rs-title">Intelligence Forecast</div>
-        <table class="data-table">
-          <thead>
-            <tr><th>Shipment</th><th>Mode</th><th>Risk Score</th><th>Day 1-2</th><th>Day 3-6</th><th>Day 7</th><th>Active Factors</th></tr>
-          </thead>
-          <tbody>
-            ${allShips.slice(0,5).map(s => `
-              <tr>
-                <td style="font-family:var(--mono);font-weight:700">${s.id}</td>
-                <td>${s.mode.toUpperCase()}</td>
-                <td style="font-weight:800; color:${s.status==='at_risk'?'var(--red)':'var(--green)'}">74/100</td>
-                <td>At Risk</td><td>Stable</td><td>Clear</td>
-                <td style="font-size:11px">Monsoon + Traffic</td>
-              </tr>
-            `).join('')}
-          </tbody>
-        </table>
-      </div>
-      <div class="report-section">
-        <div class="rs-title">Risk Factors Analysed</div>
-        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
-          <div style="padding:12px; background:var(--bg); border-radius:8px">🌧️ <b>Meteorological:</b> 12 data points per route</div>
-          <div style="padding:12px; background:var(--bg); border-radius:8px">🚧 <b>Infrastructure:</b> NHAI roadwork database</div>
-          <div style="padding:12px; background:var(--bg); border-radius:8px">📈 <b>Demand:</b> Seasonal surge modeling</div>
-          <div style="padding:12px; background:var(--bg); border-radius:8px">⚖️ <b>Regulatory:</b> E-way bill & checkpost data</div>
-        </div>
-      </div>
-    `;
-  }
+function genReport(type, btn) {
+  document.querySelectorAll('.sb-item').forEach(i => i.classList.remove('on'));
+  btn.classList.add('on');
+  const title = {daily: 'Daily Operations Report', disruption: 'Disruption Analysis Report', cost: 'Cost Impact Report', weather: 'Weather Intelligence Report', mode: 'Mode Performance Report'};
+  document.getElementById('rp-title').textContent = title[type];
+  loadData();
 }
 
-// Default load
-window.onload = () => {
-  genReport('daily', 0);
-};
+loadData();
 </script>
 </body>
 </html>

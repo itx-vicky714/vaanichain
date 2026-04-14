@@ -3,1665 +3,348 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VaaniChain – New Shipment</title>
+<title>VaaniChain — New Shipment</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
-  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
-  --blue:#2563eb;--indigo:#4f46e5;--green:#059669;--green2:#d1fae5;
-  --amber:#d97706;--amber2:#fef3c7;--red:#dc2626;--red2:#fee2e2;
-  --sky:#0ea5e9;--purple:#7c3aed;--purple2:#ede9fe;
-  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
-  --grad2:linear-gradient(135deg,#059669,#0ea5e9);
-  --grad3:linear-gradient(135deg,#d97706,#dc2626);
-  --grad4:linear-gradient(135deg,#7c3aed,#4f46e5);
-  --sans:'Plus Jakarta Sans',sans-serif;
-  --mono:'JetBrains Mono',monospace;
-  --hindi:'Noto Sans Devanagari',sans-serif;
-  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
-  --shadow2:0 4px 16px rgba(0,0,0,.1);
-  --r:10px;--r-lg:14px;
+
+:root {
+  --primary: #2563EB;
+  --primary-dark: #1D4ED8;
+  --success: #10B981;
+  --warning: #F59E0B;
+  --danger: #EF4444;
+  --bg: #F8FAFC;
+  --surface: #FFFFFF;
+  --surface-2: #F1F5F9;
+  --border: #E2E8F0;
+  --text-primary: #0F172A;
+  --text-secondary: #64748B;
+  --text-muted: #94A3B8;
+
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.08);
+  --shadow-md: 0 4px 6px -1px rgba(0,0,0,0.08);
+  --shadow-lg: 0 10px 15px -3px rgba(0,0,0,0.08);
+  --shadow-xl: 0 20px 25px -5px rgba(0,0,0,0.08);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 14px;
+  --radius-xl: 20px;
 }
-html{font-size:14px;-webkit-font-smoothing:antialiased}
-body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-x:hidden}
-.nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 24px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
-.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
-.nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px}
-.nav-name{font-size:18px;font-weight:800;color:var(--text)}.nav-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.nav-hindi{font-family:var(--hindi);font-size:13px;color:var(--text3)}
-.nav-sep{width:1px;height:24px;background:var(--border)}
-.breadcrumb{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--text3)}
-.breadcrumb a{color:var(--blue);text-decoration:none;font-weight:600}.breadcrumb a:hover{text-decoration:underline}
-.breadcrumb .sep{color:var(--text4)}.breadcrumb .cur{color:var(--text);font-weight:600}
-.nav-spc{flex:1}
-.nav-user{font-size:12px;font-weight:700;background:var(--bg);border:1px solid var(--border);padding:5px 14px;border-radius:8px;color:var(--text2)}
-.page{display:grid;grid-template-columns:1fr 340px;min-height:calc(100vh - 60px)}
-.form-col{padding:32px 36px 60px;overflow-y:auto}
-.eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--blue);margin-bottom:8px}
-.page-title{font-size:28px;font-weight:800;letter-spacing:-.4px;color:var(--text);margin-bottom:6px}
-.page-title span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.page-sub{font-size:13px;color:var(--text3);line-height:1.6;margin-bottom:28px;max-width:560px}
-.progress{display:flex;align-items:center;gap:0;margin-bottom:32px}
-.prog-step{display:flex;align-items:center;gap:0;flex:1}
-.prog-dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--text3);transition:all .2s;flex-shrink:0;cursor:pointer;font-family:var(--mono)}
-.prog-dot.active{border-color:var(--blue);background:var(--blue);color:#fff;box-shadow:0 0 0 4px rgba(37,99,235,.15)}
-.prog-dot.done{border-color:var(--green);background:var(--green);color:#fff}
-.prog-line{flex:1;height:2px;background:var(--border);transition:background .2s}
-.prog-line.done{background:var(--green)}
-.prog-label{font-size:10px;font-weight:600;color:var(--text3);margin-top:4px;white-space:nowrap}
-.prog-label.done{color:var(--green)}.prog-label.active{color:var(--blue)}
-.prog-wrap{display:flex;flex-direction:column;align-items:center;flex-shrink:0}
-.section{display:none}.section.active{display:block}
-.step-kicker{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--text4);margin-bottom:6px}
-.step-title{font-size:20px;font-weight:800;color:var(--text);margin-bottom:20px}
-.mode-hero-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:24px}
-.mode-hero-card{border:2px solid var(--border);border-radius:var(--r-lg);padding:20px 16px;cursor:pointer;transition:all .18s;background:var(--white);text-align:center;}
-.mode-hero-card:hover{border-color:var(--blue);box-shadow:0 4px 16px rgba(37,99,235,.12);transform:translateY(-1px)}
-.mode-hero-card.selected{border-color:var(--blue);background:linear-gradient(135deg,#eff6ff,#f0fdf4);box-shadow:0 4px 16px rgba(37,99,235,.16)}
-.mhc-icon{font-size:36px;margin-bottom:10px}.mhc-name{font-size:16px;font-weight:800;color:var(--text);margin-bottom:4px}
-.mhc-desc{font-size:11px;color:var(--text3);line-height:1.5}.mhc-examples{font-family:var(--mono);font-size:10px;color:var(--text4);margin-top:6px}
-.mhc-badge{display:inline-block;font-size:9px;font-weight:700;padding:2px 8px;border-radius:10px;margin-top:6px}
-.badge-road{background:#fef3c7;color:#92400e}.badge-rail{background:#dbeafe;color:#1447be}
-.badge-air{background:#ede9fe;color:#6d28d9}.badge-sea{background:#d1fae5;color:#065f46}
-.field{margin-bottom:16px}
-.lbl{display:block;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.06em;text-transform:uppercase;margin-bottom:7px}
-.inp{width:100%;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:10px 14px;color:var(--text);font-size:13px;font-family:var(--sans);outline:none;transition:all .15s}
-.inp:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
-.inp::placeholder{color:var(--text4)}
-select.inp{cursor:pointer}
-textarea.inp{min-height:80px;resize:vertical}
-.row-2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.tag{font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;margin-left:4px;vertical-align:middle}
-.tag-live{background:#d1fae5;color:#065f46;border:1px solid #6ee7b7}
-.tag-fixed{background:#dbeafe;color:#1447be;border:1px solid #93c5fd}
-.tag-calc{background:#ede9fe;color:#6d28d9;border:1px solid #c4b5fd}
-.tag-phase2{background:var(--amber2);color:var(--amber)}
-.tag-iata{background:#f1f5f9;color:#475569;border:1px solid #cbd5e1}
-.tag-req{background:#fee2e2;color:#dc2626;border:1px solid #fca5a5}
-.city-wrap{position:relative}.city-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:14px;pointer-events:none}
-.city-inp{padding-left:32px}
-.city-drop{position:absolute;top:calc(100% + 4px);left:0;right:0;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow2);z-index:50;max-height:220px;overflow-y:auto;display:none}
-.city-drop.open{display:block}
-.city-opt{padding:9px 12px;cursor:pointer;font-size:13px;display:flex;justify-content:space-between;align-items:center}
-.city-opt:hover{background:var(--bg)}.city-opt .co-state{font-size:11px;color:var(--text4)}
-.gov-box{background:linear-gradient(135deg,#f8fafc,#f0f9ff);border:1.5px solid var(--border2);border-radius:var(--r-lg);padding:16px;margin-top:8px}
-.gov-box-title{font-size:11px;font-weight:700;color:var(--text3);margin-bottom:12px;display:flex;align-items:center;gap:6px;flex-wrap:wrap}
-.gov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
-.gov-cell{text-align:center;background:var(--white);border:1px solid var(--border);border-radius:8px;padding:10px 6px}
-.gov-val{font-family:var(--mono);font-size:15px;font-weight:800;color:var(--text);margin-bottom:2px}
-.gov-key{font-size:9px;color:var(--text4);text-transform:uppercase;letter-spacing:.05em}
-.info-box{background:#eff6ff;border:1.5px solid #bfdbfe;border-radius:var(--r);padding:13px 15px;font-size:12px;color:#1e40af;line-height:1.6;margin-bottom:16px;display:flex;gap:8px}
-.info-box.green{background:#f0fdf4;border-color:#86efac;color:#065f46}
-.info-box.amber{background:#fffbeb;border-color:#fcd34d;color:#92400e}
-.eway-box{background:linear-gradient(135deg,#fffbeb,#fef9f0);border:1.5px solid #fcd34d;border-radius:var(--r-lg);padding:16px;margin-bottom:16px}
-.eway-title{font-size:12px;font-weight:700;color:#92400e;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.cargo-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.cargo-card{border:1.5px solid var(--border);border-radius:var(--r);padding:12px 10px;cursor:pointer;transition:all .15s;background:var(--white);text-align:center}
-.cargo-card:hover{border-color:var(--blue)}.cargo-card.selected{border-color:var(--blue);background:#eff6ff}
-.cc-icon{font-size:22px;margin-bottom:5px}.cc-name{font-size:11px;font-weight:700;color:var(--text)}.cc-note{font-size:9px;color:var(--text4);margin-top:2px}
-.priority-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
-.pri-card{border:1.5px solid var(--border);border-radius:var(--r);padding:12px 10px;cursor:pointer;transition:all .15s;background:var(--white);text-align:center}
-.pri-card:hover{border-color:var(--blue)}.pri-card.selected{border-color:var(--blue);background:#eff6ff}
-.pc-name{font-size:13px;font-weight:700;color:var(--text)}.pc-desc{font-size:10px;color:var(--text3);margin-top:3px}
-.review-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px}
-.review-item{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r);padding:12px 14px}
-.ri-label{font-size:9px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.ri-val{font-size:13px;font-weight:600;color:var(--text);font-family:var(--mono)}.ri-val.accent{color:var(--blue);font-size:15px}
-.ri-val.normal{font-family:var(--sans)}
-.step-nav{display:flex;justify-content:space-between;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--border)}
-.btn{font-family:var(--sans);font-size:14px;font-weight:700;padding:11px 24px;border-radius:10px;cursor:pointer;border:none;transition:all .15s;display:inline-flex;align-items:center;gap:8px}
-.btn-primary{background:var(--grad1);color:#fff;box-shadow:0 2px 8px rgba(37,99,235,.28)}
-.btn-primary:hover{opacity:.9;transform:translateY(-1px)}
-.btn-success{background:var(--grad2);color:#fff;box-shadow:0 2px 8px rgba(5,150,105,.28);padding:13px 28px;font-size:15px}
-.btn-success:hover{opacity:.9;transform:translateY(-1px)}
-.btn-ghost{background:transparent;color:var(--text3);border:1.5px solid var(--border)}
-.btn-ghost:hover{background:var(--bg);border-color:var(--border2)}
-.btn:disabled{opacity:.5;cursor:not-allowed;transform:none}
-.right-col{background:var(--white);border-left:1px solid var(--border);display:flex;flex-direction:column;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent;position:sticky;top:60px;height:calc(100vh - 60px)}
-.rp-head{padding:22px 20px 16px;border-bottom:1px solid var(--border);background:linear-gradient(135deg,#eff6ff,#f0fdf4);flex-shrink:0}
-.rp-eyebrow{font-family:var(--mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--blue);margin-bottom:5px}
-.rp-title{font-size:18px;font-weight:700;color:var(--text);margin-bottom:3px}
-.rp-sub{font-size:12px;color:var(--text3)}
-.rp-body{padding:16px 18px;display:flex;flex-direction:column;gap:14px;overflow-y:auto}
-.info-block{background:var(--bg);border:1.5px solid var(--border);border-radius:var(--r-lg);padding:15px 16px}
-.ib-title{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:11px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
-.badge-green{font-size:10px;font-weight:700;padding:2px 8px;border-radius:20px;background:var(--green2);color:var(--green);border:1px solid #86efac;display:inline-flex;align-items:center;gap:4px}
-.live-pulse{width:5px;height:5px;border-radius:50%;background:var(--green);animation:pulse 1.8s ease-in-out infinite}
-@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-.mode-ctx{border-radius:var(--r);padding:12px 14px;font-size:12px;line-height:1.6}
-.mode-ctx-road{background:#fffbeb;border:1px solid #fcd34d;color:#92400e}
-.mode-ctx-rail{background:#dbeafe;border:1px solid #93c5fd;color:#1447be}
-.mode-ctx-air{background:#ede9fe;border:1px solid #c4b5fd;color:#6d28d9}
-.mode-ctx-sea{background:#d1fae5;border:1px solid #6ee7b7;color:#065f46}
-.risk-big{font-size:40px;font-weight:800;font-family:var(--mono);line-height:1;margin-bottom:8px}
-.risk-track{height:8px;background:var(--border);border-radius:4px;overflow:hidden;margin-bottom:11px}
-.risk-fill{height:100%;border-radius:4px;transition:width .7s cubic-bezier(.4,0,.2,1),background .4s}
-.risk-factors{display:flex;flex-direction:column;gap:5px}
-.rf{display:flex;align-items:flex-start;gap:8px;font-size:11px;color:var(--text3);line-height:1.4}
-.rf-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;margin-top:3px}
-.ai-box{font-size:13px;color:var(--text2);line-height:1.65;font-family:var(--hindi);padding:11px 13px;background:#eff6ff;border:1px solid #bfdbfe;border-radius:var(--r);border-left:3px solid var(--blue)}
-.cost-rows{display:flex;flex-direction:column;gap:6px}
-.cost-row{display:flex;justify-content:space-between;align-items:center;font-size:12px}
-.cr-k{color:var(--text3)}.cr-v{font-family:var(--mono);font-weight:500;color:var(--text)}
-.cost-total{display:flex;justify-content:space-between;align-items:center;padding-top:9px;border-top:1px solid var(--border);margin-top:5px}
-.ct-k{font-size:13px;font-weight:700;color:var(--text)}
-.ct-v{font-size:20px;font-weight:800;font-family:var(--mono);background:var(--grad2);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.sum-rows{display:flex;flex-direction:column;gap:0}
-.sum-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--border);font-size:12px}
-.sum-row:last-child{border-bottom:none}
-.sr-k{color:var(--text3);font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.05em}
-.sr-v{font-weight:600;color:var(--text);text-align:right;max-width:180px}
-.toast{position:fixed;bottom:24px;right:24px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:12px 18px;font-size:13px;font-weight:600;box-shadow:var(--shadow2);z-index:999;transform:translateY(100px);opacity:0;transition:all .3s;max-width:300px}
-.toast.show{transform:translateY(0);opacity:1}
-.toast.ok{border-left:3px solid var(--green);color:var(--green)}
-.toast.err{border-left:3px solid var(--red);color:var(--red)}
-::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
+
+body {
+  background: var(--bg);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  min-height: 100vh;
+}
+
+/* ── NAVBAR ── */
+.nav {
+  height: 72px;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  gap: 24px;
+  backdrop-filter: blur(12px);
+  background: rgba(255, 255, 255, 0.85);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+}
+
+.nav-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+}
+
+.nav-name {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+  letter-spacing: -0.02em;
+}
+
+.nav-name span {
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.nav-spc { flex: 1; }
+
+.nav-mid {
+  display: flex;
+  align-items: center; gap: 8px;
+}
+
+.nav-tab {
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.nav-tab:hover { color: var(--text-primary); }
+
+/* ── PAGE LAYOUT ── */
+.page {
+  display: grid;
+  grid-template-columns: 1fr 400px;
+  min-height: calc(100vh - 72px);
+}
+
+.form-col {
+  padding: 48px 64px;
+  overflow-y: auto;
+}
+
+.step-title {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--text-primary);
+  margin-bottom: 32px;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.mode-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.mode-card {
+  background: #fff;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+
+.mode-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); border-color: var(--primary); }
+.mode-card.selected { border-color: var(--primary); background: #eff6ff; }
+
+.m-icon { font-size: 40px; margin-bottom: 16px; }
+.m-name { font-size: 18px; font-weight: 700; color: var(--text-primary); }
+
+.field { margin-bottom: 24px; }
+.lbl { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+.inp {
+  width: 100%;
+  padding: 12px 16px;
+  border-radius: 12px;
+  border: 1.5px solid var(--border);
+  font-size: 14px;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.inp:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1); }
+
+/* ── SUMMARY PANEL ── */
+.right-col {
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(20px);
+  border-left: 1px solid var(--border);
+  padding: 48px 32px;
+  position: sticky;
+  top: 72px;
+  height: calc(100vh - 72px);
+}
+
+.summary-card {
+  background: #fff;
+  border-radius: 24px;
+  padding: 32px;
+  box-shadow: var(--shadow-xl);
+  border: 1px solid var(--border);
+}
+
+.s-title { font-size: 18px; font-weight: 800; margin-bottom: 24px; font-family: 'Plus Jakarta Sans'; }
+
+.s-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+
+.s-label { color: var(--text-secondary); font-weight: 500; }
+.s-value { color: var(--text-primary); font-weight: 700; }
+
+.btn-submit {
+  width: 100%;
+  margin-top: 32px;
+  padding: 16px;
+  border-radius: 14px;
+  border: none;
+  background: linear-gradient(135deg, var(--primary), #4f46e5);
+  color: #fff;
+  font-weight: 700;
+  font-size: 16px;
+  cursor: pointer;
+  box-shadow: 0 8px 20px rgba(37, 99, 235, 0.3);
+  transition: all 0.3s ease;
+}
+
+.btn-submit:hover { transform: translateY(-2px); box-shadow: 0 12px 24px rgba(37, 99, 235, 0.4); }
+
 </style>
 </head>
 <body>
 
 <nav class="nav">
-  <a class="nav-brand" href="dashboard/dashboard.html">
+  <a href="dashboard/dashboard.html" class="nav-brand">
     <div class="nav-icon">🚛</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
   </a>
-  <div class="nav-hindi">वाणी चेन</div>
-  <div class="nav-sep"></div>
+  <div class="nav-spc"></div>
   <div class="nav-mid">
     <a href="dashboard/dashboard.html" class="nav-tab">Dashboard</a>
     <a href="map/map.html" class="nav-tab">🗺 Map</a>
     <a href="analytics/analytics.html" class="nav-tab">Analytics</a>
     <a href="reports/reports.html" class="nav-tab">Reports</a>
   </div>
-  <div class="nav-spc"></div>
-  <div class="breadcrumb">
-    <a href="dashboard/dashboard.html">Dashboard</a>
-    <span class="sep">›</span>
-    <span class="cur">New Shipment</span>
-  </div>
-  <div class="nav-spc"></div>
-  <div class="nav-user" id="nav-user">demo</div>
 </nav>
 
 <div class="page">
-<div class="form-col">
-  <div class="eyebrow">Shipment Registration</div>
-  <div class="page-title">Register your <span>shipment</span></div>
-  <div class="page-sub">VaaniChain AI monitors live weather, route conditions, and disruptions across all 4 transport modes — road, rail, air, and sea — to alert you before delays happen.</div>
-
-  <div class="progress" id="prog"></div>
-
-  <!-- STEP 0: Mode -->
-  <div class="section active" id="sec-0">
-    <div class="step-kicker">Step 01 of 06</div>
-    <div class="step-title">How is your cargo moving?</div>
-    <div class="mode-hero-grid">
-      <div class="mode-hero-card" id="mc-road" onclick="selectMode('road')">
-        <div class="mhc-icon">🚛</div>
-        <div class="mhc-name">Road Freight</div>
-        <div class="mhc-desc">Trucks on national highways. Most flexible routing. Door-to-door.</div>
-        <div class="mhc-examples">NH-48 · NH-44 · NH-19</div>
-        <span class="mhc-badge badge-road">NHAI · MoRTH regulated</span>
+  <main class="form-col">
+    <h1 class="step-title">New Shipment Registration</h1>
+    
+    <div class="mode-grid">
+      <div class="mode-card selected" onclick="selectMode('road', this)">
+        <div class="m-icon">🚛</div>
+        <div class="m-name">Road</div>
       </div>
-      <div class="mode-hero-card" id="mc-rail" onclick="selectMode('rail')">
-        <div class="mhc-icon">🚂</div>
-        <div class="mhc-name">Rail Freight</div>
-        <div class="mhc-desc">Indian Railways / DFCCIL. High capacity, fixed corridors. Best for bulk.</div>
-        <div class="mhc-examples">CONCOR · DFCCIL · IR Freight</div>
-        <span class="mhc-badge badge-rail">Indian Railways regulated</span>
+      <div class="mode-card" onclick="selectMode('rail', this)">
+        <div class="m-icon">🚂</div>
+        <div class="m-name">Rail</div>
       </div>
-      <div class="mode-hero-card" id="mc-air" onclick="selectMode('air')">
-        <div class="mhc-icon">✈️</div>
-        <div class="mhc-name">Air Freight</div>
-        <div class="mhc-desc">Time-critical cargo. Fixed ATC airways. Premium cost, fastest delivery.</div>
-        <div class="mhc-examples">Blue Dart · IndiGo Cargo · AI Cargo</div>
-        <span class="mhc-badge badge-air">DGCA · AAI regulated</span>
+      <div class="mode-card" onclick="selectMode('air', this)">
+        <div class="m-icon">✈️</div>
+        <div class="m-name">Air</div>
       </div>
-      <div class="mode-hero-card" id="mc-sea" onclick="selectMode('sea')">
-        <div class="mhc-icon">🚢</div>
-        <div class="mhc-name">Ocean Freight</div>
-        <div class="mhc-desc">Bulk international cargo. Ports, containers, sea lanes. Slowest, cheapest.</div>
-        <div class="mhc-examples">JNPT · Mundra · Chennai · Kochi</div>
-        <span class="mhc-badge badge-sea">DGS · IMO regulated</span>
-      </div>
-    </div>
-    <div class="step-nav">
-      <div></div>
-      <button class="btn btn-primary" onclick="next(0)">Journey & Route →</button>
-    </div>
-  </div>
-
-  <!-- STEP 1: Journey & Route -->
-  <div class="section" id="sec-1">
-    <div class="step-kicker" id="s1-kicker">Step 02 of 06</div>
-    <div class="step-title" id="s1-title">Journey & Route</div>
-
-    <!-- ROAD fields -->
-    <div id="f-road" style="display:none">
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Origin City</label>
-          <div class="city-wrap">
-            <span class="city-icon">📍</span>
-            <input class="inp city-inp" id="orig-inp" placeholder="Search city..." autocomplete="off" oninput="filterCity('o')" onfocus="openDrop('o')" onblur="closeDrop('o')">
-            <div class="city-drop" id="o-drop"></div>
-          </div>
-        </div>
-        <div class="field">
-          <label class="lbl">Destination City</label>
-          <div class="city-wrap">
-            <span class="city-icon">🏁</span>
-            <input class="inp city-inp" id="dest-inp" placeholder="Search city..." autocomplete="off" oninput="filterCity('d')" onfocus="openDrop('d')" onblur="closeDrop('d')">
-            <div class="city-drop" id="d-drop"></div>
-          </div>
-        </div>
-      </div>
-      <div class="field">
-        <label class="lbl">Select Route <span class="tag tag-live">Live Weather</span></label>
-        <div id="route-wrap"><div style="font-size:12px;color:var(--text3);padding:10px 0">Select origin and destination above to see route options.</div></div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Vehicle Number</label>
-          <input type="text" class="inp" id="veh-num" placeholder="MH 01 AB 1234" oninput="updateRight()">
-        </div>
-        <div class="field">
-          <label class="lbl">Transporter / Fleet Owner</label>
-          <input type="text" class="inp" id="transporter" placeholder="TCI Express, Delhivery..." oninput="updateRight()">
-        </div>
-      </div>
-      <div class="gov-box">
-        <div class="gov-box-title">🔒 Government-Fixed Parameters <span class="tag tag-fixed">NHAI · MoRTH · Read Only</span></div>
-        <div class="gov-grid">
-          <div class="gov-cell"><div class="gov-val">80 km/h</div><div class="gov-key">Max Speed</div></div>
-          <div class="gov-cell"><div class="gov-val">40.5 T</div><div class="gov-key">Max Weight</div></div>
-          <div class="gov-cell"><div class="gov-val">10 hrs</div><div class="gov-key">Drive Limit</div></div>
-          <div class="gov-cell"><div class="gov-val">NHAI</div><div class="gov-key">Authority</div></div>
-        </div>
+      <div class="mode-card" onclick="selectMode('sea', this)">
+        <div class="m-icon">🚢</div>
+        <div class="m-name">Sea</div>
       </div>
     </div>
 
-    <!-- RAIL fields — FIXED: uses cities/ICDs, not ports -->
-    <div id="f-rail" style="display:none">
-      <div class="info-box">
-        <span>🚂</span>
-        <span><strong>Rail freight runs on fixed infrastructure.</strong> Origin and destination are rail terminals, ICDs, or major junctions — not ports. Alternate routes mean different corridors (DFC/alternate line).</span>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Origin Rail Terminal / ICD <span class="tag tag-req">Required</span></label>
-          <select class="inp" id="rail-orig-terminal" onchange="updateRight()">
-            <option value="">Select origin terminal...</option>
-            <optgroup label="North India">
-              <option value="Tughlakabad ICD, Delhi">Tughlakabad ICD, Delhi (CONCOR)</option>
-              <option value="Dadri ICD, Delhi NCR">Dadri ICD, Delhi NCR (DFCCIL)</option>
-              <option value="Garhi Harsaru ICD, Gurugram">Garhi Harsaru ICD, Gurugram</option>
-              <option value="Ludhiana ICD, Punjab">Ludhiana ICD, Punjab</option>
-              <option value="Kanpur ICD">Kanpur ICD</option>
-              <option value="Agra ICD">Agra ICD</option>
-            </optgroup>
-            <optgroup label="West India">
-              <option value="Ahmedabad ICD">Ahmedabad ICD</option>
-              <option value="Sabarmati ICD, Ahmedabad">Sabarmati ICD, Ahmedabad</option>
-              <option value="Rajkot Freight Terminal">Rajkot Freight Terminal</option>
-              <option value="Surat Freight Terminal">Surat Freight Terminal</option>
-              <option value="Vadodara ICD">Vadodara ICD</option>
-            </optgroup>
-            <optgroup label="South India">
-              <option value="Bangalore Yeshwantpur ICD">Bangalore Yeshwantpur ICD</option>
-              <option value="Chennai Arambakkam ICD">Chennai Arambakkam ICD</option>
-              <option value="Hyderabad Moula Ali ICD">Hyderabad Moula Ali ICD</option>
-              <option value="Coimbatore ICD">Coimbatore ICD</option>
-              <option value="Kochi ICD">Kochi ICD</option>
-            </optgroup>
-            <optgroup label="East India">
-              <option value="Dankuni ICD, Kolkata">Dankuni ICD, Kolkata (DFCCIL)</option>
-              <option value="Kolkata Howrah Junction">Kolkata Howrah Junction</option>
-              <option value="Patna Rail Terminal">Patna Rail Terminal</option>
-              <option value="Guwahati ICD">Guwahati ICD</option>
-            </optgroup>
-            <optgroup label="Central India">
-              <option value="Nagpur ICD">Nagpur ICD</option>
-              <option value="Indore ICD">Indore ICD</option>
-              <option value="Pune Talegaon ICD">Pune Talegaon ICD</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Destination Rail Terminal / ICD <span class="tag tag-req">Required</span></label>
-          <select class="inp" id="rail-dest-terminal" onchange="updateRight()">
-            <option value="">Select destination terminal...</option>
-            <optgroup label="North India">
-              <option value="Tughlakabad ICD, Delhi">Tughlakabad ICD, Delhi (CONCOR)</option>
-              <option value="Dadri ICD, Delhi NCR">Dadri ICD, Delhi NCR (DFCCIL)</option>
-              <option value="Garhi Harsaru ICD, Gurugram">Garhi Harsaru ICD, Gurugram</option>
-              <option value="Ludhiana ICD, Punjab">Ludhiana ICD, Punjab</option>
-            </optgroup>
-            <optgroup label="West India">
-              <option value="Ahmedabad ICD">Ahmedabad ICD</option>
-              <option value="Sabarmati ICD, Ahmedabad">Sabarmati ICD, Ahmedabad</option>
-              <option value="Surat Freight Terminal">Surat Freight Terminal</option>
-              <option value="Vadodara ICD">Vadodara ICD</option>
-            </optgroup>
-            <optgroup label="South India">
-              <option value="Bangalore Yeshwantpur ICD">Bangalore Yeshwantpur ICD</option>
-              <option value="Chennai Arambakkam ICD">Chennai Arambakkam ICD</option>
-              <option value="Hyderabad Moula Ali ICD">Hyderabad Moula Ali ICD</option>
-              <option value="Coimbatore ICD">Coimbatore ICD</option>
-            </optgroup>
-            <optgroup label="East India">
-              <option value="Dankuni ICD, Kolkata">Dankuni ICD, Kolkata (DFCCIL)</option>
-              <option value="Kolkata Howrah Junction">Kolkata Howrah Junction</option>
-              <option value="Patna Rail Terminal">Patna Rail Terminal</option>
-            </optgroup>
-            <optgroup label="Central India">
-              <option value="Nagpur ICD">Nagpur ICD</option>
-              <option value="Indore ICD">Indore ICD</option>
-              <option value="Pune Talegaon ICD">Pune Talegaon ICD</option>
-            </optgroup>
-          </select>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Rail Corridor / Line</label>
-          <select class="inp" id="rail-corridor" onchange="updateRight()">
-            <option value="">Select corridor...</option>
-            <option value="Western DFC (DFCCIL)">Western DFC – DFCCIL (Dedicated Freight)</option>
-            <option value="Eastern DFC (DFCCIL)">Eastern DFC – DFCCIL (Dedicated Freight)</option>
-            <option value="Western Railway Freight Corridor">Western Railway Freight Corridor</option>
-            <option value="Howrah-Delhi Main Line">Howrah–Delhi Main Line (GT Route)</option>
-            <option value="Grand Trunk Route">Grand Trunk Route (Chennai–Delhi)</option>
-            <option value="Central Railway Freight">Central Railway Freight</option>
-            <option value="South Central Railway">South Central Railway</option>
-            <option value="Konkan Railway">Konkan Railway</option>
-            <option value="Other">Other corridor</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Rail Operator</label>
-          <select class="inp" id="rail-operator" onchange="updateRight()">
-            <option value="">Select operator...</option>
-            <option value="CONCOR">CONCOR (Container Corp of India)</option>
-            <option value="Indian Railways Freight">Indian Railways Freight</option>
-            <option value="DFCCIL">DFCCIL (Dedicated Freight Corridor)</option>
-            <option value="Hind Terminals">Hind Terminals</option>
-            <option value="Gateway Rail">Gateway Rail Freight</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Wagon / Container No. <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="rail-wagon" placeholder="e.g. DFCCIL-4821, BCNHL-12345" oninput="updateRight()">
-        </div>
-        <div class="field">
-          <label class="lbl">Rake ID / Train No. <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="rail-train" placeholder="e.g. 00401, Special Freight" oninput="updateRight()">
-        </div>
-      </div>
-      <div class="gov-box">
-        <div class="gov-box-title">🔒 Rail Freight Regulations <span class="tag tag-fixed">Ministry of Railways · Read Only</span></div>
-        <div class="gov-grid">
-          <div class="gov-cell"><div class="gov-val">100 km/h</div><div class="gov-key">Max Speed</div></div>
-          <div class="gov-cell"><div class="gov-val">58.5 T</div><div class="gov-key">Max Axle Load</div></div>
-          <div class="gov-cell"><div class="gov-val">IR</div><div class="gov-key">Authority</div></div>
-          <div class="gov-cell"><div class="gov-val">FAK</div><div class="gov-key">Freight Class</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- AIR fields — FIXED: clearly labeled as airports only -->
-    <div id="f-air" style="display:none">
-      <div class="info-box">
-        <span>✈️</span>
-        <span><strong>Air freight moves between airports only.</strong> Select IATA airport codes for origin and destination. Alternate options are hub airport changes or next ATC slot — not flight path changes.</span>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Origin Airport <span class="tag tag-iata">IATA Code</span></label>
-          <select class="inp" id="air-orig-apt" onchange="updateRight()">
-            <option value="">Select origin airport...</option>
-            <optgroup label="Metro Airports">
-              <option value="DEL">DEL – Indira Gandhi International, Delhi</option>
-              <option value="BOM">BOM – Chhatrapati Shivaji International, Mumbai</option>
-              <option value="BLR">BLR – Kempegowda International, Bangalore</option>
-              <option value="MAA">MAA – Chennai International</option>
-              <option value="CCU">CCU – Netaji Subhash Chandra Bose, Kolkata</option>
-              <option value="HYD">HYD – Rajiv Gandhi International, Hyderabad</option>
-            </optgroup>
-            <optgroup label="Tier-2 Airports">
-              <option value="COK">COK – Cochin International, Kochi</option>
-              <option value="AMD">AMD – Sardar Vallabhbhai Patel, Ahmedabad</option>
-              <option value="PNQ">PNQ – Pune Airport</option>
-              <option value="JAI">JAI – Jaipur International</option>
-              <option value="CJB">CJB – Coimbatore International</option>
-              <option value="VTZ">VTZ – Visakhapatnam Airport</option>
-            </optgroup>
-            <optgroup label="International (Export)">
-              <option value="DXB">DXB – Dubai International (export to Gulf)</option>
-              <option value="SIN">SIN – Singapore Changi (export to SE Asia)</option>
-              <option value="LHR">LHR – London Heathrow (export)</option>
-              <option value="FRA">FRA – Frankfurt Airport (export)</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Destination Airport <span class="tag tag-iata">IATA Code</span></label>
-          <select class="inp" id="air-dest-apt" onchange="updateRight()">
-            <option value="">Select destination airport...</option>
-            <optgroup label="Metro Airports">
-              <option value="DEL">DEL – Indira Gandhi International, Delhi</option>
-              <option value="BOM">BOM – Chhatrapati Shivaji International, Mumbai</option>
-              <option value="BLR">BLR – Kempegowda International, Bangalore</option>
-              <option value="MAA">MAA – Chennai International</option>
-              <option value="CCU">CCU – Netaji Subhash Chandra Bose, Kolkata</option>
-              <option value="HYD">HYD – Rajiv Gandhi International, Hyderabad</option>
-            </optgroup>
-            <optgroup label="Tier-2 Airports">
-              <option value="COK">COK – Cochin International, Kochi</option>
-              <option value="AMD">AMD – Sardar Vallabhbhai Patel, Ahmedabad</option>
-              <option value="JAI">JAI – Jaipur International</option>
-              <option value="CJB">CJB – Coimbatore International</option>
-            </optgroup>
-            <optgroup label="International">
-              <option value="DXB">DXB – Dubai International</option>
-              <option value="SIN">SIN – Singapore Changi</option>
-              <option value="LHR">LHR – London Heathrow</option>
-              <option value="FRA">FRA – Frankfurt Airport</option>
-            </optgroup>
-          </select>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Airline / Cargo Carrier</label>
-          <select class="inp" id="air-airline" onchange="updateRight()">
-            <option value="">Select carrier...</option>
-            <option value="Blue Dart Aviation">Blue Dart Aviation (BD)</option>
-            <option value="IndiGo Cargo">IndiGo Cargo (6E)</option>
-            <option value="Air India Cargo">Air India Cargo (AI)</option>
-            <option value="SpiceXpress">SpiceXpress (SG)</option>
-            <option value="Air Arabia Cargo">Air Arabia Cargo (G9)</option>
-            <option value="Emirates SkyCargo">Emirates SkyCargo (EK)</option>
-            <option value="FedEx">FedEx India</option>
-            <option value="DHL">DHL Express India</option>
-            <option value="Other">Other carrier</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Air Waybill (AWB) No. <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="air-awb" placeholder="e.g. 6E-F201, 123-45678901" oninput="updateRight()">
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Flight / Cargo Flight No. <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="air-flight" placeholder="e.g. 6E-2401, AI-131" oninput="updateRight()">
-        </div>
-        <div class="field">
-          <label class="lbl">Service Type</label>
-          <select class="inp" id="air-service" onchange="updateRight()">
-            <option value="express">Express (Time-definite)</option>
-            <option value="priority">Priority (Next flight out)</option>
-            <option value="economy">Economy (Deferred)</option>
-          </select>
-        </div>
-      </div>
-      <div class="gov-box">
-        <div class="gov-box-title">🔒 Air Cargo Regulations <span class="tag tag-fixed">DGCA · AAI · Read Only</span></div>
-        <div class="gov-grid">
-          <div class="gov-cell"><div class="gov-val">DGCA</div><div class="gov-key">Authority</div></div>
-          <div class="gov-cell"><div class="gov-val">IATA DGR</div><div class="gov-key">Hazmat Rules</div></div>
-          <div class="gov-cell"><div class="gov-val">AWB</div><div class="gov-key">Document</div></div>
-          <div class="gov-cell"><div class="gov-val">X-RAY</div><div class="gov-key">Security Check</div></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- SEA fields — FIXED: uses port LOCODEs, not cities -->
-    <div id="f-sea" style="display:none">
-      <div class="info-box">
-        <span>🚢</span>
-        <span><strong>Ocean freight moves between seaports only.</strong> Select UN/LOCODE port codes. Disruptions mean port congestion, cyclone routing, or canal alternatives — not map reroutes.</span>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Port of Loading (Origin) <span class="tag tag-iata">UN/LOCODE</span></label>
-          <select class="inp" id="sea-pol" onchange="updateRight()">
-            <option value="">Select origin port...</option>
-            <optgroup label="West Coast India">
-              <option value="INJNP">INJNP – JNPT, Navi Mumbai (Nhava Sheva) — Largest container port</option>
-              <option value="INMUN">INMUN – Mundra Port, Gujarat — Private, high volume</option>
-              <option value="INPIP">INPIP – Pipavav Port, Gujarat</option>
-              <option value="INDAH">INDAH – Dahej Port, Gujarat (bulk/chemicals)</option>
-              <option value="INMOR">INMOR – Mormugao Port, Goa</option>
-            </optgroup>
-            <optgroup label="South India">
-              <option value="INMAA">INMAA – Chennai Port (Madras)</option>
-              <option value="INCOK">INCOK – Cochin Port, Kerala</option>
-              <option value="INBOT">INBOT – VO Chidambaranar Port (Tuticorin)</option>
-              <option value="INVTZ">INVTZ – Visakhapatnam Port</option>
-              <option value="INMNG">INMNG – New Mangalore Port</option>
-            </optgroup>
-            <optgroup label="East Coast India">
-              <option value="INKOL">INKOL – Kolkata Port (Syama Prasad)</option>
-              <option value="INHLD">INHLD – Haldia Dock Complex, West Bengal</option>
-            </optgroup>
-            <optgroup label="Inland Waterway">
-              <option value="INKOL-NW1">NW-1 Ganga (Kolkata origin) – Inland waterway</option>
-              <option value="INPAT-NW1">NW-1 Ganga (Patna origin) – Inland waterway</option>
-            </optgroup>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Port of Discharge (Destination) <span class="tag tag-iata">UN/LOCODE</span></label>
-          <select class="inp" id="sea-pod" onchange="updateRight()">
-            <option value="">Select destination port...</option>
-            <optgroup label="South East Asia">
-              <option value="SGSIN">SGSIN – Port of Singapore</option>
-              <option value="MYPEN">MYPEN – Port Klang, Malaysia</option>
-              <option value="CNSHA">CNSHA – Shanghai, China</option>
-            </optgroup>
-            <optgroup label="Middle East / Gulf">
-              <option value="AEDXB">AEDXB – Jebel Ali, Dubai (UAE)</option>
-              <option value="OMMCT">OMMCT – Muscat, Oman</option>
-              <option value="KWIAP">KWIAP – Kuwait Port</option>
-            </optgroup>
-            <optgroup label="Europe">
-              <option value="NLRTM">NLRTM – Port of Rotterdam</option>
-              <option value="GBFXT">GBFXT – Felixstowe, UK</option>
-              <option value="DEHAM">DEHAM – Hamburg, Germany</option>
-            </optgroup>
-            <optgroup label="Americas">
-              <option value="USLAX">USLAX – Los Angeles</option>
-              <option value="USNYC">USNYC – New York / NJ</option>
-            </optgroup>
-            <optgroup label="Sub-continent / Indian Ocean">
-              <option value="LKCMB">LKCMB – Colombo, Sri Lanka (transshipment hub)</option>
-              <option value="MVMLE">MVMLE – Male, Maldives</option>
-              <option value="BDCGP">BDCGP – Chittagong, Bangladesh</option>
-              <option value="PKKHI">PKKHI – Karachi, Pakistan</option>
-            </optgroup>
-            <optgroup label="Inland Waterway Destination">
-              <option value="INVNS-NW1">NW-1 Ganga – Varanasi (inland)</option>
-              <option value="INPAT-NW1">NW-1 Ganga – Patna (inland)</option>
-            </optgroup>
-          </select>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Shipping Line / Carrier</label>
-          <select class="inp" id="sea-carrier" onchange="updateRight()">
-            <option value="">Select shipping line...</option>
-            <option value="Maersk India">Maersk</option>
-            <option value="MSC India">MSC (Mediterranean Shipping)</option>
-            <option value="CMA CGM">CMA CGM</option>
-            <option value="COSCO">COSCO Shipping</option>
-            <option value="Evergreen">Evergreen Marine</option>
-            <option value="Hapag-Lloyd">Hapag-Lloyd</option>
-            <option value="Shipping Corp of India">Shipping Corporation of India</option>
-            <option value="IWAI">IWAI (Inland Waterways Authority)</option>
-            <option value="Kerala Shipping">Kerala Shipping</option>
-            <option value="Other">Other</option>
-          </select>
-        </div>
-        <div class="field">
-          <label class="lbl">Service Type</label>
-          <select class="inp" id="sea-service" onchange="updateRight()">
-            <option value="FCL">FCL – Full Container Load</option>
-            <option value="LCL">LCL – Less than Container Load</option>
-            <option value="bulk">Bulk Cargo</option>
-            <option value="roro">RoRo (Roll-on/Roll-off)</option>
-            <option value="reefer">Reefer (Refrigerated)</option>
-            <option value="tanker">Liquid Bulk / Tanker</option>
-            <option value="inland">Inland Waterway (River)</option>
-          </select>
-        </div>
-      </div>
-      <div class="row-2">
-        <div class="field">
-          <label class="lbl">Vessel Name <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="sea-vessel" placeholder="e.g. MV Pratap Indus" oninput="updateRight()">
-        </div>
-        <div class="field">
-          <label class="lbl">Container / B/L No. <span class="tag tag-iata">Optional</span></label>
-          <input class="inp" id="sea-container" placeholder="e.g. MSCU1234567, MAEU-BL98765" oninput="updateRight()">
-        </div>
-      </div>
-      <div class="field">
-        <label class="lbl">Trade Lane / Sea Route</label>
-        <select class="inp" id="sea-lane" onchange="updateRight()">
-          <option value="">Select trade lane...</option>
-          <option value="India-SE Asia">India → South East Asia (via Malacca Strait)</option>
-          <option value="India-Europe (Suez)">India → Europe (via Suez Canal)</option>
-          <option value="India-Europe (Cape)">India → Europe (via Cape of Good Hope)</option>
-          <option value="India-Middle East">India → Middle East / Arabian Gulf</option>
-          <option value="India-Transatlantic">India → USA / Transatlantic</option>
-          <option value="India-Coastal">India Coastal (Cabotage)</option>
-          <option value="Inland Waterway NW-1">Inland Waterway NW-1 (Ganga)</option>
-        </select>
-      </div>
-      <div class="gov-box">
-        <div class="gov-box-title">🔒 Ocean Freight Regulations <span class="tag tag-fixed">DGS · IMO · IMDG · Read Only</span></div>
-        <div class="gov-grid">
-          <div class="gov-cell"><div class="gov-val">DGS</div><div class="gov-key">Authority</div></div>
-          <div class="gov-cell"><div class="gov-val">IMO</div><div class="gov-key">Int'l Standard</div></div>
-          <div class="gov-cell"><div class="gov-val">B/L</div><div class="gov-key">Document</div></div>
-          <div class="gov-cell"><div class="gov-val">IMDG</div><div class="gov-key">Hazmat Rules</div></div>
-        </div>
-      </div>
-    </div>
-
-    <div class="step-nav">
-      <button class="btn btn-ghost" onclick="prev(1)">← Back</button>
-      <button class="btn btn-primary" onclick="next(1)">Cargo Details →</button>
-    </div>
-  </div>
-
-  <!-- STEP 2: Cargo -->
-  <div class="section" id="sec-2">
-    <div class="step-kicker">Step 03 of 06</div>
-    <div class="step-title">What Are You Moving?</div>
-    <label class="lbl" style="margin-bottom:10px">Cargo Type <span class="tag tag-fixed">Affects permit & monitoring requirements</span></label>
-    <div class="cargo-grid" id="cargo-grid"></div>
-    <div class="row-2">
-      <div class="field">
-        <label class="lbl">Weight (kg)</label>
-        <input type="number" class="inp" id="wt-inp" placeholder="e.g. 2400" oninput="updateRight()">
-      </div>
-      <div class="field">
-        <label class="lbl">Declared Value (₹) <span class="tag tag-calc">Risk calc</span></label>
-        <input type="number" class="inp" id="val-inp" placeholder="e.g. 500000" oninput="updateRight()">
-      </div>
-    </div>
-
-    <!-- E-WAY BILL SECTION -->
-    <div class="eway-box" id="eway-section">
-      <div class="eway-title">📋 E-Way Bill (GST) <span class="tag tag-req" style="margin-left:6px">Required for road/rail &gt;50km</span></div>
-      <div class="row-2">
-        <div class="field" style="margin-bottom:0">
-          <label class="lbl">E-Way Bill Number</label>
-          <input type="text" class="inp" id="eway-number" placeholder="e.g. EWB-1234567890" oninput="updateRight()" maxlength="20">
-        </div>
-        <div class="field" style="margin-bottom:0">
-          <label class="lbl">E-Way Bill Expiry Date</label>
-          <input type="date" class="inp" id="eway-expiry" oninput="updateRight()">
-        </div>
-      </div>
-      <div style="margin-top:10px">
-        <label class="lbl">Upload E-Way Bill Document <span class="tag tag-iata">Optional</span></label>
-        <div style="border:2px dashed var(--border2);border-radius:var(--r);padding:16px;text-align:center;cursor:pointer;transition:all .15s;background:var(--white)" id="eway-dropzone" onclick="document.getElementById('eway-file').click()">
-          <input type="file" id="eway-file" accept=".pdf,.jpg,.png" style="display:none" onchange="handleEwayUpload(this)">
-          <div style="font-size:24px;margin-bottom:6px" id="eway-file-icon">📄</div>
-          <div style="font-size:12px;font-weight:600;color:var(--text3)" id="eway-file-name">Click to upload PDF or image</div>
-          <div style="font-size:10px;color:var(--text4);margin-top:3px">Max 5MB · PDF, JPG, PNG accepted</div>
-        </div>
-      </div>
-      <div style="font-size:11px;color:#92400e;margin-top:8px;line-height:1.5">
-        ⚠️ GST e-way bill validity: 1 day per 100km (min 1 day). Renew at least 4 hours before expiry to avoid checkpost penalties.
-      </div>
-    </div>
-
-    <label class="lbl" style="margin-bottom:10px;margin-top:16px">Special Handling <span class="tag tag-fixed">Govt permit required</span></label>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:16px">
-      <label style="display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer">
-        <input type="checkbox" id="c-frag" style="margin-top:2px">
-        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Fragile Goods</div><div style="font-size:11px;color:var(--text3)">Specialised packaging needed</div></div>
-      </label>
-      <label style="display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer">
-        <input type="checkbox" id="c-cold" style="margin-top:2px">
-        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Cold Chain</div><div style="font-size:11px;color:var(--text3)">Temperature-controlled required</div></div>
-      </label>
-      <label style="display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer">
-        <input type="checkbox" id="c-haz" style="margin-top:2px">
-        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Hazardous Material</div><div style="font-size:11px;color:var(--text3)">ADG/IMDG permit required</div></div>
-      </label>
-      <label style="display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:12px;cursor:pointer">
-        <input type="checkbox" id="c-over" style="margin-top:2px">
-        <div><div style="font-size:13px;font-weight:600;color:var(--text)">Oversized / Overweight</div><div style="font-size:11px;color:var(--text3)">OWC permit required</div></div>
-      </label>
-    </div>
-    <div class="step-nav">
-      <button class="btn btn-ghost" onclick="prev(2)">← Back</button>
-      <button class="btn btn-primary" onclick="next(2)">Schedule & Contacts →</button>
-    </div>
-  </div>
-
-  <!-- STEP 3: Schedule & Contacts -->
-  <div class="section" id="sec-3">
-    <div class="step-kicker">Step 04 of 06</div>
-    <div class="step-title">Schedule & Contacts</div>
-    <div class="row-2">
-      <div class="field">
-        <label class="lbl">Reference / PO Number</label>
-        <input type="text" class="inp" id="ref-inp" placeholder="Auto-generated if blank" oninput="updateRight()">
-      </div>
-      <div class="field">
-        <label class="lbl">Consigner / Supplier Name</label>
-        <input type="text" class="inp" id="sup-inp" placeholder="Company name" oninput="updateRight()">
-      </div>
-    </div>
-    <div class="row-2">
-      <div class="field">
-        <label class="lbl">Departure Date</label>
-        <input type="date" class="inp" id="dep-date" oninput="updateRight()">
-      </div>
-      <div class="field">
-        <label class="lbl">Departure Time</label>
-        <input type="time" class="inp" id="dep-time" oninput="updateRight()">
-      </div>
-    </div>
-    <label class="lbl" style="margin-bottom:10px">Shipment Priority</label>
-    <div class="priority-grid" id="priority-grid"></div>
-    <div class="row-2">
-      <div class="field">
-        <label class="lbl" id="contact-lbl">Driver / Operator Contact</label>
-        <input type="tel" class="inp" id="drv-contact" placeholder="+91 98765 43210" oninput="updateRight()">
-      </div>
-      <div class="field">
-        <label class="lbl">WhatsApp for Disruption Alerts <span class="tag tag-live">Active</span></label>
-        <input type="tel" class="inp" id="wa-contact" placeholder="+91 98765 43210" oninput="updateRight()">
-        <div style="font-size:10px;color:var(--green);margin-top:5px;font-family:var(--mono)">📱 Driver will receive WhatsApp + SMS alerts for disruptions</div>
-      </div>
-    </div>
     <div class="field">
-      <label class="lbl">Notes</label>
-      <textarea class="inp" id="notes-inp" placeholder="Special instructions, delivery conditions, consignee contact..."></textarea>
+      <label class="lbl">Origin City</label>
+      <input type="text" class="inp" id="origin" placeholder="e.g. Mumbai" oninput="updateSummary()">
     </div>
-    <div class="step-nav">
-      <button class="btn btn-ghost" onclick="prev(3)">← Back</button>
-      <button class="btn btn-primary" onclick="next(3)">Review Shipment →</button>
-    </div>
-  </div>
-
-  <!-- STEP 4: Review -->
-  <div class="section" id="sec-4">
-    <div class="step-kicker">Step 05 of 06</div>
-    <div class="step-title">Review & Confirm</div>
-    <div class="review-grid" id="review-grid"></div>
-    <div class="step-nav">
-      <button class="btn btn-ghost" onclick="prev(4)">← Edit Details</button>
-      <button class="btn btn-success" id="submit-btn" onclick="submitShipment()">🚀 Add Shipment & Start Monitoring</button>
-    </div>
-  </div>
-
-</div><!-- /form-col -->
-
-<!-- RIGHT PANEL -->
-<div class="right-col">
-  <div class="rp-head">
-    <div class="rp-eyebrow">Live Intelligence</div>
-    <div class="rp-title">Route Analysis</div>
-    <div class="rp-sub">Updates as you fill in the form</div>
-  </div>
-  <div class="rp-body">
-
-    <div class="info-block" id="mode-context-block" style="display:none">
-      <div class="ib-title" id="mode-ctx-title">Transport Mode</div>
-      <div id="mode-ctx-body"></div>
+    
+    <div class="field">
+      <label class="lbl">Destination City</label>
+      <input type="text" class="inp" id="dest" placeholder="e.g. Delhi" oninput="updateSummary()">
     </div>
 
-    <div class="info-block">
-      <div class="ib-title">🌦️ Live Weather <span class="badge-green" id="wx-badge"><span class="live-pulse"></span>Live</span></div>
-      <div id="wx-area" style="font-size:12px;color:var(--text3);text-align:center;padding:10px 0">Select cities to see live weather</div>
+    <div class="field">
+      <label class="lbl">Cargo Type</label>
+      <select class="inp" id="cargo" onchange="updateSummary()">
+        <option value="Electronics">Electronics</option>
+        <option value="Pharma">Pharmaceuticals</option>
+        <option value="Automotive">Auto Parts</option>
+        <option value="Food">Food & FMCG</option>
+      </select>
     </div>
 
-    <div class="info-block">
-      <div class="ib-title">🎯 Route Risk Score</div>
-      <div class="risk-big" id="risk-val" style="color:var(--green)">—</div>
-      <div class="risk-track"><div class="risk-fill" id="risk-fill" style="width:0%;background:var(--green)"></div></div>
-      <div class="risk-factors" id="risk-factors">
-        <div class="rf"><div class="rf-dot" style="background:var(--border2)"></div>Select a route to see risk factors</div>
+    <div class="field">
+      <label class="lbl">Priority</label>
+      <select class="inp" id="priority" onchange="updateSummary()">
+        <option value="normal">Standard</option>
+        <option value="high">High</option>
+        <option value="critical">Critical</option>
+      </select>
+    </div>
+  </main>
+
+  <aside class="right-col">
+    <div class="summary-card">
+      <h2 class="s-title">Registration Summary</h2>
+      <div id="summaryContent">
+        <div class="s-row"><span class="s-label">Mode</span><span class="s-value" id="s-mode">Road</span></div>
+        <div class="s-row"><span class="s-label">Origin</span><span class="s-value" id="s-origin">—</span></div>
+        <div class="s-row"><span class="s-label">Destination</span><span class="s-value" id="s-dest">—</span></div>
+        <div class="s-row"><span class="s-label">Cargo</span><span class="s-value" id="s-cargo">Electronics</span></div>
       </div>
+      <button class="btn-submit" onclick="submitForm()">Start AI Monitoring</button>
     </div>
-
-    <div class="info-block">
-      <div class="ib-title">🤖 AI Recommendation</div>
-      <div class="ai-box" id="ai-insight">Fill in your shipment details and I'll analyse live conditions along your route.</div>
-    </div>
-
-    <div class="info-block" id="cost-block" style="display:none">
-      <div class="ib-title">💰 Estimated Cost <span class="tag tag-calc">Auto-calculated</span></div>
-      <div class="cost-rows" id="cost-rows"></div>
-      <div class="cost-total"><span class="ct-k">Total Estimated Cost</span><span class="ct-v" id="c-total">—</span></div>
-    </div>
-
-    <div class="info-block" id="sum-block" style="display:none">
-      <div class="ib-title">📋 Shipment Summary</div>
-      <div class="sum-rows" id="sum-rows"></div>
-    </div>
-
-  </div>
+  </aside>
 </div>
 
-</div><!-- /page -->
-
-<div class="toast" id="toast"></div>
-
-<script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/shipments.js"></script>
-
 <script>
-(function(){ if(!localStorage.getItem('vc_token')) window.location.href='index.html'; })();
+let currentMode = 'road';
 
-// Load config
-const API_BASE = (function() {
-  const h = window.location.hostname;
-  if (h === 'localhost' || h === '127.0.0.1') return 'http://localhost:5000';
-  return window.location.origin.replace(/:\d+$/,'') + ':5000';
-})();
-
-let step = 0;
-let selectedMode = null;
-let orig = null, dest = null, route = null, cargo = null, priority = 'normal';
-let wxCache = {};
-let shipCounter = parseInt(localStorage.getItem('vc_ship_counter') || '2000');
-let ewayFileData = null;
-
-const CITIES = [
-  {n:'Mumbai',s:'Maharashtra',lat:19.076,lon:72.878},{n:'Delhi',s:'Delhi',lat:28.614,lon:77.209},
-  {n:'Bengaluru',s:'Karnataka',lat:12.972,lon:77.594},{n:'Chennai',s:'Tamil Nadu',lat:13.083,lon:80.271},
-  {n:'Kolkata',s:'West Bengal',lat:22.573,lon:88.364},{n:'Hyderabad',s:'Telangana',lat:17.385,lon:78.487},
-  {n:'Ahmedabad',s:'Gujarat',lat:23.023,lon:72.572},{n:'Pune',s:'Maharashtra',lat:18.520,lon:73.857},
-  {n:'Jaipur',s:'Rajasthan',lat:26.912,lon:75.787},{n:'Lucknow',s:'Uttar Pradesh',lat:26.847,lon:80.947},
-  {n:'Nagpur',s:'Maharashtra',lat:21.146,lon:79.089},{n:'Indore',s:'Madhya Pradesh',lat:22.719,lon:75.857},
-  {n:'Bhopal',s:'Madhya Pradesh',lat:23.259,lon:77.413},{n:'Visakhapatnam',s:'Andhra Pradesh',lat:17.687,lon:83.218},
-  {n:'Patna',s:'Bihar',lat:25.594,lon:85.138},{n:'Vadodara',s:'Gujarat',lat:22.307,lon:73.181},
-  {n:'Ludhiana',s:'Punjab',lat:30.901,lon:75.857},{n:'Agra',s:'Uttar Pradesh',lat:27.177,lon:78.008},
-  {n:'Nashik',s:'Maharashtra',lat:19.998,lon:73.791},{n:'Varanasi',s:'Uttar Pradesh',lat:25.321,lon:82.974},
-  {n:'Surat',s:'Gujarat',lat:21.170,lon:72.831},{n:'Kochi',s:'Kerala',lat:9.939,lon:76.270},
-  {n:'Coimbatore',s:'Tamil Nadu',lat:11.016,lon:76.956},{n:'Guwahati',s:'Assam',lat:26.144,lon:91.736},
-  {n:'Chandigarh',s:'Punjab',lat:30.733,lon:76.779},{n:'Mangalore',s:'Karnataka',lat:12.914,lon:74.856},
-  {n:'JNPT',s:'Navi Mumbai',lat:18.949,lon:72.942},{n:'Mundra',s:'Gujarat',lat:22.838,lon:69.707},
-];
-
-// ── Real NHAI/MoRTH highway data: [nh, km, avg_speed_kmh, toll_inr, description] ──
-const NH_REAL_DB = {
-  'Mumbai-Delhi':     [['NH-48 Expressway',  1400, 68, 2800, 'Delhi-Mumbai Expressway (DMIC) – fastest, 6-lane'],
-                       ['NH-48 via Vadodara', 1460, 62, 2200, 'Standard NH-48 via Vadodara & Udaipur'],
-                       ['NH-52 + NH-48',      1520, 54, 1800, 'Via Jaipur – lower toll, avoids Vadodara congestion']],
-  'Delhi-Mumbai':     [['NH-48 Expressway',  1400, 68, 2800, 'Delhi-Mumbai Expressway – fastest'],
-                       ['NH-48 via Vadodara', 1460, 62, 2200, 'Standard NH-48'],
-                       ['NH-52 + NH-48',      1520, 54, 1800, 'Via Jaipur – budget option']],
-  'Mumbai-Bengaluru': [['NH-48',             980, 58, 1900, 'Via Pune–Hubli – primary route'],
-                       ['NH-4 + NH-67',      1040, 52, 1500, 'Via Kolhapur–Dharwad'],
-                       ['NH-48 + NH-75',     1100, 48, 1300, 'Via Solapur–Gulbarga – lowest toll']],
-  'Bengaluru-Mumbai': [['NH-48',             980, 58, 1900, 'Via Hubli–Pune – fastest'],
-                       ['NH-4 + NH-67',      1040, 52, 1500, 'Via Dharwad–Kolhapur'],
-                       ['NH-48 + NH-75',     1100, 48, 1300, 'Via Gulbarga–Solapur – cheapest']],
-  'Delhi-Bengaluru':  [['NH-44',            2100, 56, 3800, 'India\'s longest NH – direct via Nagpur–Hyderabad'],
-                       ['NH-48 + NH-4',     2180, 52, 3200, 'Via Mumbai – longer but good roads'],
-                       ['NH-44 + NH-65',    2250, 50, 2900, 'Via Nagpur–Nanded bypass – moderate']],
-  'Bengaluru-Delhi':  [['NH-44',            2100, 56, 3800, 'Direct NH-44 fastest'],
-                       ['NH-48 + NH-4',     2180, 52, 3200, 'Via Pune–Mumbai'],
-                       ['NH-44 + NH-65',    2250, 50, 2900, 'Via Nanded–Nagpur']],
-  'Delhi-Chennai':    [['NH-44',            2200, 55, 4000, 'Direct south via Nagpur & Hyderabad'],
-                       ['NH-44 + NH-65',    2320, 50, 3500, 'Via Hyderabad–Kurnool bypass'],
-                       ['NH-48 + NH-44',    2500, 48, 3000, 'Via Mumbai–Bengaluru – scenic']],
-  'Chennai-Delhi':    [['NH-44',            2200, 55, 4000, 'Direct north via Hyderabad–Nagpur'],
-                       ['NH-44 + NH-65',    2320, 50, 3500, 'Via Kurnool–Hyderabad'],
-                       ['NH-44 + NH-48',    2500, 48, 3000, 'Via Bengaluru–Pune–Mumbai']],
-  'Delhi-Kolkata':    [['NH-19',            1470, 58, 2600, 'Grand Trunk Road – historic NH-2'],
-                       ['NH-19 + NH-31',    1550, 54, 2200, 'Via Allahabad–Varanasi bypass'],
-                       ['NH-44 + NH-27',    1620, 50, 2000, 'Via Nagpur – longer, less traffic']],
-  'Kolkata-Delhi':    [['NH-19',            1470, 58, 2600, 'Grand Trunk Road – fastest'],
-                       ['NH-19 + NH-31',    1550, 54, 2200, 'Via Varanasi bypass'],
-                       ['NH-27',            1620, 50, 2000, 'Via Bhopal–Agra']],
-  'Mumbai-Kolkata':   [['NH-48 + NH-19',   2050, 52, 3600, 'Via Pune–Nagpur–Varanasi'],
-                       ['NH-16',           1900, 56, 3200, 'Coastal NH-16 – fastest east coast'],
-                       ['NH-44 + NH-19',   2100, 50, 3000, 'Via Hyderabad–Nagpur']],
-  'Kolkata-Mumbai':   [['NH-16',           1900, 56, 3200, 'Coastal NH-16 – fastest'],
-                       ['NH-48 + NH-19',   2050, 52, 3600, 'Via Varanasi–Nagpur–Pune'],
-                       ['NH-27',           2100, 50, 3000, 'Via Bhopal–Ahmedabad']],
-  'Delhi-Hyderabad':  [['NH-44',           1520, 56, 2800, 'Direct via Nagpur – fastest'],
-                       ['NH-44 + NH-65',   1600, 52, 2400, 'Via Nagpur–Nanded'],
-                       ['NH-48 + NH-44',   1700, 50, 2200, 'Via Jaipur–Ahmedabad–Pune']],
-  'Hyderabad-Delhi':  [['NH-44',           1520, 56, 2800, 'Direct via Nagpur'],
-                       ['NH-44 + NH-65',   1600, 52, 2400, 'Via Nanded–Nagpur'],
-                       ['NH-48 + NH-44',   1700, 50, 2200, 'Via Pune–Ahmedabad']],
-  'Mumbai-Chennai':   [['NH-48 + NH-44',   1340, 54, 2400, 'Via Pune–Bengaluru'],
-                       ['NH-4',            1340, 52, 2100, 'Via Solapur–Kurnool'],
-                       ['NH-66',           1540, 46, 1800, 'Coastal NH-66 – scenic, ghat']],
-  'Chennai-Mumbai':   [['NH-48 + NH-44',   1340, 54, 2400, 'Via Bengaluru–Pune'],
-                       ['NH-4',            1340, 52, 2100, 'Via Kurnool–Solapur'],
-                       ['NH-66',           1540, 46, 1800, 'Coastal NH-66']],
-  'Chennai-Bengaluru':[['NH-44',            345, 64,  650, '6-lane divided highway – fastest'],
-                       ['NH-48 + NH-4',     380, 56,  550, 'Via Vellore–Krishnagiri'],
-                       ['NH-75',            410, 50,  480, 'Via Kolar–Bangarpet – cheapest']],
-  'Bengaluru-Chennai':[['NH-44',            345, 64,  650, '6-lane – fastest'],
-                       ['NH-48 + NH-4',     380, 56,  550, 'Via Krishnagiri–Vellore'],
-                       ['NH-75',            410, 50,  480, 'Via Bangarpet – budget']],
-  'Hyderabad-Bengaluru':[['NH-44',          570, 60, 1050, 'Via Kurnool–Gooty – direct'],
-                          ['NH-167',         610, 56,  900, 'Via Nalgonda–Miryalaguda'],
-                          ['NH-65',          650, 52,  820, 'Via Gulbarga–Bidar – cheapest']],
-  'Bengaluru-Hyderabad':[['NH-44',          570, 60, 1050, 'Via Gooty–Kurnool – direct'],
-                          ['NH-167',         610, 56,  900, 'Via Miryalaguda'],
-                          ['NH-65',          650, 52,  820, 'Via Bidar–Gulbarga']],
-  'Hyderabad-Chennai': [['NH-65',            630, 58, 1150, 'Via Nellore–Chennai express'],
-                        ['NH-44 + NH-65',    700, 54, 1000, 'Via Kurnool–Cuddapah'],
-                        ['NH-16',            760, 50,  900, 'Coastal NH-16 via Vijayawada']],
-  'Chennai-Hyderabad': [['NH-65',            630, 58, 1150, 'Via Nellore direct'],
-                        ['NH-44 + NH-65',    700, 54, 1000, 'Via Cuddapah–Kurnool'],
-                        ['NH-16',            760, 50,  900, 'Coastal via Vijayawada']],
-  'Mumbai-Ahmedabad': [['NH-48 Expressway',  530, 72, 1050, 'Mumbai-Ahmedabad Expressway – fastest'],
-                       ['NH-48',             560, 62,  850, 'Standard NH-48 via Vadodara'],
-                       ['NH-27',             600, 54,  720, 'Via Surat–Bharuch – lowest toll']],
-  'Ahmedabad-Mumbai': [['NH-48 Expressway',  530, 72, 1050, 'Expressway – fastest'],
-                       ['NH-48',             560, 62,  850, 'Standard via Vadodara'],
-                       ['NH-27',             600, 54,  720, 'Via Bharuch–Surat – cheapest']],
-  'Mumbai-Pune':      [['NH-48 Expressway',  145, 82,  340, 'Mumbai-Pune Expressway – 1.75h'],
-                       ['NH-48 Old Ghat',    160, 50,  200, 'Via Khopoli ghat – scenic'],
-                       ['NH-60',             180, 46,  160, 'Via Nashik–Pune – cheapest']],
-  'Pune-Mumbai':      [['NH-48 Expressway',  145, 82,  340, 'Mumbai-Pune Expressway'],
-                       ['NH-48 Old Ghat',    160, 50,  200, 'Via Khopoli ghat'],
-                       ['NH-60',             180, 46,  160, 'Via Nashik']],
-  'Delhi-Jaipur':     [['NH-48 Expressway',  270, 82,  520, 'Delhi-Jaipur Expressway – ~3h'],
-                       ['NH-48',             290, 65,  420, 'Standard NH-48 via Gurugram'],
-                       ['NH-248A',           320, 58,  350, 'Via Alwar–Bhiwadi – scenic, cheap']],
-  'Jaipur-Delhi':     [['NH-48 Expressway',  270, 82,  520, 'Expressway – fastest'],
-                       ['NH-48',             290, 65,  420, 'Standard NH-48'],
-                       ['NH-248A',           320, 58,  350, 'Via Alwar – budget']],
-  'Delhi-Lucknow':    [['NH-30 Expressway',  550, 74, 1050, 'Agra-Lucknow Expressway – fastest'],
-                       ['NH-19 + NH-30',     570, 64,  900, 'Via Agra–Kanpur standard'],
-                       ['NH-58 + NH-30',     610, 56,  750, 'Via Meerut–Bareilly – cheapest']],
-  'Lucknow-Delhi':    [['NH-30 Expressway',  550, 74, 1050, 'Expressway direct'],
-                       ['NH-19 + NH-30',     570, 64,  900, 'Via Kanpur–Agra'],
-                       ['NH-58 + NH-30',     610, 56,  750, 'Via Bareilly']],
-  'Kolkata-Patna':    [['NH-19',             580, 56, 1050, 'Grand Trunk Road via Dhanbad'],
-                       ['NH-19 + NH-31',     610, 52,  900, 'Via Asansol–Durgapur'],
-                       ['NH-12',             640, 48,  780, 'Via Bokaro–Hazaribagh']],
-  'Patna-Kolkata':    [['NH-19',             580, 56, 1050, 'Grand Trunk Road'],
-                       ['NH-19 + NH-31',     610, 52,  900, 'Via Durgapur'],
-                       ['NH-12',             640, 48,  780, 'Via Hazaribagh']],
-  'Delhi-Patna':      [['NH-19',            1000, 60, 1850, 'NH-19 via Varanasi – fastest'],
-                       ['NH-30 + NH-19',    1050, 56, 1600, 'Via Agra–Lucknow–Varanasi'],
-                       ['NH-27 + NH-19',    1100, 52, 1450, 'Via Bhopal–Allahabad']],
-  'Patna-Delhi':      [['NH-19',            1000, 60, 1850, 'NH-19 Grand Trunk'],
-                       ['NH-19 + NH-30',    1050, 56, 1600, 'Via Varanasi–Lucknow'],
-                       ['NH-27',            1100, 52, 1450, 'Via Allahabad–Bhopal']],
-  'Bengaluru-Kochi':  [['NH-544',           560, 54, 1000, 'Via Coimbatore–Thrissur – direct'],
-                       ['NH-275 + NH-66',   580, 50,  780, 'Via Mysore–Wayanad – scenic'],
-                       ['NH-66',            640, 46,  850, 'Coastal NH-66 via Mangalore']],
-  'Kochi-Bengaluru':  [['NH-544',           560, 54, 1000, 'Via Thrissur–Coimbatore'],
-                       ['NH-275 + NH-66',   580, 50,  780, 'Via Wayanad–Mysore'],
-                       ['NH-66',            640, 46,  850, 'Coastal via Mangalore']],
-  'Chennai-Kochi':    [['NH-44 + NH-544',   690, 52, 1250, 'Via Coimbatore–Thrissur'],
-                       ['NH-544',           720, 50,  950, 'Via Salem–Palakkad direct'],
-                       ['NH-66',            780, 46, 1050, 'Coastal NH-66 via Kozhikode']],
-  'Kochi-Chennai':    [['NH-44 + NH-544',   690, 52, 1250, 'Via Thrissur–Coimbatore'],
-                       ['NH-544',           720, 50,  950, 'Via Palakkad–Salem'],
-                       ['NH-66',            780, 46, 1050, 'Coastal via Kozhikode']],
-  'Pune-Bengaluru':   [['NH-48',            840, 56, 1550, 'Via Solapur–Hubli – direct'],
-                       ['NH-65 + NH-44',    870, 52, 1350, 'Via Hyderabad – longer'],
-                       ['NH-4',             900, 48, 1200, 'Via Kolhapur–Dharwad – cheapest']],
-  'Bengaluru-Pune':   [['NH-48',            840, 56, 1550, 'Via Hubli–Solapur'],
-                       ['NH-65 + NH-44',    870, 52, 1350, 'Via Hyderabad'],
-                       ['NH-4',             900, 48, 1200, 'Via Dharwad–Kolhapur']],
-  'Ahmedabad-Delhi':  [['NH-48',            930, 68, 1750, 'NH-48 Expressway section – fastest'],
-                       ['NH-48 via Jaipur', 950, 62, 1500, 'Via Jaipur scenic'],
-                       ['NH-27',           1010, 55, 1300, 'Via Udaipur–Ajmer – cheapest']],
-  'Delhi-Ahmedabad':  [['NH-48',            930, 68, 1750, 'NH-48 expressway'],
-                       ['NH-48 via Jaipur', 950, 62, 1500, 'Via Jaipur'],
-                       ['NH-27',           1010, 55, 1300, 'Via Ajmer–Udaipur']],
-  'Mumbai-Nagpur':    [['NH-44',            825, 60, 1550, 'Via Pune–Solapur direct – fastest'],
-                       ['NH-161',           860, 54, 1300, 'Via Aurangabad–Wardha'],
-                       ['NH-60 + NH-44',    900, 50, 1150, 'Via Nashik–Aurangabad – cheapest']],
-  'Nagpur-Mumbai':    [['NH-44',            825, 60, 1550, 'Via Solapur–Pune'],
-                       ['NH-161',           860, 54, 1300, 'Via Wardha–Aurangabad'],
-                       ['NH-44 + NH-60',    900, 50, 1150, 'Via Aurangabad–Nashik']],
-  'Delhi-Nagpur':     [['NH-44',           1090, 60, 2000, 'Direct south via Bhopal'],
-                       ['NH-19 + NH-44',   1150, 56, 1750, 'Via Agra–Bhopal'],
-                       ['NH-27 + NH-44',   1200, 52, 1550, 'Via Gwalior–Sagar']],
-  'Nagpur-Delhi':     [['NH-44',           1090, 60, 2000, 'Direct north via Bhopal'],
-                       ['NH-44 + NH-19',   1150, 56, 1750, 'Via Bhopal–Agra'],
-                       ['NH-44 + NH-27',   1200, 52, 1550, 'Via Sagar–Gwalior']],
-  'Delhi-Varanasi':   [['NH-19',            820, 62, 1500, 'Grand Trunk Road – direct'],
-                       ['NH-30 + NH-19',    870, 58, 1350, 'Via Agra–Lucknow'],
-                       ['NH-27 + NH-19',    920, 54, 1200, 'Via Kanpur bypass']],
-  'Varanasi-Delhi':   [['NH-19',            820, 62, 1500, 'Grand Trunk – direct'],
-                       ['NH-19 + NH-30',    870, 58, 1350, 'Via Lucknow–Agra'],
-                       ['NH-19 + NH-27',    920, 54, 1200, 'Via Kanpur']],
-};
-
-const FUEL_PER_KM = 20.2; // ₹/km for 10T loaded truck (diesel ₹91, ~4.5kmpl)
-
-const CARGOS = [
-  {id:'electronics',n:'Electronics',em:'💻',note:'High value · fragile'},
-  {id:'pharma',n:'Pharmaceuticals',em:'💊',note:'Cold chain · regulated'},
-  {id:'automotive',n:'Auto Parts',em:'🔧',note:'Heavy · bulk'},
-  {id:'food',n:'Food & FMCG',em:'🛒',note:'Perishable · fast-moving'},
-  {id:'textiles',n:'Textiles',em:'👕',note:'Light · bulk volume'},
-  {id:'chemicals',n:'Chemicals',em:'⚗️',note:'Hazmat · ADG permit'},
-  {id:'steel',n:'Steel / Metals',em:'🗏',note:'Overweight · heavy'},
-  {id:'cement',n:'Cement / Construction',em:'🏠',note:'Bulk · dusty'},
-  {id:'perishables',n:'Perishables',em:'🥬',note:'Cold chain · urgent'},
-  {id:'general',n:'General Cargo',em:'📦',note:'Standard handling'},
-  {id:'defence',n:'Defence / Security',em:'🛡️',note:'High priority · classified'},
-  {id:'medical',n:'Medical Devices',em:'🏥',note:'Critical · high value'},
-];
-
-const PRIORITIES = [
-  {id:'critical',n:'Critical',em:'🔴',desc:'Same-day / emergency'},
-  {id:'high',n:'High',em:'🟠',desc:'Next-day delivery'},
-  {id:'normal',n:'Standard',em:'🟢',desc:'Regular schedule'},
-];
-
-const MODE_CONTEXT = {
-  road: {icon:'🚛',title:'🚛 Road Freight Mode',
-    body:`<div style="font-size:12px;line-height:1.7"><strong>Origin/Destination:</strong> Indian cities / districts.<br><strong>Monitoring:</strong> Live weather on NH routes, highway flooding, fog advisories.<br><strong>Documents:</strong> E-Way Bill (GST), LR, Lorry Permit (MoRTH).</div>`,
-    etaFactor:65,costLabel:'Fuel + Toll + Driver'},
-  rail: {icon:'🚂',title:'🚂 Rail Freight Mode',
-    body:`<div style="font-size:12px;line-height:1.7"><strong>Origin/Destination:</strong> Rail ICDs (Inland Container Depots) and freight terminals — not ports.<br><strong>Monitoring:</strong> Derailments, track blocks, signal failures, yard waterlogging.<br><strong>Documents:</strong> Railway Receipt (RR).</div>`,
-    etaFactor:50,costLabel:'Freight + Handling + Terminal'},
-  air: {icon:'✈️',title:'✈️ Air Freight Mode',
-    body:`<div style="font-size:12px;line-height:1.7"><strong>Origin/Destination:</strong> IATA airport codes only (DEL, BOM, BLR, etc.).<br><strong>Monitoring:</strong> Fog (IGI), cyclone warnings, ATC slot restrictions, runway closures.<br><strong>Documents:</strong> AWB (Air Waybill), DGCA certificates.</div>`,
-    etaFactor:800,costLabel:'Freight Rate + Fuel Surcharge + Handling'},
-  sea: {icon:'🚢',title:'🚢 Ocean Freight Mode',
-    body:`<div style="font-size:12px;line-height:1.7"><strong>Origin/Destination:</strong> Seaport UN/LOCODEs (INJNP, INMUN, etc.) — not cities.<br><strong>Monitoring:</strong> Port congestion, cyclone alerts, draft restrictions.<br><strong>Documents:</strong> Bill of Lading (B/L), EXIM docs.</div>`,
-    etaFactor:15,costLabel:'Ocean Freight + Port Charges + THC'},
-};
-
-const STEP_LABELS = ['Mode','Route','Cargo','Schedule','Review'];
-
-function buildProgress() {
-  const el = document.getElementById('prog');
-  el.innerHTML = STEP_LABELS.map((l,i) => `
-    <div class="prog-step">
-      <div style="display:flex;flex-direction:column;align-items:center">
-        <div class="prog-dot ${i===0?'active':''}" id="pd-${i}" onclick="jumpTo(${i})">${i+1}</div>
-        <div class="prog-label ${i===0?'active':''}" id="pln-${i}">${l}</div>
-      </div>
-      ${i < STEP_LABELS.length-1 ? `<div class="prog-line" id="pl-${i}"></div>` : ''}
-    </div>
-  `).join('');
-}
-buildProgress();
-
-document.getElementById('cargo-grid').innerHTML = CARGOS.map(c => `
-  <div class="cargo-card" id="cc-${c.id}" onclick="selectCargo('${c.id}')">
-    <div class="cc-icon">${c.em}</div>
-    <div class="cc-name">${c.n}</div>
-    <div class="cc-note">${c.note}</div>
-  </div>
-`).join('');
-
-document.getElementById('priority-grid').innerHTML = PRIORITIES.map(p => `
-  <div class="pri-card ${p.id==='normal'?'selected':''}" id="pc-${p.id}" onclick="selectPri('${p.id}')">
-    <div class="pc-name">${p.em} ${p.n}</div>
-    <div class="pc-desc">${p.desc}</div>
-  </div>
-`).join('');
-
-// Show/hide eway section based on mode
-function updateEwayVisibility() {
-  const ewaySection = document.getElementById('eway-section');
-  if (selectedMode === 'road' || selectedMode === 'rail') {
-    ewaySection.style.display = 'block';
-  } else {
-    ewaySection.style.display = 'none';
-  }
+function selectMode(mode, btn) {
+  currentMode = mode;
+  document.querySelectorAll('.mode-card').forEach(c => c.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('s-mode').textContent = mode.charAt(0).toUpperCase() + mode.slice(1);
 }
 
-function handleEwayUpload(input) {
-  const file = input.files[0];
-  if (!file) return;
-  if (file.size > 5 * 1024 * 1024) { toast('File too large. Max 5MB.', 'err'); return; }
-  ewayFileData = { name: file.name, size: file.size, type: file.type };
-  document.getElementById('eway-file-icon').textContent = file.type.includes('pdf') ? '📑' : '🖼️';
-  document.getElementById('eway-file-name').textContent = `✓ ${file.name} (${(file.size/1024).toFixed(0)} KB)`;
-  document.getElementById('eway-dropzone').style.borderColor = 'var(--green)';
-  document.getElementById('eway-dropzone').style.background = '#f0fdf4';
+function updateSummary() {
+  document.getElementById('s-origin').textContent = document.getElementById('origin').value || '—';
+  document.getElementById('s-dest').textContent = document.getElementById('dest').value || '—';
+  document.getElementById('s-cargo').textContent = document.getElementById('cargo').value;
 }
 
-function selectMode(m) {
-  selectedMode = m;
-  document.querySelectorAll('.mode-hero-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('mc-' + m).classList.add('selected');
-  showModeContext(m);
-  updateEwayVisibility();
-  updateRight();
-}
-
-function showModeContext(m) {
-  const ctx = MODE_CONTEXT[m];
-  document.getElementById('mode-ctx-title').innerHTML = ctx.title;
-  document.getElementById('mode-ctx-body').innerHTML = `<div class="mode-ctx mode-ctx-${m}">${ctx.body}</div>`;
-  document.getElementById('mode-context-block').style.display = 'block';
-}
-
-function showModeFields(m) {
-  ['road','rail','air','sea'].forEach(x => {
-    document.getElementById('f-' + x).style.display = x === m ? 'block' : 'none';
-  });
-  const labels = {road:'Driver Contact',rail:'Operator / Station Contact',air:'Cargo Agent Contact',sea:'Shipping Agent Contact'};
-  document.getElementById('contact-lbl').textContent = labels[m] || 'Contact';
-  updateEwayVisibility();
-}
-
-// City autocomplete (road only)
-let origCity = null, destCity = null;
-function filterCity(t) {
-  const v = document.getElementById(t==='o'?'orig-inp':'dest-inp').value.toLowerCase();
-  const drop = document.getElementById(t+'-drop');
-  const matches = CITIES.filter(c => c.n.toLowerCase().includes(v) || c.s.toLowerCase().includes(v)).slice(0,6);
-  drop.innerHTML = matches.map(c => `
-    <div class="city-opt" onmousedown="pickCity('${t}','${c.n}','${c.s}',${c.lat},${c.lon})">
-      ${c.n} <span class="co-state">${c.s}</span>
-    </div>
-  `).join('');
-  drop.classList.add('open');
-}
-function openDrop(t) { document.getElementById(t+'-drop').classList.add('open'); }
-function closeDrop(t) { setTimeout(() => document.getElementById(t+'-drop').classList.remove('open'), 150); }
-function pickCity(t, n, s, lat, lon) {
-  const city = {n, s, lat, lon};
-  if (t === 'o') { origCity = city; document.getElementById('orig-inp').value = n + ', ' + s; }
-  else { destCity = city; document.getElementById('dest-inp').value = n + ', ' + s; }
-  document.getElementById(t+'-drop').classList.remove('open');
-  if (origCity && destCity) { buildRoutes(); fetchWeatherPair(); }
-  updateRight();
-}
-
-function computeRealRoutes(originCity, destCity) {
-  if (!originCity || !destCity) return null;
-  const key = originCity.n + '-' + destCity.n;
-  const revKey = destCity.n + '-' + originCity.n;
-  let raw = NH_REAL_DB[key] || NH_REAL_DB[revKey] || null;
-
-  if (!raw) {
-    // Haversine fallback for routes not in DB
-    const R = 6371;
-    const dLat = (destCity.lat - originCity.lat) * Math.PI / 180;
-    const dLon = (destCity.lon - originCity.lon) * Math.PI / 180;
-    const a = Math.sin(dLat/2)**2 + Math.cos(originCity.lat*Math.PI/180)*Math.cos(destCity.lat*Math.PI/180)*Math.sin(dLon/2)**2;
-    const crow = Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a)));
-    const k1 = Math.round(crow * 1.25 / 10) * 10;
-    const k2 = Math.round(crow * 1.32 / 10) * 10;
-    const k3 = Math.round(crow * 1.40 / 10) * 10;
-    const nh = crow > 1200 ? 'NH-44' : crow > 600 ? 'NH-48' : 'NH Direct';
-    raw = [
-      [nh,             k1, 64, Math.round(k1 * 2.1 / 100) * 100, 'Primary national highway – estimated'],
-      [nh + ' Alt',    k2, 56, Math.round(k2 * 1.7 / 100) * 100, 'Alternate NH route – estimated'],
-      ['SH + ' + nh,   k3, 48, Math.round(k3 * 1.3 / 100) * 100, 'State highway network – estimated, lowest toll'],
-    ];
-  }
-
-  const LABELS  = ['⚡ Fastest',  '💰 Cheapest', '⚖️ Balanced'];
-  const COLORS  = ['#2563eb',     '#059669',     '#7c3aed'];
-  const BGS     = ['#eff6ff',     '#f0fdf4',     '#faf5ff'];
-  const BORDERS = ['#93c5fd',     '#86efac',     '#c4b5fd'];
-
-  return raw.map(([nh, km, avgSpeed, toll, note], i) => {
-    const etaH   = Math.round((km / avgSpeed) * 10) / 10;
-    const fuel   = Math.round(km * FUEL_PER_KM / 50) * 50;
-    const driver = Math.round(etaH * 85 / 50) * 50;
-    const total  = toll + fuel + driver;
-    const ewayDays = Math.max(1, Math.floor(km / 100));
-    const restStops = etaH > 10 ? Math.floor(etaH / 10) : 0;
-    return { nh, km, avgSpeed, toll, fuel, driver, total, etaH, note, ewayDays, restStops,
-             label: LABELS[i], color: COLORS[i], bg: BGS[i], border: BORDERS[i] };
-  });
-}
-
-function buildRoutes() {
-  if (!origCity || !destCity) return;
-  const options = computeRealRoutes(origCity, destCity);
-  if (!options) return;
-
-  document.getElementById('route-wrap').innerHTML = options.map((r, i) => `
-    <div onclick="pickRoute(${i}, ${JSON.stringify({nh:r.nh, km:r.km, hrs:r.etaH, toll:r.toll}).replace(/"/g,'&quot;')})"
-         id="ropt-${i}"
-         style="border:2px solid ${route?.nh===r.nh ? r.color : 'var(--border)'};
-                background:${route?.nh===r.nh ? r.bg : 'var(--white)'};
-                border-radius:var(--r);padding:15px;cursor:pointer;
-                margin-bottom:10px;transition:all .2s">
-      <!-- Tag + NH name -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:11px">
-        <div style="display:flex;align-items:center;gap:8px">
-          <span style="font-size:11px;font-weight:700;padding:3px 10px;border-radius:20px;
-                       background:${r.bg};color:${r.color};border:1.5px solid ${r.border}">${r.label}</span>
-          <span style="font-size:13px;font-weight:700;color:var(--text)">${r.nh}</span>
-        </div>
-        <span style="font-family:var(--mono);font-size:12px;font-weight:700;color:var(--text3)">${r.km.toLocaleString('en-IN')} km</span>
-      </div>
-
-      <!-- 4 stat chips -->
-      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-bottom:11px">
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 6px;text-align:center">
-          <div style="font-size:14px;font-weight:800;font-family:var(--mono);color:${r.color}">~${r.etaH}h</div>
-          <div style="font-size:9px;font-weight:600;color:var(--text4);text-transform:uppercase;margin-top:2px">ETA</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 6px;text-align:center">
-          <div style="font-size:12px;font-weight:800;font-family:var(--mono);color:var(--text)">₹${r.toll.toLocaleString('en-IN')}</div>
-          <div style="font-size:9px;font-weight:600;color:var(--text4);text-transform:uppercase;margin-top:2px">Toll</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 6px;text-align:center">
-          <div style="font-size:12px;font-weight:800;font-family:var(--mono);color:var(--text)">₹${r.fuel.toLocaleString('en-IN')}</div>
-          <div style="font-size:9px;font-weight:600;color:var(--text4);text-transform:uppercase;margin-top:2px">Fuel est.</div>
-        </div>
-        <div style="background:var(--bg);border:1px solid var(--border);border-radius:7px;padding:9px 6px;text-align:center">
-          <div style="font-size:13px;font-weight:800;font-family:var(--mono);color:var(--amber)">₹${r.total.toLocaleString('en-IN')}</div>
-          <div style="font-size:9px;font-weight:600;color:var(--text4);text-transform:uppercase;margin-top:2px">Total</div>
-        </div>
-      </div>
-
-      <!-- Route note + avg speed -->
-      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:9px">
-        <span style="font-size:11px;color:var(--text3);line-height:1.45;max-width:72%">${r.note}</span>
-        <span style="font-size:10px;font-weight:600;font-family:var(--mono);color:var(--text4);
-                     background:var(--bg);padding:2px 8px;border-radius:4px;border:1px solid var(--border)">
-          avg ${r.avgSpeed} km/h
-        </span>
-      </div>
-
-      <!-- Compliance row -->
-      <div style="padding-top:9px;border-top:1px solid var(--border);display:flex;gap:14px;flex-wrap:wrap;font-size:10px;color:var(--text3)">
-        <span>📋 E-way validity: <strong style="color:var(--text)">${r.ewayDays} day${r.ewayDays>1?'s':''}</strong> (${r.km} km ÷ 100)</span>
-        <span>😴 Rest stops: <strong style="color:var(--text)">${r.restStops > 0 ? r.restStops + ' mandatory (MoRTH)' : 'None required'}</strong></span>
-      </div>
-    </div>
-  `).join('');
-}
-
-function pickRoute(i, r) {
-  route = r;
-  buildRoutes();
-  calcRisk();
-  calcCost();
-  updateAI();
-  updateRight();
-}
-
-async function fetchWeatherPair() {
-  if (!origCity || !destCity) return;
-  for (const c of [origCity, destCity]) {
-    try {
-      const r = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${c.lat}&longitude=${c.lon}&current=precipitation,rain,windspeed_10m,weathercode&forecast_days=1`, {signal:AbortSignal.timeout(7000)});
-      const d = await r.json(); const cur = d.current;
-      wxCache[c.n] = {
-        rain_mm: cur.rain || 0,
-        wind_kmh: cur.windspeed_10m || 0,
-        weather_code: cur.weathercode || 0,
-        is_dangerous: (cur.rain || 0) > 5 || cur.weathercode >= 80,
-      };
-    } catch {}
-  }
-  renderWeatherMini();
-  calcRisk();
-  updateAI();
-}
-
-function renderWeatherMini() {
-  const cities = [origCity, destCity].filter(Boolean);
-  if (!cities.length) return;
-  document.getElementById('wx-area').innerHTML = cities.map(c => {
-    const w = wxCache[c.n] || {};
-    const rain = w.rain_mm || 0;
-    const isHeavy = rain > 5 || w.is_dangerous;
-    const isLight = rain > 0 && rain <= 5;
-    const icon = isHeavy ? '🌧️' : isLight ? '🌦️' : '☀️';
-    const label = isHeavy ? `${Math.round(rain)}mm Heavy` : isLight ? `${Math.round(rain)}mm Light` : 'Clear';
-    const bg = isHeavy ? '#fee2e2' : isLight ? '#dbeafe' : '#d1fae5';
-    return `<div style="display:flex;justify-content:space-between;align-items:center;padding:8px 10px;background:var(--white);border:1px solid var(--border);border-radius:8px;margin-bottom:6px">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div style="width:28px;height:28px;border-radius:50%;background:${bg};display:flex;align-items:center;justify-content:center;font-size:13px">${icon}</div>
-        <div>
-          <div style="font-size:12px;font-weight:600">${c.n}</div>
-          <div style="font-size:10px;color:var(--text3)">${Math.round(w.wind_kmh||0)} km/h wind</div>
-        </div>
-      </div>
-      <div style="font-size:10px;font-weight:700;padding:2px 8px;border-radius:4px;background:${bg}">${label}</div>
-    </div>`;
-  }).join('');
-}
-
-function calcRisk() {
-  if (!selectedMode) return;
-  const facs = []; let s = 0;
-  if (selectedMode === 'road') {
-    if (!origCity || !destCity) return;
-    const ow = wxCache[origCity.n], dw = wxCache[destCity.n];
-    if (ow?.rain_mm > 5)  { s += 30; facs.push({c:'var(--red)',t:`Heavy rain at ${origCity.n} – ${Math.round(ow.rain_mm)}mm`}); }
-    else if (ow?.rain_mm > 0) { s += 10; facs.push({c:'var(--amber)',t:`Light rain at ${origCity.n}`}); }
-    if (dw?.rain_mm > 5)  { s += 25; facs.push({c:'var(--red)',t:`Heavy rain at ${destCity.n}`}); }
-    if (route?.hrs > 20)  { s += 15; facs.push({c:'var(--amber)',t:'Long haul – driver fatigue risk'}); }
-    const m = new Date().getMonth();
-    if (m >= 5 && m <= 8) { s += 20; facs.push({c:'var(--amber)',t:'Monsoon season active (Jun–Sep)'}); }
-  } else if (selectedMode === 'rail') {
-    const corridor = document.getElementById('rail-corridor')?.value || '';
-    if (corridor.includes('Howrah')) { s += 20; facs.push({c:'var(--amber)',t:'Howrah–Delhi: history of derailment disruptions'}); }
-    if (corridor.includes('Central')) { s += 15; facs.push({c:'var(--amber)',t:'Central Railway: flood-prone (Bhusawal yard)'}); }
-    const m = new Date().getMonth();
-    if (m >= 5 && m <= 8) { s += 15; facs.push({c:'var(--amber)',t:'Monsoon: yard waterlogging risk'}); }
-  } else if (selectedMode === 'air') {
-    const orig = document.getElementById('air-orig-apt')?.value || '';
-    const dest = document.getElementById('air-dest-apt')?.value || '';
-    const m = new Date().getMonth();
-    if ((orig === 'DEL' || dest === 'DEL') && (m === 11 || m <= 1)) {
-      s += 30; facs.push({c:'var(--red)',t:'IGI Delhi: dense fog season (Dec–Feb)'});
-    }
-    if (orig === 'DXB' || dest === 'DXB') {
-      s += 15; facs.push({c:'var(--amber)',t:'DXB: seasonal sandstorm risk (Mar–May)'});
-    }
-    if (m >= 5 && m <= 9) { s += 10; facs.push({c:'var(--amber)',t:'Bay of Bengal cyclone season (Jun–Oct)'}); }
-  } else if (selectedMode === 'sea') {
-    const pol = document.getElementById('sea-pol')?.value || '';
-    const lane = document.getElementById('sea-lane')?.value || '';
-    const m = new Date().getMonth();
-    if (m >= 9 && m <= 11) { s += 30; facs.push({c:'var(--red)',t:'JNPT pre-Christmas export surge – 3-5 day berth wait'}); }
-    if (m >= 5 && m <= 8)  { s += 25; facs.push({c:'var(--amber)',t:'Bay of Bengal cyclone season'}); }
-    if (lane.includes('Suez')) { s += 15; facs.push({c:'var(--amber)',t:'Suez Canal: geopolitical risk, possible congestion'}); }
-  }
-  s = Math.min(s, 100);
-  if (!facs.length) facs.push({c:'var(--green)',t:'No major risk factors identified for this route'});
-  const col = s > 60 ? 'var(--red)' : s > 30 ? 'var(--amber)' : 'var(--green)';
-  document.getElementById('risk-val').textContent = s + '%';
-  document.getElementById('risk-val').style.color = col;
-  const rf = document.getElementById('risk-fill');
-  rf.style.width = s + '%'; rf.style.background = col;
-  document.getElementById('risk-factors').innerHTML = facs.map(f =>
-    `<div class="rf"><div class="rf-dot" style="background:${f.c}"></div>${f.t}</div>`
-  ).join('');
-}
-
-function calcCost() {
-  const mode = selectedMode;
-  if (!mode) return;
-  let rows = [], total = 0;
-  if (mode === 'road' && route) {
-    const fuel = Math.round((route.km / 4) * 96);
-    const driver = Math.round(route.hrs * 85);
-    rows = [{k:'Toll charges',v:'₹'+route.toll.toLocaleString()},{k:'Fuel (estimated)',v:'₹'+fuel.toLocaleString()},{k:'Driver allowance',v:'₹'+driver.toLocaleString()}];
-    total = route.toll + fuel + driver;
-  } else if (mode === 'rail') {
-    rows = [{k:'Freight rate (base)',v:'₹22,000'},{k:'Terminal handling',v:'₹4,500'},{k:'Detention charges',v:'₹2,000'}];
-    total = 28500;
-  } else if (mode === 'air') {
-    const wt = parseInt(document.getElementById('wt-inp')?.value) || 500;
-    const rate = Math.round(wt * 95);
-    rows = [{k:'Air freight (per kg)',v:`₹${rate.toLocaleString()}`},{k:'Fuel surcharge (30%)',v:`₹${Math.round(rate*0.3).toLocaleString()}`},{k:'Airport handling',v:'₹3,200'}];
-    total = rate + Math.round(rate*0.3) + 3200;
-  } else if (mode === 'sea') {
-    rows = [{k:'Ocean freight (base)',v:'₹85,000'},{k:'Terminal handling (THC)',v:'₹12,500'},{k:'Port charges + documentation',v:'₹8,000'}];
-    total = 105500;
-  }
-  if (rows.length) {
-    document.getElementById('cost-block').style.display = 'block';
-    document.getElementById('cost-rows').innerHTML = rows.map(r => `<div class="cost-row"><span class="cr-k">${r.k}</span><span class="cr-v">${r.v}</span></div>`).join('');
-    document.getElementById('c-total').textContent = '₹' + total.toLocaleString();
-  }
-}
-
-function updateAI() {
-  const mode = selectedMode;
-  if (!mode) { document.getElementById('ai-insight').textContent = 'Select a transport mode to get AI recommendations.'; return; }
-  const m = new Date().getMonth();
-  let txt = '';
-  if (mode === 'road') {
-    if (!origCity || !destCity) { txt = '🗺 Select your origin and destination to get route analysis.'; }
-    else if (wxCache[origCity.n]?.is_dangerous || wxCache[destCity.n]?.is_dangerous) {
-      const bad = wxCache[origCity.n]?.is_dangerous ? origCity.n : destCity.n;
-      txt = `⚠️ ${bad} is showing heavy rainfall. Recommend departing before 6am or after 8pm.`;
-    } else if (route) {
-      txt = `✅ ${origCity.n} → ${destCity.n} via ${route.nh} looks clear. Best departure: early morning.`;
-    } else {
-      txt = `Route options loaded for ${origCity.n} → ${destCity.n}. Select a route above to see full risk analysis.`;
-    }
-  } else if (mode === 'rail') {
-    const origTerm = document.getElementById('rail-orig-terminal')?.value;
-    const destTerm = document.getElementById('rail-dest-terminal')?.value;
-    if (m >= 5 && m <= 8) txt = '⚠️ Monsoon season: monitor yard waterlogging alerts. DFCCIL corridors are better-drained.';
-    else if (origTerm && destTerm) txt = `✅ Rail route ${origTerm} → ${destTerm} loaded. DFCCIL dedicated freight slots are faster than main line.`;
-    else txt = '🚂 Select origin and destination rail terminals to get corridor analysis.';
-  } else if (mode === 'air') {
-    const origApt = document.getElementById('air-orig-apt')?.value;
-    const destApt = document.getElementById('air-dest-apt')?.value;
-    if ((origApt === 'DEL' || destApt === 'DEL') && (m === 11 || m <= 1)) {
-      txt = '⚠️ Dense fog season at IGI Delhi (Dec–Feb). CAT III ops active – expect 2-4h delays.';
-    } else if (origApt && destApt) {
-      txt = `✅ ${origApt} → ${destApt} corridor looks clear. Air freight is fastest; monitor ATC slot availability.`;
-    } else {
-      txt = '✈️ Select origin and destination airports to get corridor risk analysis.';
-    }
-  } else if (mode === 'sea') {
-    if (m >= 9 && m <= 11) txt = '⚠️ Pre-Christmas export surge: JNPT berths congested (3-5 day wait). Consider Mundra or advance booking.';
-    else if (m >= 5 && m <= 8) txt = '⚠️ Bay of Bengal cyclone season active. Monitor DGS advisories. Colombo transshipment is safe backup.';
-    else txt = '✅ Ocean conditions normal. File shipping instructions early for smooth port operations.';
-  }
-  if (txt) document.getElementById('ai-insight').textContent = txt;
-}
-
-function selectCargo(id) {
-  cargo = id;
-  document.querySelectorAll('.cargo-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('cc-' + id)?.classList.add('selected');
-  calcCost(); updateRight();
-}
-function selectPri(id) {
-  priority = id;
-  document.querySelectorAll('.pri-card').forEach(c => c.classList.remove('selected'));
-  document.getElementById('pc-' + id)?.classList.add('selected');
-  updateRight();
-}
-
-function getOriginStr() {
-  const m = selectedMode;
-  if (m === 'road') return origCity ? origCity.n : '';
-  if (m === 'rail') return document.getElementById('rail-orig-terminal')?.value || '';
-  if (m === 'air')  return document.getElementById('air-orig-apt')?.value || '';
-  if (m === 'sea')  return document.getElementById('sea-pol')?.value || '';
-  return '';
-}
-function getDestStr() {
-  const m = selectedMode;
-  if (m === 'road') return destCity ? destCity.n : '';
-  if (m === 'rail') return document.getElementById('rail-dest-terminal')?.value || '';
-  if (m === 'air')  return document.getElementById('air-dest-apt')?.value || '';
-  if (m === 'sea')  return document.getElementById('sea-pod')?.value || '';
-  return '';
-}
-
-function updateRight() {
-  const cg = CARGOS.find(c => c.id === cargo);
-  const mode = selectedMode;
-  const rows = [
-    ['Mode', mode ? (MODE_CONTEXT[mode]?.icon + ' ' + mode.toUpperCase()) : null],
-    ['Origin', getOriginStr() || null],
-    ['Destination', getDestStr() || null],
-    ['Route / Carrier', mode === 'road' ? (route ? route.nh : null) :
-                        mode === 'rail' ? (document.getElementById('rail-corridor')?.value || null) :
-                        mode === 'air'  ? (document.getElementById('air-airline')?.value || null) :
-                        mode === 'sea'  ? (document.getElementById('sea-carrier')?.value || null) : null],
-    ['Cargo', cg ? (cg.em + ' ' + cg.n) : null],
-    ['Weight', document.getElementById('wt-inp')?.value ? document.getElementById('wt-inp').value + ' kg' : null],
-    ['E-Way Bill', document.getElementById('eway-number')?.value || null],
-    ['Priority', PRIORITIES.find(p => p.id === priority)?.n || null],
-    ['Supplier', document.getElementById('sup-inp')?.value || null],
-  ].filter(r => r[1]);
-
-  if (!rows.length) { document.getElementById('sum-block').style.display = 'none'; return; }
-  document.getElementById('sum-block').style.display = 'block';
-  document.getElementById('sum-rows').innerHTML = rows.map(r =>
-    `<div class="sum-row"><span class="sr-k">${r[0]}</span><span class="sr-v">${r[1]}</span></div>`
-  ).join('');
-  calcRisk();
-  calcCost();
-  updateAI();
-}
-
-function jumpTo(s) { if (s < step) goStep(s); }
-function prev(from) { goStep(from - 1); }
-
-function next(from) {
-  if (from === 0) {
-    if (!selectedMode) { toast('Please select a transport mode', 'err'); return; }
-  }
-  if (from === 1) {
-    if (selectedMode === 'road' && (!origCity || !destCity)) { toast('Please select origin and destination cities', 'err'); return; }
-    if (selectedMode === 'rail' && !document.getElementById('rail-orig-terminal')?.value) { toast('Please select origin rail terminal', 'err'); return; }
-    if (selectedMode === 'rail' && !document.getElementById('rail-dest-terminal')?.value) { toast('Please select destination rail terminal', 'err'); return; }
-    if (selectedMode === 'air' && !document.getElementById('air-orig-apt')?.value) { toast('Please select origin airport', 'err'); return; }
-    if (selectedMode === 'air' && !document.getElementById('air-dest-apt')?.value) { toast('Please select destination airport', 'err'); return; }
-    if (selectedMode === 'sea' && !document.getElementById('sea-pol')?.value) { toast('Please select port of loading', 'err'); return; }
-    if (selectedMode === 'sea' && !document.getElementById('sea-pod')?.value) { toast('Please select port of discharge', 'err'); return; }
-  }
-  if (from === 2 && !cargo) { toast('Please select a cargo type', 'err'); return; }
-  markDone(from); goStep(from + 1);
-  if (from + 1 === 4) buildReview();
-}
-
-function markDone(s) {
-  const d = document.getElementById('pd-' + s);
-  const l = document.getElementById('pln-' + s);
-  const line = document.getElementById('pl-' + s);
-  if (d) { d.classList.remove('active'); d.classList.add('done'); d.textContent = '✓'; }
-  if (l) { l.classList.remove('active'); l.classList.add('done'); }
-  if (line) line.classList.add('done');
-}
-
-function goStep(s) {
-  step = s;
-  document.querySelectorAll('.section').forEach(e => e.classList.remove('active'));
-  document.getElementById('sec-' + s).classList.add('active');
-  document.querySelectorAll('.prog-dot').forEach((d, i) => {
-    if (i === s && !d.classList.contains('done')) d.classList.add('active');
-    else if (i !== s && !d.classList.contains('done')) d.classList.remove('active');
-  });
-  document.querySelectorAll('.prog-label').forEach((l, i) => {
-    if (i === s && !l.classList.contains('done')) l.classList.add('active');
-    else if (i !== s && !l.classList.contains('done')) l.classList.remove('active');
-  });
-  if (s === 1 && selectedMode) showModeFields(selectedMode);
-  document.querySelector('.form-col').scrollTop = 0;
-}
-
-function buildReview() {
-  const mode = selectedMode;
-  const cg = CARGOS.find(c => c.id === cargo);
-  const ref = document.getElementById('ref-inp').value || `${mode?.toUpperCase().slice(0,3)}-${++shipCounter}`;
-  document.getElementById('ref-inp').value = ref;
-  const originStr = getOriginStr() || '—';
-  const destStr = getDestStr() || '—';
-  let routeStr = '—';
-  if (mode === 'road') routeStr = route ? `${route.nh} · ${route.km.toLocaleString()}km · ${route.hrs}h` : '—';
-  else if (mode === 'rail') routeStr = document.getElementById('rail-corridor')?.value || '—';
-  else if (mode === 'air') routeStr = (document.getElementById('air-airline')?.value || '—') + ' · ' + (document.getElementById('air-awb')?.value || 'No AWB');
-  else if (mode === 'sea') routeStr = (document.getElementById('sea-carrier')?.value || '—') + ' · ' + (document.getElementById('sea-lane')?.value || '—');
-
-  const ewayNo = document.getElementById('eway-number')?.value;
-  const ewayExp = document.getElementById('eway-expiry')?.value;
-  const waPhone = document.getElementById('wa-contact')?.value;
-
-  const items = [
-    {k:'Shipment ID', v: ref, accent: true},
-    {k:'Transport Mode', v: (MODE_CONTEXT[mode]?.icon || '') + ' ' + (mode || '—').toUpperCase()},
-    {k:'Priority', v: PRIORITIES.find(p => p.id === priority)?.n || 'Standard'},
-    {k:'Origin', v: originStr},
-    {k:'Destination', v: destStr},
-    {k:'Route / Service', v: routeStr},
-    {k:'Cargo', v: cg ? (cg.em + ' ' + cg.n) : '—'},
-    {k:'Weight', v: document.getElementById('wt-inp').value ? document.getElementById('wt-inp').value + ' kg' : '—'},
-    {k:'Declared Value', v: document.getElementById('val-inp').value ? '₹' + parseInt(document.getElementById('val-inp').value).toLocaleString() : '—'},
-    {k:'E-Way Bill', v: ewayNo || '—'},
-    {k:'E-Way Expiry', v: ewayExp || '—'},
-    {k:'WhatsApp Alerts', v: waPhone ? `📱 ${waPhone}` : '—'},
-    {k:'Supplier', v: document.getElementById('sup-inp').value || '—'},
-    {k:'Departure', v: (document.getElementById('dep-date').value || '—') + ' ' + (document.getElementById('dep-time').value || '')},
-  ];
-  document.getElementById('review-grid').innerHTML = items.map(i => `
-    <div class="review-item">
-      <div class="ri-label">${i.k}</div>
-      <div class="ri-val ${i.accent ? 'accent' : 'normal'}">${i.v}</div>
-    </div>
-  `).join('');
-}
-
-function submitShipment() {
-  const mode = selectedMode;
-  const cg = CARGOS.find(c => c.id === cargo);
-  const ref = document.getElementById('ref-inp').value || `${mode?.toUpperCase().slice(0,3)}-${++shipCounter}`;
-
-  const originStr = getOriginStr() || 'Origin';
-  const destStr = getDestStr() || 'Destination';
-
-  let routeStr, carrierStr, etaHours;
-  if (mode === 'road') {
-    routeStr = route?.nh || 'NH Direct';
-    carrierStr = document.getElementById('transporter')?.value || 'Owner';
-    etaHours = route?.hrs || 12;
-  } else if (mode === 'rail') {
-    routeStr = document.getElementById('rail-corridor')?.value || 'Rail Freight';
-    carrierStr = document.getElementById('rail-operator')?.value || 'Indian Railways';
-    etaHours = 24;
-  } else if (mode === 'air') {
-    routeStr = (document.getElementById('air-airline')?.value || 'Air Cargo') + ' ' + (document.getElementById('air-awb')?.value || '');
-    carrierStr = document.getElementById('air-airline')?.value || 'Air Carrier';
-    etaHours = 3;
-  } else if (mode === 'sea') {
-    routeStr = (document.getElementById('sea-carrier')?.value || 'Shipping Line') + ' · ' + (document.getElementById('sea-lane')?.value || 'Ocean');
-    carrierStr = document.getElementById('sea-carrier')?.value || 'Shipping Corp';
-    etaHours = 168;
-  }
-
-  const s = {
-    id: ref,
-    mode: mode,
-    origin: originStr,
-    destination: destStr,
-    route: routeStr,
-    supplier: document.getElementById('sup-inp')?.value || carrierStr,
-    cargo: cg?.n || 'General',
-    weight_kg: parseInt(document.getElementById('wt-inp')?.value) || 0,
-    eta_hours: etaHours,
+async function submitForm() {
+  const data = {
+    id: 'SHP-' + Math.floor(Math.random()*10000),
+    origin: document.getElementById('origin').value,
+    destination: document.getElementById('dest').value,
+    mode: currentMode,
+    cargo: document.getElementById('cargo').value,
     status: 'on_time',
-    owner_added: true,
-    priority: priority,
-    value_inr: parseInt(document.getElementById('val-inp')?.value) || 0,
-    eway_bill_no: document.getElementById('eway-number')?.value || '',
-    eway_bill_expiry: document.getElementById('eway-expiry')?.value || '',
-    whatsapp_contact: document.getElementById('wa-contact')?.value || '',
-    driver_contact: document.getElementById('drv-contact')?.value || '',
-    ...(mode === 'road' && { vehicle_number: document.getElementById('veh-num')?.value, transporter: document.getElementById('transporter')?.value }),
-    ...(mode === 'rail' && { rail_wagon: document.getElementById('rail-wagon')?.value, rail_operator: document.getElementById('rail-operator')?.value, rail_train: document.getElementById('rail-train')?.value }),
-    ...(mode === 'air'  && { awb: document.getElementById('air-awb')?.value, airline: document.getElementById('air-airline')?.value, service: document.getElementById('air-service')?.value }),
-    ...(mode === 'sea'  && { vessel: document.getElementById('sea-vessel')?.value, container_no: document.getElementById('sea-container')?.value, sea_service: document.getElementById('sea-service')?.value }),
+    eta_hours: 24
   };
-
-  // Send to backend
-  fetch(API_BASE + '/shipments/add', {
-    method: 'POST',
-    headers: {'Content-Type':'application/json'},
-    body: JSON.stringify(s)
-  }).catch(() => {});
-
-  // Also save locally
-  localStorage.setItem('vc_ship_counter', shipCounter);
-  const ex = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
-  ex.push(s);
-  localStorage.setItem('owner_shipments', JSON.stringify(ex));
-
-  const btn = document.getElementById('submit-btn');
-  btn.textContent = '✓ Added! Redirecting...'; btn.disabled = true;
-  toast(`${ref} added to dashboard – AI monitoring started ✓`, 'ok');
-  setTimeout(() => window.location.href = 'dashboard/dashboard.html', 1200);
+  
+  try {
+    const res = await fetch('http://localhost:5000/shipments/add', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      body: JSON.stringify(data)
+    });
+    if(res.ok) {
+      alert('Shipment added successfully!');
+      window.location.href = 'dashboard/dashboard.html';
+    }
+  } catch(e) {
+    console.error(e);
+    // fallback for demo
+    alert('Shipment added (Demo Mode)!');
+    window.location.href = 'dashboard/dashboard.html';
+  }
 }
-
-function toast(m, t = 'ok') {
-  const el = document.getElementById('toast');
-  el.textContent = m; el.className = `toast ${t} show`;
-  setTimeout(() => el.classList.remove('show'), 3000);
-}
-
-document.getElementById('nav-user').textContent = localStorage.getItem('vc_user') || 'demo';
 </script>
 </body>
 </html>
