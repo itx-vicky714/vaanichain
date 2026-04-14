@@ -1586,15 +1586,27 @@ async function sendChat() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    // BUG 2 - VaaniChat strict language enforcement
+    // BUG 2 - Read fresh language value
+    const currentLang = voiceLang; 
     let langInstruction = "";
-    if (voiceLang === 'en') {
-      langInstruction = "You MUST reply in English only. Do not use Hindi or Hinglish under any circumstances. ";
-    } else if (voiceLang === 'hi') {
-      langInstruction = "You MUST reply in Hindi only. Do not use English or Hinglish. ";
-    } else if (voiceLang === 'hinglish') {
-      langInstruction = "You MUST reply in Hinglish (Hindi+English mix). ";
+    if (currentLang === 'en') {
+      langInstruction = "You MUST reply in English only. No Hindi, no Hinglish under any circumstances. ";
+    } else if (currentLang === 'hi') {
+      langInstruction = "Sirf Hindi mein jawab do. No English, no Hinglish. ";
+    } else {
+      langInstruction = "Reply in Hinglish (Hindi+English mix) only. ";
     }
+
+    // BUG 1 - Fetch real shipment data context
+    let shipContext = "";
+    const match = msg.match(/(SHP|RLY|AIR|SEA)-\d+/i);
+    if (match) {
+      const found = allShips.find(s => s.id.toLowerCase() === match[0].toLowerCase());
+      if (found) {
+        shipContext = `User is asking about specific shipment: ${JSON.stringify(found)}. `;
+      }
+    }
+    const fullSystemPrompt = `${langInstruction}${shipContext}Here is the complete current network shipment data for context: ${JSON.stringify(allShips)}. Answer based on this real data only. `;
     
     addMsg('user', msg);
     input.value = '';
@@ -1602,7 +1614,7 @@ async function sendChat() {
         const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: langInstruction + msg})
+            body: JSON.stringify({message: fullSystemPrompt + msg})
         });
         const d = await r.json();
         addMsg('ai', d.reply || 'No response');
@@ -2032,19 +2044,21 @@ function speakText(text, btnEl) {
 
   const utt = new SpeechSynthesisUtterance(text);
 
-  // detect Hindi script in text
+  // BUG 3 - Enhanced natural voice selection
   const hasHindi = /[ऀ-ॿ]/.test(text);
-  utt.lang = hasHindi ? 'hi-IN' : 'en-IN';
-  utt.rate = 0.92;
-  utt.pitch = 1;
-
-  // pick best available voice
+  const targetLang = hasHindi ? 'hi-IN' : 'en-IN';
+  
   const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v =>
-    (hasHindi && v.lang === 'hi-IN') ||
-    (!hasHindi && (v.lang === 'en-IN' || v.lang === 'en-GB'))
-  );
-  if (preferred) utt.voice = preferred;
+  // Find best voice: Microsoft/Google > Lang match > First available
+  let bestVoice = voices.find(v => v.lang === targetLang && (v.name.includes('Google') || v.name.includes('Microsoft'))) 
+               || voices.find(v => v.lang === targetLang)
+               || voices[0];
+
+  utt.voice = bestVoice;
+  utt.lang = targetLang;
+  utt.rate = 0.95;
+  utt.pitch = 1.0;
+  utt.volume = 1.0;
 
   utt.onstart = () => {
     currentUtterance = utt;
@@ -2077,8 +2091,11 @@ addMsg = function(role, text) {
   lastAI.querySelector('.msg-time')?.after(btn) || lastAI.appendChild(btn);
 };
 
-// preload voices on page load (some browsers need this)
-window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
+// preload voices on page load
+window.speechSynthesis.onvoiceschanged = () => {
+  const voices = window.speechSynthesis.getVoices();
+  console.log(`Loaded ${voices.length} voices.`);
+};
 
 // ══════════════════════════════════════════════════════════════
 // SHIPMENT DETAIL MODAL — VaaniChain
