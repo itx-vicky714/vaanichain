@@ -1278,34 +1278,47 @@ function updateRiskBadge(risk) {
 }
 
 function renderAlerts(data) {
-  const alerts = data.alerts || [];
+  // BUG 4 - Alerts should be built from actual shipments that have riskFactors or AT_RISK/DELAYED status
+  const alerts = [];
+  allShips.forEach(s => {
+    const risk = RISK_ENGINE.getFullRisk(s, null);
+    if (risk.level !== 'low' || s.status === 'at_risk' || s.status === 'delayed') {
+      const { alts } = genAltRoutes(s);
+      alerts.push({
+        shipment_id: s.id || s.shipmentId || s.shp_id,
+        risk_level: risk.level,
+        risk_reason: risk.topReason || (s.riskFactors ? s.riskFactors.join(', ') : '') || s.threat || s.disruption || 'Potential Delay',
+        recommended_action: alts[0]?.name || 'Review Route',
+        alternate_routes: alts,
+        confidence_pct: Math.min(98, 70 + (risk.score / 2)),
+        mode: s.mode,
+        supplier: s.supplier
+      });
+    }
+  });
+
   const badge = document.getElementById('alert-count-badge');
   badge.textContent = alerts.length + ' Alert' + (alerts.length !== 1 ? 's' : '');
   badge.style.background = alerts.length > 0 ? 'var(--red2)' : 'var(--green2)';
   badge.style.color = alerts.length > 0 ? 'var(--red)' : 'var(--green)';
   badge.style.borderColor = alerts.length > 0 ? '#fca5a5' : '#86efac';
+  
   document.getElementById('alerts-body').innerHTML = alerts.length
     ? alerts.map(mkAlertCard).join('')
     : `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
 }
 
 function mkAlertCard(a) {
-  const s = allShips.find(x => x.id === a.shipment_id) || {};
-  const modeIcon = a.mode_icon || MODE_ICONS[s.mode] || '📦';
+  // BUG 1 - Resolve ID and data from correct properties
+  const shipId = a.shipment_id || a.id || a.shipmentId || a.shp_id;
+  const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === shipId) || {};
+  
+  const modeIcon = a.mode_icon || MODE_ICONS[s.mode || a.mode] || '📦';
   const mode = s.mode || a.mode || 'road';
   
-  // BUG 3 - Real AI-generated recommendation logic
-  let realReason = a.risk_reason;
-  let realAction = a.recommended_action;
-  
-  if (s.id) {
-    const risk = RISK_ENGINE.getFullRisk(s, null);
-    const { etaLeft } = getShipProgress(s);
-    realReason = `${risk.topReason}. Shipment ${s.id} carrying ${s.cargo||'cargo'} has ${etaLeft}h remaining.`;
-    realAction = risk.level === 'high' 
-      ? `Critical: Reroute ${s.id} immediately to avoid ${etaLeft}h delay.` 
-      : `Monitor: ${s.id} ETA is tight, consider alternate corridor.`;
-  }
+  const realReason = a.risk_reason || (a.riskFactors ? a.riskFactors.join(', ') : '') || a.risks || a.threat || a.disruption || 'Potential Delay';
+  const realAction = a.recommended_action || a.altRoute || a.alternative || a.suggestedRoute || 'Review Route';
+  const confidence = a.confidence_pct || (s.id ? Math.min(98, 75 + (RISK_ENGINE.getFullRisk(s, null).score / 4)) : 85);
 
   const modeBadgeColors = {
     road:{bg:'#fef3c7',color:'#92400e',border:'#fcd34d'},
@@ -1337,8 +1350,8 @@ function mkAlertCard(a) {
 
   return `<div class="alert-card ${a.risk_level||'medium'}">
     <div class="alert-head">
-      <span class="ah-id">${modeIcon} ${a.shipment_id} · ${s.supplier||a.supplier||''}</span>
-      <span class="ah-conf">${a.confidence_pct||'—'}% confidence</span>
+      <span class="ah-id">${modeIcon} ${shipId} · ${s.supplier||a.supplier||'Unknown'}</span>
+      <span class="ah-conf">${Math.round(confidence)}% confidence</span>
     </div>
     <div class="alert-body">
       <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:${mbc.bg};color:${mbc.color};border:1px solid ${mbc.border};margin-bottom:6px">${modeIcon} ${(a.mode_label||mode).toUpperCase()} FREIGHT</span>
@@ -1348,8 +1361,8 @@ function mkAlertCard(a) {
       <div class="a-action">→ ${realAction}</div>
       <div class="a-routes">${altRoutesHtml||'<div style="font-size:11px;color:var(--text4);padding:4px 0">No pre-filed alternate on record.</div>'}</div>
       <div class="a-btns">
-        <button class="btn-approve" onclick="approveAlert('${a.shipment_id}',this)">${approveLabel}</button>
-        <button class="btn-email-a" onclick="showEmail('${a.shipment_id}','${s.supplier||a.supplier||''}')">📧 Email</button>
+        <button class="btn-approve" onclick="approveAlert('${shipId}',this)">${approveLabel}</button>
+        <button class="btn-email-a" onclick="showEmail('${shipId}','${s.supplier||a.supplier||''}')">📧 Email</button>
         <button class="btn-dismiss" onclick="this.closest('.alert-card').style.opacity='0.4'">✕</button>
       </div>
     </div>
@@ -1357,6 +1370,7 @@ function mkAlertCard(a) {
 }
 
 function approveAlert(id, btn) {
+  // BUG 2 - Ensure real shipment ID is used in toast
   btn.textContent = '✓ Approved!'; btn.disabled = true; btn.style.opacity = '.5';
   showToast('Reroute approved for ' + id, 'ok');
   addMsg('ai', '✓ Reroute for ' + id + ' approved. Supplier notified and new route activated.');
@@ -1372,27 +1386,28 @@ async function showEmail(id, sup) {
     emailText = d.email_draft;
     document.getElementById('email-content').textContent = emailText;
   } catch {
-    // BUG 1 - Fallback email generation
-    const s = allShips.find(x => x.id === id);
+    // BUG 3 - Fallback email generation using shipment data from card/page
+    const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === id);
     if (s) {
       const { etaLeft } = getShipProgress(s);
-      emailText = `Subject: URGENT: Shipment Update ${s.id} (${s.cargo})
-Dear ${s.supplier || 'Supplier'},
+      const risk = RISK_ENGINE.getFullRisk(s, null);
+      emailText = `Subject: URGENT: Shipment Update ${id} (${s.cargo || 'Cargo'})
+Dear ${sup || s.supplier || 'Supplier'},
 
-This is an automated operational alert from VaaniChain regarding Shipment ${s.id}.
+This is an automated operational alert regarding Shipment ${id}.
 
 Current Details:
 - Route: ${s.origin} to ${s.destination}
-- Cargo: ${s.cargo || 'General Freight'}
-- ETA: ${etaLeft} hours remaining
+- Issue: ${risk.topReason || 'Potential delay detected'}
+- Remaining Time: ~${etaLeft}h
 
-We have detected a potential disruption on your current route. Please confirm the status of the vehicle and if any immediate assistance is required.
+Please confirm the status of the vehicle and if any immediate assistance is required to mitigate this risk.
 
 Best regards,
 VaaniChain Operations Team`;
       document.getElementById('email-content').textContent = emailText;
     } else {
-      document.getElementById('email-content').textContent = 'Backend error. Run python app.py';
+      document.getElementById('email-content').textContent = `Subject: Operational Alert - ${id}\n\nDear Supplier,\n\nWe have detected a risk for shipment ${id}. Please check status immediately.\n\nSent via VaaniChain Offline Mode.`;
     }
   }
 }
