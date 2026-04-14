@@ -1527,11 +1527,13 @@ function allClear() {
   simulateMode = false;
 }
 
+let resetRetryTimer = null;
+let resetCountdown = null;
 let _resetRetryCount = 0;
-let _countdownInterval = null;
 
 async function resetAll() {
-  if (_countdownInterval) return; // Already counting down
+  clearInterval(resetCountdown);
+  clearTimeout(resetRetryTimer);
 
   try {
     const res = await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
@@ -1556,24 +1558,26 @@ async function resetAll() {
       let seconds = 30;
       const msgPrefix = _resetRetryCount === 1 ? 'Backend is waking up' : 'Still waking up';
       
-      const updateToast = () => {
-        showToast(`${msgPrefix}... retrying in ${seconds}s`, 'warn');
+      const toastEl = document.getElementById('toast');
+      const updateToast = (sec) => {
+        toastEl.textContent = `${msgPrefix}... retrying in ${sec}s`;
+        toastEl.className = 'toast warn show';
       };
       
-      updateToast();
-      _countdownInterval = setInterval(() => {
+      updateToast(seconds);
+      resetCountdown = setInterval(() => {
         seconds--;
         if (seconds <= 0) {
-          clearInterval(_countdownInterval);
-          _countdownInterval = null;
+          clearInterval(resetCountdown);
+          resetCountdown = null;
           resetAll();
         } else {
-          updateToast();
+          updateToast(seconds);
         }
       }, 1000);
     } else {
       _resetRetryCount = 0;
-      showToast('Backend unavailable. Try again later', 'err');
+      showToast('Backend unavailable. Max retries reached.', 'err');
     }
   }
 }
@@ -1586,27 +1590,24 @@ async function sendChat() {
     const msg = input.value.trim();
     if (!msg) return;
     
-    // BUG 2 - Read fresh language value
+    let systemPrompt = "You are VaaniChat, a logistics assistant. Current shipment data: " + JSON.stringify(allShips) + " Answer ONLY based on this data. ";
+
     const currentLang = voiceLang; 
-    let langInstruction = "";
     if (currentLang === 'en') {
-      langInstruction = "You MUST reply in English only. No Hindi, no Hinglish under any circumstances. ";
+      systemPrompt += "IMPORTANT: You MUST reply in English only. Never use Hindi or Hinglish. ";
     } else if (currentLang === 'hi') {
-      langInstruction = "Sirf Hindi mein jawab do. No English, no Hinglish. ";
+      systemPrompt += "IMPORTANT: Sirf Hindi mein jawab do. Kabhi English mat bolna. ";
     } else {
-      langInstruction = "Reply in Hinglish (Hindi+English mix) only. ";
+      systemPrompt += "IMPORTANT: Reply in Hinglish (Hindi+English mix) only. ";
     }
 
-    // BUG 1 - Fetch real shipment data context
-    let shipContext = "";
     const match = msg.match(/(SHP|RLY|AIR|SEA)-\d+/i);
     if (match) {
       const found = allShips.find(s => s.id.toLowerCase() === match[0].toLowerCase());
       if (found) {
-        shipContext = `User is asking about specific shipment: ${JSON.stringify(found)}. `;
+        systemPrompt += "User is asking about specific shipment " + match[0] + ": " + JSON.stringify(found) + ". ";
       }
     }
-    const fullSystemPrompt = `${langInstruction}${shipContext}Here is the complete current network shipment data for context: ${JSON.stringify(allShips)}. Answer based on this real data only. `;
     
     addMsg('user', msg);
     input.value = '';
@@ -1614,7 +1615,7 @@ async function sendChat() {
         const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: fullSystemPrompt + msg})
+            body: JSON.stringify({message: systemPrompt + "\nUser Message: " + msg})
         });
         const d = await r.json();
         addMsg('ai', d.reply || 'No response');
