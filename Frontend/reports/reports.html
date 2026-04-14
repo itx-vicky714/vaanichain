@@ -284,13 +284,13 @@ async function genReport(type, idx) {
           <tbody>
             ${allShips.map(s => `
               <tr>
-                <td style="font-family:var(--mono);font-weight:700">${s.id}</td>
-                <td>${s.mode.toUpperCase()}</td>
-                <td>${s.route || s.highway || '—'}</td>
-                <td>${s.origin}</td>
-                <td>${s.destination}</td>
-                <td style="font-family:var(--mono)">${s.eta_hours}h</td>
-                <td><span class="status-pill ${s.status==='on_time'?'s-ok':s.status==='at_risk'?'s-risk':'s-del'}">${s.status.replace('_',' ')}</span></td>
+                <td style="font-family:var(--mono);font-weight:700">${s.id || s.shipmentId || s.shp_id}</td>
+                <td>${(s.mode || 'road').toUpperCase()}</td>
+                <td>${(s.origin || s.from || '?')} → ${(s.destination || s.to || '?')}</td>
+                <td>${s.origin || s.from || '—'}</td>
+                <td>${s.destination || s.to || '—'}</td>
+                <td style="font-family:var(--mono)">${s.eta_hours || s.eta || 0}h</td>
+                <td><span class="status-pill ${(s.status || 'on_time') === 'on_time' ? 's-ok' : (s.status || 'on_time') === 'at_risk' ? 's-risk' : 's-del'}">${(s.status || 'on_time').replace('_', ' ')}</span></td>
                 <td>${s.cargo || s.cargo_type || 'General'}</td>
               </tr>
             `).join('')}
@@ -310,13 +310,17 @@ async function genReport(type, idx) {
           </thead>
           <tbody>
             ${alerts.length ? alerts.map(a => {
-              const ship = allShips.find(s => s.id === a.shipment_id) || {};
+              const shipId = a.shipment_id || a.id || a.shipmentId || a.shp_id;
+              const ship = allShips.find(s => (s.id || s.shipmentId || s.shp_id) === shipId) || {};
+              const threat = a.risk_reason || a.riskFactors || a.risks || a.threat || a.disruption || 'Potential Delay';
+              const alternative = a.recommended_action || a.altRoute || a.alternative || a.suggestedRoute || 'Review Route';
+              
               return `
                 <tr>
-                  <td style="font-family:var(--mono);font-weight:700">${a.shipment_id}</td>
-                  <td style="color:var(--red);font-weight:600">${a.risk_reason}</td>
-                  <td>${a.route || ship.route || 'Network Node'}</td>
-                  <td style="color:var(--blue);font-weight:600">${a.recommended_action}</td>
+                  <td style="font-family:var(--mono);font-weight:700">${shipId}</td>
+                  <td style="color:var(--red);font-weight:600">${Array.isArray(threat) ? threat.join(', ') : threat}</td>
+                  <td>${a.route || ship.route || (ship.origin ? ship.origin + ' → ' + ship.destination : 'Network Node')}</td>
+                  <td style="color:var(--blue);font-weight:600">${alternative}</td>
                   <td style="font-weight:700">₹${(a.savings_est || 42000).toLocaleString()}</td>
                 </tr>
               `;
@@ -406,15 +410,19 @@ async function genReport(type, idx) {
             <tr><th>Shipment</th><th>Mode</th><th>Risk Score</th><th>Day 1-2</th><th>Day 3-6</th><th>Day 7</th><th>Active Factors</th></tr>
           </thead>
           <tbody>
-            ${allShips.slice(0,5).map(s => `
-              <tr>
-                <td style="font-family:var(--mono);font-weight:700">${s.id}</td>
-                <td>${s.mode.toUpperCase()}</td>
-                <td style="font-weight:800; color:${s.status==='at_risk'?'var(--red)':'var(--green)'}">74/100</td>
-                <td>At Risk</td><td>Stable</td><td>Clear</td>
-                <td style="font-size:11px">Monsoon + Traffic</td>
-              </tr>
-            `).join('')}
+            ${allShips.slice(0,5).map(s => {
+              const shipId = s.id || s.shipmentId || s.shp_id;
+              const status = s.status || 'on_time';
+              return `
+                <tr>
+                  <td style="font-family:var(--mono);font-weight:700">${shipId}</td>
+                  <td>${(s.mode || 'road').toUpperCase()}</td>
+                  <td style="font-weight:800; color:${status === 'at_risk' ? 'var(--red)' : 'var(--green)'}">74/100</td>
+                  <td>${status === 'at_risk' ? 'At Risk' : 'On Track'}</td><td>Stable</td><td>Clear</td>
+                  <td style="font-size:11px">Monsoon + Traffic</td>
+                </tr>
+              `;
+            }).join('')}
           </tbody>
         </table>
       </div>
