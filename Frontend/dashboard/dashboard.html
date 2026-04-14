@@ -2358,8 +2358,22 @@ function genTimeline(s) {
   return stops;
 }
 
+let _selectedRoute = null;
+
+function selectAltRoute(el, idx) {
+  document.querySelectorAll('.sdm-alt-route').forEach(r => {
+    r.style.borderColor = 'var(--border)';
+    r.style.background = 'var(--white)';
+  });
+  el.style.borderColor = 'var(--blue)';
+  el.style.background = '#eff6ff';
+  const { alts } = genAltRoutes(_sdmShipment);
+  _selectedRoute = alts[idx];
+}
+
 function openSDM(s) {
   _sdmShipment = s;
+  _selectedRoute = null; // reset selection
   const mode = s.mode || 'road';
   const st   = s.status || 'on_time';
   const { seed, pct, eta, km, covKm, etaLeft } = getShipProgress(s);
@@ -2496,18 +2510,20 @@ function openSDM(s) {
     const badge = recBadges[rec] || recBadges.acceptable;
     const costStr = r.extraCost < 0 ? `−₹${Math.abs(r.extraCost).toLocaleString('en-IN')}` : `+₹${r.extraCost.toLocaleString('en-IN')}`;
     const timeStr = r.extraH < 0 ? `−${Math.abs(r.extraH)}h` : `+${r.extraH}h`;
-    return `<div class="sdm-alt-route ${i===0?'best':''}" style="${i===0?`background:${badge.bg}22;border-color:${badge.border};`:''}">
-      <div class="sar-left" style="flex:1">
-        <div class="sar-name" style="display:flex;align-items:center;gap:7px;flex-wrap:wrap">
-          ${r.name}
-          <span style="font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;background:${badge.bg};color:${badge.color};border:1px solid ${badge.border}">${badge.label}</span>
+    return `<div class="sdm-alt-route" onclick="selectAltRoute(this, ${i})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:11px 14px; border-radius:10px; border:1.5px solid var(--border); background:var(--white); transition:all .15s; margin-bottom:8px">
+      <div class="sar-left" style="flex:1; display:flex; align-items:center; gap:10px">
+        <input type="radio" name="route-select" style="cursor:pointer">
+        <div>
+          <div class="sar-name" style="font-size:12px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px">
+            ${r.name}
+            <span style="font-size:9px; font-weight:700; padding:2px 7px; border-radius:4px; background:${badge.bg}; color:${badge.color}; border:1px solid ${badge.border}">${badge.label}</span>
+          </div>
+          <div class="sar-desc" style="font-size:11px; color:var(--text3); margin-top:2px">${r.via}</div>
         </div>
-        <div class="sar-desc" style="margin-top:3px">${r.via}</div>
-        <div style="font-size:10px;color:var(--text3);margin-top:2px;font-style:italic">${r.note}</div>
       </div>
-      <div class="sar-right" style="flex-shrink:0;text-align:right;min-width:80px">
-        <div class="sar-cost" style="color:${r.extraCost<0?'var(--green)':'var(--text)'}">${costStr}</div>
-        <div class="sar-time">${timeStr}</div>
+      <div class="sar-right" style="flex-shrink:0; text-align:right; min-width:80px">
+        <div class="sar-cost" style="font-size:13px; font-weight:800; color:${r.extraCost<0?'var(--green)':'var(--text)'}; font-family:var(--mono)">${costStr}</div>
+        <div class="sar-time" style="font-size:10px; color:var(--text4); margin-top:1px; font-family:var(--mono)">${timeStr}</div>
       </div>
     </div>`;
   }).join('');
@@ -2538,9 +2554,29 @@ function switchSDMTab(id, btn) {
 }
 
 function sdmApproveReroute() {
-  if (!_sdmShipment) return;
-  showToast('✓ Reroute approved for ' + _sdmShipment.id, 'ok');
-  addMsg('ai', `✓ Reroute for ${_sdmShipment.id} approved. Supplier ${_sdmShipment.supplier||''} notified. New route activated.`);
+  if (!_sdmShipment || !_selectedRoute) {
+    showToast('Please select an alternate route first', 'warn');
+    return;
+  }
+  
+  const ship = allShips.find(s => s.id === _sdmShipment.id);
+  if (ship) {
+    ship.status = 'REROUTED';
+    ship.selectedRoute = _selectedRoute;
+    ship.route = _selectedRoute.name;
+    ship.eta_hours = (_sdmShipment.eta_hours || 0) + (_selectedRoute.extraH || 0);
+    
+    localStorage.setItem("approvedReroutes", JSON.stringify(allShips));
+    
+    renderShipments();
+    activeAlerts = activeAlerts.filter(a => (a.shipment_id || a.id) !== ship.id);
+    renderAlerts();
+    updateKPIs();
+    
+    showToast('✓ Reroute approved for ' + ship.id, 'ok');
+    addMsg('ai', `✓ Reroute for ${ship.id} approved via ${_selectedRoute.name}. New ETA: ${ship.eta_hours}h.`);
+  }
+  
   closeSDM();
 }
 

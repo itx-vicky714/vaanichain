@@ -226,21 +226,38 @@ let allShips = [];
 let statusData = {};
 
 async function loadData() {
+  const localReroutes = localStorage.getItem('approvedReroutes');
+  if (localReroutes) {
+    try {
+      allShips = JSON.parse(localReroutes);
+      console.log("Using rerouted shipment data from localStorage");
+    } catch(e) {
+      console.error("Failed to parse local reroutes", e);
+    }
+  }
+
   try {
     const [rs, st] = await Promise.all([
       fetch(`${CONFIG.BASE_URL}/shipments`),
       fetch(`${CONFIG.BASE_URL}/status`)
     ]);
-    allShips = await rs.json();
+    const serverShips = await rs.json();
     statusData = await st.json();
+    
+    // If we don't have local reroutes, use server data
+    if (!allShips.length) {
+      allShips = serverShips;
+    }
   } catch(e) {
-    console.warn("Backend offline, using fallback data");
-    allShips = [
-      {id:'SHP-1001',mode:'road',route:'NH-48',origin:'Mumbai',destination:'Delhi',eta_hours:18,status:'on_time',cargo:'Electronics'},
-      {id:'SHP-1002',mode:'road',route:'NH-44',origin:'Delhi',destination:'Bengaluru',eta_hours:28,status:'at_risk',cargo:'Pharma'},
-      {id:'RLY-2001',mode:'rail',route:'Western DFC',origin:'Mumbai',destination:'Delhi',eta_hours:22,status:'on_time',cargo:'FMCG'},
-      {id:'AIR-3001',mode:'air',route:'IndiGo Cargo',origin:'Mumbai',destination:'Delhi',eta_hours:2,status:'on_time',cargo:'Medical'}
-    ];
+    console.warn("Backend offline, using fallback or local data");
+    if (!allShips.length) {
+      allShips = [
+        {id:'SHP-1001',mode:'road',route:'NH-48',origin:'Mumbai',destination:'Delhi',eta_hours:18,status:'on_time',cargo:'Electronics'},
+        {id:'SHP-1002',mode:'road',route:'NH-44',origin:'Delhi',destination:'Bengaluru',eta_hours:28,status:'at_risk',cargo:'Pharma'},
+        {id:'RLY-2001',mode:'rail',route:'Western DFC',origin:'Mumbai',destination:'Delhi',eta_hours:22,status:'on_time',cargo:'FMCG'},
+        {id:'AIR-3001',mode:'air',route:'IndiGo Cargo',origin:'Mumbai',destination:'Delhi',eta_hours:2,status:'on_time',cargo:'Medical'}
+      ];
+    }
     statusData = { alerts: [{shipment_id:'SHP-1002', risk_reason:'Monsoon Flooding', recommended_action:'Reroute via NH-52'}] };
   }
 }

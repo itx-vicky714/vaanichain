@@ -195,12 +195,24 @@ document.getElementById('data-date').textContent =
 // ── Load live data ──
 async function loadData() {
   let ships = [], status = {};
+  
+  const localReroutes = localStorage.getItem('approvedReroutes');
+  if (localReroutes) {
+    try {
+      ships = JSON.parse(localReroutes);
+      console.log("Using rerouted shipment data from localStorage");
+    } catch(e) {
+      console.error("Failed to parse local reroutes", e);
+    }
+  }
+
   try {
     const [sr, st] = await Promise.all([
       fetch(`${CONFIG.BASE_URL}/shipments`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json()),
       fetch(`${CONFIG.BASE_URL}/status`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json())
     ]);
-    ships = sr; status = st;
+    if (!ships.length) ships = sr;
+    status = st;
   } catch {}
 
   const total   = ships.length || 20;

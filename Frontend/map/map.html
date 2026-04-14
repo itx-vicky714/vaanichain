@@ -390,19 +390,30 @@ map = L.map('map', {
 // ── LOAD DATA ──
 async function loadAll() {
   let ships = [];
+  
+  const localReroutes = localStorage.getItem('approvedReroutes');
+  if (localReroutes) {
+    try {
+      ships = JSON.parse(localReroutes);
+      console.log("Using rerouted shipment data from localStorage for Map");
+    } catch(e) {
+      console.error("Failed to parse local reroutes", e);
+    }
+  }
+
   try {
     const [sr, st] = await Promise.all([
       fetch(`${CONFIG.BASE_URL}/shipments`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json()),
       fetch(`${CONFIG.BASE_URL}/status`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json())
     ]);
-    ships = sr;
+    if (!ships.length) ships = sr;
     const risk = st.overall_risk || 'low';
     const pill = document.getElementById('risk-pill');
     if (risk==='high'){pill.className='nav-pill pill-high';pill.textContent='🔴 High Risk'}
     else if(risk==='medium'){pill.className='nav-pill pill-risk';pill.textContent='🟡 Medium'}
     else{pill.className='nav-pill pill-ok';pill.textContent='🟢 All Clear'}
   } catch {
-    ships = getDefaultShips();
+    if (!ships.length) ships = getDefaultShips();
   }
   allShips = ships;
   document.getElementById('ship-count').textContent = `(${ships.length})`;
