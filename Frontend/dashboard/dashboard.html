@@ -1600,21 +1600,46 @@ async function sendChat() {
     const input = document.getElementById('chat-inp');
     const msg = input.value.trim();
     if (!msg) return;
-    
-    const shipData = JSON.stringify(allShips || []);
-    const langInstruction = voiceLang === 'en' ? "You MUST reply in English only. Never use Hindi." : voiceLang === 'hi' ? "Sirf Hindi mein jawab do. No English." : "Reply in Hinglish (Hindi+English mix) only.";
-    let systemPrompt = "You are VaaniChat, a logistics AI assistant. Current real shipment data: " + shipData + ". Answer ONLY based on this data. " + langInstruction;
 
-    const match = msg.match(/(SHP|RLY|AIR|SEA)-\d+/i);
-    if (match) {
-      const found = allShips.find(s => s.id.toLowerCase() === match[0].toLowerCase());
-      if (found) {
-        systemPrompt += " User is specifically asking about shipment " + match[0] + ". Details: " + JSON.stringify(found);
+    const allData = {
+      shipments: allShips,
+      summary: {
+        total: allShips.length,
+        onTime: allShips.filter(s => (s.status||'').toUpperCase() === 'ON_TIME').length,
+        atRisk: allShips.filter(s => (s.status||'').toUpperCase() === 'AT_RISK').length,
+        delayed: allShips.filter(s => (s.status||'').toUpperCase() === 'DELAYED').length,
+        rerouted: allShips.filter(s => (s.status||'').toUpperCase() === 'REROUTED').length
+      },
+      routes: allShips.map(s => ({
+        id: s.id || s.shipmentId,
+        mode: s.mode || s.transportMode,
+        origin: s.origin,
+        destination: s.destination,
+        currentRoute: s.currentRoute || s.route,
+        altRoutes: s.altRoutes || s.alternativeRoutes || []
+      })),
+      analytics: {
+        byMode: {
+          sea: allShips.filter(s => (s.mode||'').toLowerCase().includes('sea') || (s.mode||'').toLowerCase().includes('ship')).length,
+          air: allShips.filter(s => (s.mode||'').toLowerCase().includes('air')).length,
+          rail: allShips.filter(s => (s.mode||'').toLowerCase().includes('rail')).length,
+          road: allShips.filter(s => (s.mode||'').toLowerCase().includes('road')).length
+        }
       }
-    }
-    
+    };
+
+    const selectedLang = voiceLang; 
+    const langInstruction = selectedLang === 'en' 
+      ? "You MUST reply in English only. No matter what language the user writes in, your response must always be in English only."
+      : "User ne Hindi choose ki hai. Chahe user kisi bhi language mein likhe, tumhara jawab hamesha sirf Hindi mein hona chahiye. Koi English nahi.";
+
+    const systemPrompt = "You are VaaniChat, an intelligent logistics assistant for VaaniChain supply chain platform. You have access to complete real-time data below. Answer any question the user asks — about shipments, routes, maps, transport modes (sea/air/rail/road), analytics, reports, delays, risks, ETAs, cargo — using ONLY this data. Never say you don't have data. Never give generic answers. " +
+      "If user asks about specific shipment ID, find it in allShips and give full details. If user asks about analytics/counts, use summary object. If user asks about routes/modes, use routes array. If user asks about at-risk shipments, list them with IDs and reasons. " +
+      "Never return vague answers — always answer the specific question.\n\nLIVE DATA: " + JSON.stringify(allData) + "\n\n" + langInstruction;
+
     addMsg('user', msg);
     input.value = '';
+
     try {
         const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
             method: 'POST',
@@ -1628,19 +1653,38 @@ async function sendChat() {
         addMsg('ai', d.reply || 'No response');
         updateChatBadge(true);
     } catch {
-        // Frontend Fallback Logic
-        let reply = "Backend is offline. ";
+        // SMART FALLBACK
+        let reply = "";
+        const lowerMsg = msg.toLowerCase();
+        const match = msg.match(/(SHP|RLY|AIR|SEA)-\d+/i);
+
         if (match) {
-            const s = allShips.find(x => x.id.toLowerCase() === match[0].toLowerCase());
+            const s = allShips.find(x => (x.id || x.shipmentId || '').toUpperCase() === match[0].toUpperCase());
             if (s) {
-                reply += `Found ${s.id}: ${s.origin} to ${s.destination}, status is ${s.status}. ETA: ${s.eta_hours}h.`;
+                reply = selectedLang === 'en'
+                    ? `Shipment ${s.id}: ${s.origin} to ${s.destination}, status is ${s.status}. ETA: ${s.eta_hours}h. Cargo: ${s.cargo}. Route: ${s.route || '—'}.`
+                    : `Shipment ${s.id}: ${s.origin} se ${s.destination} ja raha hai, status ${s.status} hai. ETA ${s.eta_hours} ghante hai. Maal: ${s.cargo}. Route: ${s.route || '—'}.`;
             } else {
-                reply += `Could not find shipment ${match[0]} in local data.`;
+                reply = selectedLang === 'en' ? `Could not find shipment ${match[0]}.` : `Shipment ${match[0]} nahi mila.`;
             }
-        } else if (msg.toLowerCase().includes('how many') || msg.toLowerCase().includes('kitne')) {
-            reply += `Currently monitoring ${allShips.length} shipments. ${allShips.filter(x=>x.status!=='on_time').length} need attention.`;
+        } else if (lowerMsg.includes('at risk') || lowerMsg.includes('risk') || lowerMsg.includes('khatra')) {
+            const risky = allShips.filter(s => (s.status||'').toUpperCase() === 'AT_RISK');
+            if (risky.length > 0) {
+                const ids = risky.map(s => s.id).join(', ');
+                reply = selectedLang === 'en'
+                    ? `There are ${risky.length} shipments at risk: ${ids}. Check the alert feed for details.`
+                    : `${risky.length} shipments risk mein hain: ${ids}. Details ke liye alert feed dekhein.`;
+            } else {
+                reply = selectedLang === 'en' ? "No shipments are currently at risk." : "Abhi koi shipment risk mein nahi hai.";
+            }
+        } else if (lowerMsg.includes('how many') || lowerMsg.includes('count') || lowerMsg.includes('total') || lowerMsg.includes('kitne')) {
+            reply = selectedLang === 'en'
+                ? `Total: ${allData.summary.total}, On Time: ${allData.summary.onTime}, At Risk: ${allData.summary.atRisk}, Delayed: ${allData.summary.delayed}.`
+                : `Kul shipments: ${allData.summary.total}, On Time: ${allData.summary.onTime}, At Risk: ${allData.summary.atRisk}, Delayed: ${allData.summary.delayed}.`;
         } else {
-            reply += "Please check app.py status.";
+            reply = selectedLang === 'en' 
+                ? "I am currently in offline mode but can assist with dashboard data. Ask about specific IDs, analytics, or at-risk shipments."
+                : "Main abhi offline mode mein hoon lekin dashboard data mein madad kar sakta hoon. Shipment IDs, analytics, ya risk ke baare mein puchein.";
         }
         addMsg('ai', reply);
         updateChatBadge(false);
