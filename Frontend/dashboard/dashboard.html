@@ -1277,15 +1277,22 @@ function updateRiskBadge(risk) {
   else                   { el.className = 'risk-badge risk-low';  el.textContent = '🟢 All Clear'; }
 }
 
+let activeAlerts = [];
+
 function renderAlerts(data) {
-  // BUG 4 - Alerts should be built from actual shipments that have riskFactors or AT_RISK/DELAYED status
-  const alerts = [];
+  // BUG 2 - Prevent duplicates and clear existing state
+  const uniqueAlerts = new Map();
+  
   allShips.forEach(s => {
+    const shipId = s.id || s.shipmentId || s.shp_id;
+    // Skip if already rerouted in this session
+    if (s.status === 'REROUTED') return;
+
     const risk = RISK_ENGINE.getFullRisk(s, null);
     if (risk.level !== 'low' || s.status === 'at_risk' || s.status === 'delayed') {
       const { alts } = genAltRoutes(s);
-      alerts.push({
-        shipment_id: s.id || s.shipmentId || s.shp_id,
+      uniqueAlerts.set(shipId, {
+        shipment_id: shipId,
         risk_level: risk.level,
         risk_reason: risk.topReason || (s.riskFactors ? s.riskFactors.join(', ') : '') || s.threat || s.disruption || 'Potential Delay',
         recommended_action: alts[0]?.name || 'Review Route',
@@ -1297,19 +1304,22 @@ function renderAlerts(data) {
     }
   });
 
+  activeAlerts = Array.from(uniqueAlerts.values());
+
+  // BUG 3 - Sync badge count with actual cards
   const badge = document.getElementById('alert-count-badge');
-  badge.textContent = alerts.length + ' Alert' + (alerts.length !== 1 ? 's' : '');
-  badge.style.background = alerts.length > 0 ? 'var(--red2)' : 'var(--green2)';
-  badge.style.color = alerts.length > 0 ? 'var(--red)' : 'var(--green)';
-  badge.style.borderColor = alerts.length > 0 ? '#fca5a5' : '#86efac';
+  const count = activeAlerts.length;
+  badge.textContent = count + ' Alert' + (count !== 1 ? 's' : '');
+  badge.style.background = count > 0 ? 'var(--red2)' : 'var(--green2)';
+  badge.style.color = count > 0 ? 'var(--red)' : 'var(--green)';
+  badge.style.borderColor = count > 0 ? '#fca5a5' : '#86efac';
   
-  document.getElementById('alerts-body').innerHTML = alerts.length
-    ? alerts.map(mkAlertCard).join('')
+  document.getElementById('alerts-body').innerHTML = count
+    ? activeAlerts.map(mkAlertCard).join('')
     : `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
 }
 
 function mkAlertCard(a) {
-  // BUG 1 - Resolve ID and data from correct properties
   const shipId = a.shipment_id || a.id || a.shipmentId || a.shp_id;
   const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === shipId) || {};
   
@@ -1348,7 +1358,7 @@ function mkAlertCard(a) {
     </div>`;
   }).join('');
 
-  return `<div class="alert-card ${a.risk_level||'medium'}">
+  return `<div class="alert-card ${a.risk_level||'medium'}" id="alert-${shipId}">
     <div class="alert-head">
       <span class="ah-id">${modeIcon} ${shipId} · ${s.supplier||a.supplier||'Unknown'}</span>
       <span class="ah-conf">${Math.round(confidence)}% confidence</span>
@@ -1370,10 +1380,49 @@ function mkAlertCard(a) {
 }
 
 function approveAlert(id, btn) {
-  // BUG 2 - Ensure real shipment ID is used in toast
+  // BUG 1 - Update shipment status and re-render
+  const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === id);
+  if (s) {
+    s.status = 'REROUTED';
+    renderShipments();
+  }
+
+  // BUG 1 - Remove alert card from feed
+  activeAlerts = activeAlerts.filter(a => (a.shipment_id || a.id) !== id);
+  const card = document.getElementById(`alert-${id}`);
+  if (card) {
+    card.style.transition = 'all 0.4s ease';
+    card.style.opacity = '0';
+    card.style.transform = 'translateX(20px)';
+    setTimeout(() => {
+      card.remove();
+      // Sync badge count
+      const badge = document.getElementById('alert-count-badge');
+      const count = document.querySelectorAll('.alert-card').length;
+      badge.textContent = count + ' Alert' + (count !== 1 ? 's' : '');
+      if (count === 0) {
+        document.getElementById('alerts-body').innerHTML = `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
+        badge.style.background = 'var(--green2)';
+        badge.style.color = 'var(--green)';
+        badge.style.borderColor = '#86efac';
+      }
+    }, 400);
+  }
+
+  // BUG 4 - Connect to Map
+  const reroutes = JSON.parse(localStorage.getItem('approvedReroutes') || '[]');
+  if (!reroutes.includes(id)) {
+    reroutes.push(id);
+    localStorage.setItem('approvedReroutes', JSON.stringify(reroutes));
+  }
+  
+  // Check for global map functions (if embedded)
+  if (window.updateRoute) window.updateRoute(id);
+  if (window.focusShipment) window.focusShipment(id);
+
   btn.textContent = '✓ Approved!'; btn.disabled = true; btn.style.opacity = '.5';
   showToast('Reroute approved for ' + id, 'ok');
-  addMsg('ai', '✓ Reroute for ' + id + ' approved. Supplier notified and new route activated.');
+  addMsg('ai', `✓ Reroute for ${id} approved. Shipment status updated to REROUTED. Map intelligence updated.`);
 }
 
 async function showEmail(id, sup) {
