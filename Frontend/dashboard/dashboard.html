@@ -875,6 +875,11 @@ window.onload = () => {
   const user = localStorage.getItem('vc_user') || 'demo';
   document.getElementById('user-av').childNodes[0].textContent = user[0].toUpperCase();
   document.getElementById('um-name').textContent = 'Signed in as ' + user;
+  
+  // BUG 2 - All Clear button click handler
+  document.getElementById('risk-badge').style.cursor = 'pointer';
+  document.getElementById('risk-badge').onclick = () => resetAll();
+
   startClock();
   fetchAllWeather();
   loadShipments();
@@ -1285,8 +1290,23 @@ function renderAlerts(data) {
 }
 
 function mkAlertCard(a) {
-  const modeIcon = a.mode_icon || '📦';
-  const mode = a.mode || 'road';
+  const s = allShips.find(x => x.id === a.shipment_id) || {};
+  const modeIcon = a.mode_icon || MODE_ICONS[s.mode] || '📦';
+  const mode = s.mode || a.mode || 'road';
+  
+  // BUG 3 - Real AI-generated recommendation logic
+  let realReason = a.risk_reason;
+  let realAction = a.recommended_action;
+  
+  if (s.id) {
+    const risk = RISK_ENGINE.getFullRisk(s, null);
+    const { etaLeft } = getShipProgress(s);
+    realReason = `${risk.topReason}. Shipment ${s.id} carrying ${s.cargo||'cargo'} has ${etaLeft}h remaining.`;
+    realAction = risk.level === 'high' 
+      ? `Critical: Reroute ${s.id} immediately to avoid ${etaLeft}h delay.` 
+      : `Monitor: ${s.id} ETA is tight, consider alternate corridor.`;
+  }
+
   const modeBadgeColors = {
     road:{bg:'#fef3c7',color:'#92400e',border:'#fcd34d'},
     rail:{bg:'#dbeafe',color:'#1447be',border:'#93c5fd'},
@@ -1317,19 +1337,19 @@ function mkAlertCard(a) {
 
   return `<div class="alert-card ${a.risk_level||'medium'}">
     <div class="alert-head">
-      <span class="ah-id">${modeIcon} ${a.shipment_id} · ${a.supplier||''}</span>
+      <span class="ah-id">${modeIcon} ${a.shipment_id} · ${s.supplier||a.supplier||''}</span>
       <span class="ah-conf">${a.confidence_pct||'—'}% confidence</span>
     </div>
     <div class="alert-body">
       <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:${mbc.bg};color:${mbc.color};border:1px solid ${mbc.border};margin-bottom:6px">${modeIcon} ${(a.mode_label||mode).toUpperCase()} FREIGHT</span>
       ${a.weather_confirmed?'<span class="a-weather-badge">⛈ Weather-confirmed</span><br>':''}
       <span class="a-level al-${a.risk_level||'medium'}">${a.risk_level||'medium'} risk</span>
-      <div class="a-reason">${a.risk_reason}</div>
-      <div class="a-action">→ ${a.recommended_action||'Review recommended'}</div>
+      <div class="a-reason">${realReason}</div>
+      <div class="a-action">→ ${realAction}</div>
       <div class="a-routes">${altRoutesHtml||'<div style="font-size:11px;color:var(--text4);padding:4px 0">No pre-filed alternate on record.</div>'}</div>
       <div class="a-btns">
         <button class="btn-approve" onclick="approveAlert('${a.shipment_id}',this)">${approveLabel}</button>
-        <button class="btn-email-a" onclick="showEmail('${a.shipment_id}','${a.supplier||''}')">📧 Email</button>
+        <button class="btn-email-a" onclick="showEmail('${a.shipment_id}','${s.supplier||a.supplier||''}')">📧 Email</button>
         <button class="btn-dismiss" onclick="this.closest('.alert-card').style.opacity='0.4'">✕</button>
       </div>
     </div>
@@ -1422,7 +1442,11 @@ function _markDisruption() {
 }
  
 let _resetRetryCount = 0;
+let _countdownInterval = null;
+
 async function resetAll() {
+  if (_countdownInterval) return; // Already counting down
+
   try {
     const res = await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
     if (!res.ok) throw new Error('Reset failed');
@@ -1439,11 +1463,24 @@ async function resetAll() {
     updateChatBadge(false);
     
     if (_resetRetryCount <= 5) {
-      const msg = _resetRetryCount === 1 
-        ? 'Backend is waking up... retrying in 30s' 
-        : 'Backend is still waking up... retrying in 30s';
-      showToast(msg, 'warn');
-      setTimeout(resetAll, 30000);
+      let seconds = 30;
+      const msgPrefix = _resetRetryCount === 1 ? 'Backend is waking up' : 'Still waking up';
+      
+      const updateToast = () => {
+        showToast(`${msgPrefix}... retrying in ${seconds}s`, 'warn');
+      };
+      
+      updateToast();
+      _countdownInterval = setInterval(() => {
+        seconds--;
+        if (seconds <= 0) {
+          clearInterval(_countdownInterval);
+          _countdownInterval = null;
+          resetAll();
+        } else {
+          updateToast();
+        }
+      }, 1000);
     } else {
       _resetRetryCount = 0;
       showToast('Backend unavailable. Try again later', 'err');
@@ -1458,13 +1495,19 @@ async function sendChat() {
     const input = document.getElementById('chat-inp');
     const msg = input.value.trim();
     if (!msg) return;
+    
+    // BUG 4 - VaaniChat language instruction
+    const langInstruction = voiceLang === 'en' 
+      ? "[REPLY IN ENGLISH ONLY] " 
+      : "[REPLY IN HINDI/HINGLISH] ";
+    
     addMsg('user', msg);
     input.value = '';
     try {
         const r = await fetch(`${CONFIG.BASE_URL}/chat`, {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify({message: msg})  // was broken — `message` was undefined
+            body: JSON.stringify({message: langInstruction + msg})
         });
         const d = await r.json();
         addMsg('ai', d.reply || 'No response');

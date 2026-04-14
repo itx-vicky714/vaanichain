@@ -1195,21 +1195,33 @@ function computeRealRoutes(originCity, destCity) {
     ];
   }
 
-  const LABELS  = ['⚡ Fastest',  '💰 Cheapest', '⚖️ Balanced'];
-  const COLORS  = ['#2563eb',     '#059669',     '#7c3aed'];
-  const BGS     = ['#eff6ff',     '#f0fdf4',     '#faf5ff'];
-  const BORDERS = ['#93c5fd',     '#86efac',     '#c4b5fd'];
-
-  return raw.map(([nh, km, avgSpeed, toll, note], i) => {
+  const processed = raw.map(([nh, km, avgSpeed, toll, note]) => {
     const etaH   = Math.round((km / avgSpeed) * 10) / 10;
     const fuel   = Math.round(km * FUEL_PER_KM / 50) * 50;
     const driver = Math.round(etaH * 85 / 50) * 50;
     const total  = toll + fuel + driver;
     const ewayDays = Math.max(1, Math.floor(km / 100));
     const restStops = etaH > 10 ? Math.floor(etaH / 10) : 0;
-    return { nh, km, avgSpeed, toll, fuel, driver, total, etaH, note, ewayDays, restStops,
-             label: LABELS[i], color: COLORS[i], bg: BGS[i], border: BORDERS[i] };
+    return { nh, km, avgSpeed, toll, fuel, driver, total, etaH, note, ewayDays, restStops };
   });
+
+  // BUG 6 - Logic to correctly label Fastest, Cheapest, and Balanced
+  const sortedByTime = [...processed].sort((a, b) => a.etaH - b.etaH);
+  const sortedByCost = [...processed].sort((a, b) => a.total - b.total);
+  
+  const COLORS  = ['#2563eb',     '#059669',     '#7c3aed'];
+  const BGS     = ['#eff6ff',     '#f0fdf4',     '#faf5ff'];
+  const BORDERS = ['#93c5fd',     '#86efac',     '#c4b5fd'];
+
+  const fastest = sortedByTime[0];
+  const cheapest = sortedByCost[0] === fastest ? sortedByCost[1] || sortedByCost[0] : sortedByCost[0];
+  const balanced = processed.find(p => p !== fastest && p !== cheapest) || processed[2] || processed[0];
+
+  return [
+    { ...fastest, label: '⚡ Fastest', color: COLORS[0], bg: BGS[0], border: BORDERS[0] },
+    { ...cheapest, label: '💰 Cheapest', color: COLORS[1], bg: BGS[1], border: BORDERS[1] },
+    { ...balanced, label: '⚖️ Balanced', color: COLORS[2], bg: BGS[2], border: BORDERS[2] }
+  ];
 }
 
 function buildRoutes() {
