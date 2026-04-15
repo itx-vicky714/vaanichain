@@ -126,15 +126,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex
 
 <!-- NAV -->
 <nav class="nav">
-  <a class="nav-brand" href="../dashboard/dashboard.html">
+  <a class="nav-brand" href="../dashboard/index.html">
     <div class="nav-icon">🚛</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
   </a>
   <div class="nav-spc"></div>
   <div class="nav-mid">
-    <button class="nav-tab" onclick="location.href='../dashboard/dashboard.html'">Dashboard</button>
+    <button class="nav-tab" onclick="location.href='../dashboard/index.html'">Dashboard</button>
     <button class="nav-tab on">🗺 Map</button>
-    <button class="nav-tab" onclick="location.href='../analytics/analytics.html'">Analytics</button>
+    <button class="nav-tab" onclick="location.href='../analytics/index.html'">Analytics</button>
     <button class="nav-tab" onclick="location.href='../reports/reports.html'">Reports</button>
   </div>
   <div class="nav-spc"></div>
@@ -207,9 +207,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);display:flex
   </div>
 </div>
 <script src="js/config.js"></script>
-<script src="js/api.js"></script>
-<script src="js/chat.js"></script>
-<script src="js/shipments.js"></script>
+<script src="../js/api.js"></script>
+<script src="../js/chat.js"></script>
+<script src="../js/shipments.js"></script>
 
 <script>
 (function(){ if(!localStorage.getItem('vc_token')) window.location.href='../index.html'; })();

@@ -1,0 +1,19 @@
+name: CI
+on: [push, pull_request]
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install -r Backend/requirements.txt
+      - run: pip install pytest
+      - run: pytest Backend/tests/ -v
+      - name: Check no hardcoded localhost login in production HTML
+        run: |
+          if grep -rn "localhost:5000/login" Frontend/ --include="*.html"; then
+            echo "ERROR: hardcoded localhost:5000/login found in frontend HTML"
+            exit 1
+          fi

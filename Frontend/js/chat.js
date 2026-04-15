@@ -1,5 +1,5 @@
 // Fixed chat.js
-// Old version used getElementById("chat-input") but dashboard.html uses id="chat-inp"
+// Old version used getElementById("chat-input") but dashboard/index.html uses id="chat-inp"
 // Added null guard so it doesn't crash on pages without a chat box
 
 async function sendMessage() {

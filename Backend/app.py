@@ -1,15 +1,21 @@
 from flask import Flask, jsonify, request, send_from_directory
 import os
+import logging
 from flask_cors import CORS
-import os, json, requests as req
+import json
+import requests as req
 from dotenv import load_dotenv
 
 load_dotenv()
+
+logging.basicConfig(level=os.environ.get('LOG_LEVEL', 'INFO'))
+logger = logging.getLogger(__name__)
 
 # Load env vars
 SUPABASE_URL = os.environ.get('SUPABASE_URL', '')
 SUPABASE_KEY = os.environ.get('SUPABASE_KEY', '')
 GEMINI_KEY = os.environ.get('GEMINI_API_KEY', '')
+DEMO_TOKEN = os.environ.get('DEMO_TOKEN', 'vaanichain_demo')
 
 # Headers for REST calls
 SUPA_HEADERS = {
@@ -19,14 +25,20 @@ SUPA_HEADERS = {
     "Prefer": "return=representation"
 }
 
-def supa_call(method, path, json=None):
-    if not SUPABASE_URL: return None
+def supa_call(method, path, payload=None):
+    if not SUPABASE_URL or not SUPABASE_KEY: return None
     try:
-        url = f"{SUPABASE_URL}/rest/v1/{path}"
-        r = req.request(method, url, headers=SUPA_HEADERS, json=json, timeout=10)
+        base_url = SUPABASE_URL.rstrip('/')
+        url = f"{base_url}/rest/v1/{path}"
+        r = req.request(method, url, headers=SUPA_HEADERS, json=payload, timeout=(3.05, 10))
+        if not r.ok:
+            logger.warning(f"Supabase error: {r.status_code} - {r.text[:200]}")
+            return None
+        if r.status_code == 204 or not r.text.strip():
+            return None
         return r.json()
     except Exception as e:
-        print(f"Supabase REST error: {e}")
+        logger.exception(f"Supabase REST error: {e}")
         return None
 
 app = Flask(__name__)
@@ -38,7 +50,7 @@ def serve_frontend(filename):
 @app.route('/')
 def index():
     frontend_path = os.path.join(os.path.dirname(__file__), '..', 'Frontend')
-    return send_from_directory(frontend_path, 'dashboard.html')
+    return send_from_directory(frontend_path, 'index.html')
 CORS(app)
 
 DATA_FILE = os.path.join(os.path.dirname(__file__), 'data', 'shipments.json')
@@ -56,15 +68,17 @@ def save_data(data):
         with open(DATA_FILE, 'w') as f:
             json.dump(data, f, indent=2)
     except Exception as e:
-        print(f"Error saving data: {e}")
+        logger.exception(f"Error saving data: {e}")
 
-@app.route('/')
+@app.route('/health')
 def health():
     return jsonify({"status": "ok", "supabase": SUPABASE_URL != ''})
 
 @app.route('/login', methods=['POST'])
 def login():
-    data = request.json
+    data = request.get_json(silent=True) or {}
+    if not data:
+        return jsonify({"success": False, "error": "JSON body required"}), 400
     u = data.get('username')
     p = data.get('password')
     valid = {'demo':'vaanichain123', 'admin':'admin123', 'judge':'hackathon'}
@@ -75,14 +89,24 @@ def login():
 @app.route('/shipments', methods=['GET'])
 def get_shipments():
     res = supa_call('GET', 'shipments?select=*')
-    if res is not None:
-        return jsonify(res)
-    return jsonify(load_data())
+    if not isinstance(res, list):
+        res = load_data()
+    return jsonify(res)
+
+def check_demo_token():
+    token = request.headers.get('X-Demo-Token')
+    if not token or token != DEMO_TOKEN:
+        return False
+    return True
 
 @app.route('/shipments/add', methods=['POST'])
 def add_shipment():
-    data = request.json
-    supa_call('POST', 'shipments', json=data)
+    if not check_demo_token():
+        return jsonify({"success": False, "error": "Invalid or missing token"}), 403
+    data = request.get_json(silent=True) or {}
+    if not data:
+        return jsonify({"success": False, "error": "JSON body required"}), 400
+    supa_call('POST', 'shipments', payload=data)
     
     # Save to JSON as backup
     current = load_data()
@@ -93,16 +117,19 @@ def add_shipment():
 
 @app.route('/trigger', methods=['POST'])
 def trigger():
-    mode = request.json.get('mode')
-    route = request.json.get('route')
+    if not check_demo_token():
+        return jsonify({"success": False, "error": "Invalid or missing token"}), 403
+    data = request.get_json(silent=True) or {}
+    mode = data.get('mode')
+    route = data.get('route')
     if SUPABASE_URL:
         try:
             if mode:
-                supa_call('PATCH', f'shipments?mode=eq.{mode}', json={'status':'at_risk'})
+                supa_call('PATCH', f'shipments?mode=eq.{mode}', payload={'status':'at_risk'})
             elif route:
-                supa_call('PATCH', f'shipments?route_name=like.*{route}*', json={'status':'at_risk'})
+                supa_call('PATCH', f'shipments?route_name=like.*{route}*', payload={'status':'at_risk'})
             else:
-                supa_call('PATCH', 'shipments?id=neq.', json={'status':'at_risk'})
+                supa_call('PATCH', 'shipments?id=not.is.null', payload={'status':'at_risk'})
             return jsonify({'success': True})
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
@@ -110,9 +137,11 @@ def trigger():
 
 @app.route('/reset', methods=['POST'])
 def reset():
+    if not check_demo_token():
+        return jsonify({"success": False, "error": "Invalid or missing token"}), 403
     if SUPABASE_URL:
         try:
-            supa_call('PATCH', 'shipments?id=neq.', json={'status':'on_time'})
+            supa_call('PATCH', 'shipments?id=not.is.null', payload={'status':'on_time'})
             return jsonify({'success': True})
         except Exception as e:
             return jsonify({'success': False, 'error': str(e)}), 500
@@ -121,7 +150,7 @@ def reset():
 @app.route('/status', methods=['GET'])
 def network_status():
     data = supa_call('GET', 'shipments?select=*')
-    if data is None:
+    if not isinstance(data, list):
         data = load_data()
         
     total = len(data)
@@ -151,12 +180,16 @@ def network_status():
 
 @app.route('/chat', methods=['POST'])
 def chat():
-    message = request.json.get('message','')
+    data = request.get_json(silent=True) or {}
+    if not data:
+        return jsonify({"success": False, "error": "JSON body required"}), 400
+    message = data.get('message','')
     
     # Try Gemini first
     if GEMINI_KEY:
         try:
-            ships = supa_call('GET', 'shipments?select=*') or []
+            ships = supa_call('GET', 'shipments?select=*')
+            if not isinstance(ships, list): ships = load_data()
             at_risk = [s for s in ships if s.get('status') == 'at_risk']
             delayed = [s for s in ships if s.get('status') == 'delayed']
             
@@ -183,7 +216,8 @@ If message is in Hindi/Hinglish, reply in Hinglish."""
     # Rule-based fallback
     msg = message.lower()
     if any(w in msg for w in ['status','kitna','total','how many']):
-        ships = supa_call('GET', 'shipments?select=*') or []
+        ships = supa_call('GET', 'shipments?select=*')
+        if not isinstance(ships, list): ships = load_data()
         on_time = len([s for s in ships if s.get('status')=='on_time'])
         at_risk = len([s for s in ships if s.get('status')=='at_risk'])
         return jsonify({'reply': f'Network mein {len(ships)} shipments hain. {on_time} on time, {at_risk} at risk.'})
@@ -200,21 +234,23 @@ If message is in Hindi/Hinglish, reply in Hinglish."""
 
 @app.route('/weather/<city>', methods=['GET'])
 def get_weather(city):
-    coords = {
-        'Mumbai':(19.07,72.87), 'Delhi':(28.67,77.22), 'Chennai':(13.08,80.27),
-        'Kolkata':(22.57,88.36), 'Bangalore':(12.97,77.59), 'Hyderabad':(17.38,78.47)
-    }
-    if city not in coords:
-        return jsonify({"error":"City not found"}), 404
-        
-    lat, lon = coords[city]
     try:
-        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,precipitation,windspeed_10m,weathercode"
+        geo_url = f"https://geocoding-api.open-meteo.com/v1/search?name={city}&count=1&language=en&format=json"
+        geo_r = req.get(geo_url, timeout=5)
+        geo_r.raise_for_status()
+        geo_data = geo_r.json()
+        if not geo_data.get('results'):
+            raise ValueError("City not found in geocoding")
+        lat = geo_data['results'][0]['latitude']
+        lon = geo_data['results'][0]['longitude']
+        
+        url = f"https://api.open-meteo.com/v1/forecast?latitude={lat}&longitude={lon}&current=temperature_2m,precipitation,wind_speed_10m,weather_code&timezone=auto"
         r = req.get(url, timeout=5)
+        r.raise_for_status()
         d = r.json()['current']
         temp = d['temperature_2m']
         rain = d['precipitation']
-        wind = d['windspeed_10m']
+        wind = d['wind_speed_10m']
         
         cond = "Clear"
         r_level = "low"
@@ -229,7 +265,8 @@ def get_weather(city):
             "city": city, "temp_c": temp, "condition": cond, 
             "rain_mm": rain, "wind_kmh": wind, "risk_level": r_level
         })
-    except:
+    except Exception as e:
+        logger.exception(f"Weather error for {city}: {e}")
         return jsonify({"city": city, "temp_c": 25, "condition": "Unknown", "rain_mm": 0, "wind_kmh": 10, "risk_level": "low"})
 
 if __name__ == '__main__':

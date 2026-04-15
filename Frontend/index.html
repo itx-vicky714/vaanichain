@@ -214,7 +214,7 @@ async function doLogin() {
 
   // Try backend first (3s timeout — short so demo doesn't stall)
   try {
-    const r = await fetch('http://localhost:5000/login', {
+    const r = await fetch(`${API}/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ username: user, password: pass }),
@@ -248,10 +248,13 @@ function saveAndGo(user, token) {
   localStorage.setItem('vc_user', user);
   document.getElementById('login-btn').textContent = '✓ Redirecting...';
   // use replace() so back button from dashboard doesn't return here
-  setTimeout(() => window.location.replace('dashboard/dashboard.html'), 600);
+  setTimeout(() => window.location.replace('dashboard/index.html'), 600);
 }
 
 document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>down', e => { if (e.key === 'Enter') doLogin(); });
 </script>
 </body>
 </html>
