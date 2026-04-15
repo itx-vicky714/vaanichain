@@ -1,9 +1,9 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>VaaniChain — Live Operations</title>
+<title>VaaniChain â€” Live Operations</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -27,7 +27,7 @@
 html{font-size:14px;-webkit-font-smoothing:antialiased}
 body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;overflow-y:auto}
 
-/* ── NAVBAR ── */
+/* â”€â”€ NAVBAR â”€â”€ */
 .nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
 .nav-brand{display:flex;align-items:center;gap:10px}
 .nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px;box-shadow:0 2px 8px rgba(37,99,235,.35)}
@@ -62,7 +62,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .um-item:last-child{border-radius:0 0 10px 10px;color:var(--red)}
 .um-divider{height:1px;background:var(--border);margin:4px 0}
 
-/* ── KPI STRIP ── */
+/* â”€â”€ KPI STRIP â”€â”€ */
 .kpi-strip{padding:20px 28px 0;display:grid;grid-template-columns:repeat(6,1fr);gap:12px}
 .kpi{background:var(--white);border-radius:var(--r);padding:16px 18px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden;transition:box-shadow .2s,transform .2s}
 .kpi:hover{box-shadow:var(--shadow2);transform:translateY(-2px)}
@@ -76,17 +76,17 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .kpi-sub{font-size:10px;color:var(--text4)}
 .kpi-icon{position:absolute;top:14px;right:14px;width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:16px}
 
-/* ── MAIN GRID ── */
+/* â”€â”€ MAIN GRID â”€â”€ */
 .grid{display:grid;grid-template-columns:1fr 390px;gap:18px;padding:18px 28px 40px;align-items:start}
 
-/* ── PANEL ── */
+/* â”€â”€ PANEL â”€â”€ */
 .panel{background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow);display:flex;flex-direction:column}
 .panel-head{padding:13px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0}
 .ph-title{font-size:14px;font-weight:700;color:var(--text);flex:1}
 .ph-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--bg);border:1px solid var(--border);color:var(--text3)}
 .ph-refresh{font-family:var(--mono);font-size:10px;color:var(--text4)}
 
-/* ── MODE + FILTER BAR ── */
+/* â”€â”€ MODE + FILTER BAR â”€â”€ */
 .filter-bar{padding:9px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:7px;background:var(--bg);flex-wrap:wrap}
 .filter-btn{padding:5px 13px;border-radius:20px;font-size:12px;font-weight:600;border:1.5px solid var(--border);background:var(--white);color:var(--text3);cursor:pointer;transition:all .15s;font-family:var(--sans)}
 .filter-btn:hover{border-color:var(--blue);color:var(--blue)}
@@ -101,7 +101,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .search:focus{border-color:var(--blue)}
 .search::placeholder{color:var(--text4)}
 
-/* ── SHIPMENT CARDS GRID ── */
+/* â”€â”€ SHIPMENT CARDS GRID â”€â”€ */
 .ships-grid{padding:14px;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:11px}
 .ship-card{background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);padding:15px;cursor:pointer;transition:all .2s;position:relative}
 .ship-card:hover{box-shadow:var(--shadow2);transform:translateY(-2px);border-color:var(--border2)}
@@ -132,10 +132,10 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .pri-high{background:var(--amber2);color:var(--amber)}
 .pri-normal{background:var(--green2);color:var(--green)}
 
-/* ── RIGHT COLUMN ── */
+/* â”€â”€ RIGHT COLUMN â”€â”€ */
 .right-col{display:flex;flex-direction:column;gap:14px}
 
-/* ── WEATHER ── */
+/* â”€â”€ WEATHER â”€â”€ */
 .wx-grid{padding:10px;display:flex;flex-direction:column;gap:7px}
 .wx-card{background:var(--white);border:1.5px solid var(--border);border-radius:10px;padding:11px 13px;display:flex;align-items:center;justify-content:space-between;box-shadow:var(--shadow)}
 .wx-left{display:flex;align-items:center;gap:9px}
@@ -150,7 +150,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .wxr-heavy{background:var(--red2);color:var(--red)}
 .wx-empty{padding:20px;text-align:center;font-size:12px;color:var(--text3)}
 
-/* ── ALERTS ── */
+/* â”€â”€ ALERTS â”€â”€ */
 .alert-card{margin:9px 11px;background:var(--white);border:1.5px solid var(--border);border-radius:var(--r);overflow:hidden;animation:slideIn .3s ease both;box-shadow:var(--shadow)}
 @keyframes slideIn{from{opacity:0;transform:translateX(8px)}to{opacity:1;transform:translateX(0)}}
 .alert-card.high{border-left:4px solid var(--red)}
@@ -179,7 +179,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .btn-dismiss{padding:7px 10px;border-radius:8px;font-size:11px;font-weight:700;background:var(--bg);border:1px solid var(--border);color:var(--text3);cursor:pointer;font-family:var(--sans)}
 .btn-dismiss:hover{background:var(--red2);color:var(--red)}
 
-/* ── CHAT ── */
+/* â”€â”€ CHAT â”€â”€ */
 .chat-msgs{padding:11px;display:flex;flex-direction:column;gap:8px;max-height:220px;overflow-y:auto;scrollbar-width:thin;scrollbar-color:var(--border) transparent}
 .msg{max-width:88%}
 .msg-user{align-self:flex-end}.msg-ai{align-self:flex-start}
@@ -216,7 +216,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .lang-toggle-btn.on{background:var(--blue);border-color:var(--blue);color:#fff}
 .voice-hint{font-size:10px;color:var(--text4);font-family:var(--mono);margin-left:auto}
 
-/* ── MODAL ── */
+/* â”€â”€ MODAL â”€â”€ */
 .modal-ov{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:200;display:flex;align-items:center;justify-content:center;padding:24px;backdrop-filter:blur(4px);opacity:0;pointer-events:none;transition:opacity .2s}
 .modal-ov.open{opacity:1;pointer-events:all}
 .modal{background:var(--white);border-radius:16px;padding:26px;max-width:520px;width:100%;max-height:80vh;overflow-y:auto;box-shadow:0 20px 60px rgba(0,0,0,.2);transform:translateY(16px);transition:transform .2s}
@@ -228,7 +228,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .btn-copy-e{padding:8px 18px;border-radius:8px;font-size:13px;font-weight:600;background:var(--grad1);color:#fff;border:none;cursor:pointer;font-family:var(--sans)}
 .btn-close-e{padding:8px 16px;border-radius:8px;font-size:13px;font-weight:600;background:var(--bg);border:1.5px solid var(--border);color:var(--text3);cursor:pointer;font-family:var(--sans)}
 
-/* ── EMPTY / TOAST ── */
+/* â”€â”€ EMPTY / TOAST â”€â”€ */
 .empty{text-align:center;padding:40px 20px;color:var(--text3)}
 .empty-icon{font-size:32px;margin-bottom:10px;opacity:.5}
 .empty-text{font-size:13px;line-height:1.6}
@@ -240,9 +240,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 ::-webkit-scrollbar{width:4px}::-webkit-scrollbar-thumb{background:var(--border2);border-radius:4px}
 
-/* ══════════════════════════════════════════════
-   SHIPMENT DETAIL MODAL — Production Grade
-══════════════════════════════════════════════ */
+/* â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+   SHIPMENT DETAIL MODAL â€” Production Grade
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• */
 .sdm-ov{
   position:fixed;inset:0;background:rgba(15,23,42,.6);
   z-index:300;display:flex;align-items:center;justify-content:center;
@@ -453,7 +453,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .sdm-btn-ghost:hover{background:var(--border)}
 .sdm-footer-spc{flex:1}
 
-/* ── LOCATION TRACKER ── */
+/* â”€â”€ LOCATION TRACKER â”€â”€ */
 .tracker-wrap{margin-top:10px;padding-top:10px;border-top:1px solid var(--border)}
 .tracker-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px}
 .tracker-label{font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;display:flex;align-items:center;gap:5px}
@@ -467,13 +467,13 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 .tracker-eta{font-size:10px;color:var(--text3);display:flex;align-items:center;gap:4px;margin-top:3px}
 .tracker-eta span{font-weight:700;color:var(--text)}
 
-/* ── PREDICTION BADGE ── */
+/* â”€â”€ PREDICTION BADGE â”€â”€ */
 .predict-badge{display:inline-flex;align-items:center;gap:5px;font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;margin-top:5px;font-family:var(--mono)}
 .predict-low{background:#f0fdf4;color:var(--green);border:1px solid #86efac}
 .predict-med{background:var(--amber2);color:var(--amber);border:1px solid #fcd34d}
 .predict-high{background:var(--red2);color:var(--red);border:1px solid #fca5a5}
 
-/* ── FLOATING CHATBOT ── */
+/* â”€â”€ FLOATING CHATBOT â”€â”€ */
 .fab{
   position:fixed;bottom:28px;left:28px;
   width:52px;height:52px;
@@ -514,23 +514,23 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 <!-- NAVBAR -->
 <nav class="nav">
   <div class="nav-brand">
-    <div class="nav-icon">🚛</div>
+    <div class="nav-icon">ðŸš›</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
-    <div class="nav-hindi">वाणी चेन</div>
+    <div class="nav-hindi">à¤µà¤¾à¤£à¥€ à¤šà¥‡à¤¨</div>
   </div>
   <div class="nav-spc"></div>
   <div class="nav-mid">
     <button class="nav-tab on">Dashboard</button>
-    <button class="nav-tab" onclick="window.location.href='../map/map.html'">🗺 Map</button>
+    <button class="nav-tab" onclick="window.location.href='../map/map.html'">ðŸ—º Map</button>
     <button class="nav-tab" onclick="window.location.href='../analytics/analytics.html'">Analytics</button>
     <button class="nav-tab" onclick="window.location.href='../reports/reports.html'">Reports</button>
   </div>
   <div class="nav-spc"></div>
   <div class="nav-right">
-    <div class="risk-badge risk-low" id="risk-badge">🟢 All Clear</div>
+    <div class="risk-badge risk-low" id="risk-badge">ðŸŸ¢ All Clear</div>
     <button class="nav-btn btn-add" onclick="window.location.href='../add-shipment.html'">+ New Shipment</button>
-    <button class="nav-btn btn-simulate" onclick="simDisrupt()">⚡ Simulate</button>
-    <button class="nav-btn btn-reset" onclick="resetAll()">↺ Reset</button>
+    <button class="nav-btn btn-simulate" onclick="simDisrupt()">âš¡ Simulate</button>
+    <button class="nav-btn btn-reset" onclick="resetAll()">â†º Reset</button>
     <div class="nav-clock" id="nav-clock">--:--:--</div>
     <div class="user-av" id="user-av" onclick="toggleUserMenu()">D
       <div class="user-menu" id="user-menu">
@@ -547,39 +547,39 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 <div class="kpi-strip">
   <div class="kpi kpi-1">
     <div class="kpi-label">Total Shipments</div>
-    <div class="kpi-value" id="kpi-total">—</div>
+    <div class="kpi-value" id="kpi-total">â€”</div>
     <div class="kpi-sub">Active in network</div>
-    <div class="kpi-icon" style="background:#eff6ff">📦</div>
+    <div class="kpi-icon" style="background:#eff6ff">ðŸ“¦</div>
   </div>
   <div class="kpi kpi-2">
     <div class="kpi-label">On Time</div>
-    <div class="kpi-value" id="kpi-ontime" style="color:var(--green)">—</div>
+    <div class="kpi-value" id="kpi-ontime" style="color:var(--green)">â€”</div>
     <div class="kpi-sub">Delivering as planned</div>
-    <div class="kpi-icon" style="background:var(--green2)">✅</div>
+    <div class="kpi-icon" style="background:var(--green2)">âœ…</div>
   </div>
   <div class="kpi kpi-3">
     <div class="kpi-label">At Risk</div>
-    <div class="kpi-value" id="kpi-risk" style="color:var(--amber)">—</div>
+    <div class="kpi-value" id="kpi-risk" style="color:var(--amber)">â€”</div>
     <div class="kpi-sub">Need attention now</div>
-    <div class="kpi-icon" style="background:var(--amber2)">⚠️</div>
+    <div class="kpi-icon" style="background:var(--amber2)">âš ï¸</div>
   </div>
   <div class="kpi kpi-4">
     <div class="kpi-label">AI Alerts</div>
-    <div class="kpi-value" id="kpi-alerts" style="color:var(--indigo)">—</div>
+    <div class="kpi-value" id="kpi-alerts" style="color:var(--indigo)">â€”</div>
     <div class="kpi-sub">Auto-detected issues</div>
-    <div class="kpi-icon" style="background:#ede9fe">🤖</div>
+    <div class="kpi-icon" style="background:#ede9fe">ðŸ¤–</div>
   </div>
   <div class="kpi kpi-5">
     <div class="kpi-label">Network Efficiency</div>
-    <div class="kpi-value" id="kpi-eff" style="color:var(--sky)">—</div>
+    <div class="kpi-value" id="kpi-eff" style="color:var(--sky)">â€”</div>
     <div class="kpi-sub">Fleet performance</div>
-    <div class="kpi-icon" style="background:#e0f2fe">📊</div>
+    <div class="kpi-icon" style="background:#e0f2fe">ðŸ“Š</div>
   </div>
   <div class="kpi kpi-6">
     <div class="kpi-label">Revenue at Risk</div>
-    <div class="kpi-value" id="kpi-rev" style="color:var(--red);font-size:20px">—</div>
+    <div class="kpi-value" id="kpi-rev" style="color:var(--red);font-size:20px">â€”</div>
     <div class="kpi-sub">Est. exposure</div>
-    <div class="kpi-icon" style="background:var(--red2)">💸</div>
+    <div class="kpi-icon" style="background:var(--red2)">ðŸ’¸</div>
   </div>
 </div>
 
@@ -589,9 +589,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
   <!-- LEFT: Shipments -->
   <div class="panel">
     <div class="panel-head">
-      <div class="ph-title">🚚 Live Shipments</div>
+      <div class="ph-title">ðŸšš Live Shipments</div>
       <div class="ph-badge" id="ship-count-badge">Loading...</div>
-      <div class="ph-refresh" id="ship-refresh">—</div>
+      <div class="ph-refresh" id="ship-refresh">â€”</div>
     </div>
     <div class="filter-bar">
       <button class="filter-btn on" id="fb-all" onclick="setFilter('all','status')">All</button>
@@ -599,15 +599,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
       <button class="filter-btn" id="fb-at_risk" onclick="setFilter('at_risk','status')">At Risk</button>
       <button class="filter-btn" id="fb-delayed" onclick="setFilter('delayed','status')">Delayed</button>
       <div class="filter-sep"></div>
-      <button class="filter-btn road" id="fm-road" onclick="setFilter('road','mode')">🚛 Road</button>
-      <button class="filter-btn rail" id="fm-rail" onclick="setFilter('rail','mode')">🚂 Rail</button>
-      <button class="filter-btn air"  id="fm-air"  onclick="setFilter('air','mode')">✈️ Air</button>
-      <button class="filter-btn sea"  id="fm-sea"  onclick="setFilter('sea','mode')">🚢 Sea</button>
+      <button class="filter-btn road" id="fm-road" onclick="setFilter('road','mode')">ðŸš› Road</button>
+      <button class="filter-btn rail" id="fm-rail" onclick="setFilter('rail','mode')">ðŸš‚ Rail</button>
+      <button class="filter-btn air"  id="fm-air"  onclick="setFilter('air','mode')">âœˆï¸ Air</button>
+      <button class="filter-btn sea"  id="fm-sea"  onclick="setFilter('sea','mode')">ðŸš¢ Sea</button>
       <div class="filter-spc"></div>
-      <input class="search" id="search-inp" placeholder="🔍 Search shipment, city, route..." oninput="renderShipments()">
+      <input class="search" id="search-inp" placeholder="ðŸ” Search shipment, city, route..." oninput="renderShipments()">
     </div>
     <div class="ships-grid" id="ships-grid">
-      <div class="empty"><div class="empty-icon">🔄</div><div class="empty-text">Loading shipments...</div></div>
+      <div class="empty"><div class="empty-icon">ðŸ”„</div><div class="empty-text">Loading shipments...</div></div>
     </div>
   </div>
 
@@ -617,8 +617,8 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <!-- Weather -->
     <div class="panel">
       <div class="panel-head">
-        <div class="ph-title">🌦️ Live Weather — Key Hubs</div>
-        <div class="ph-badge" id="wx-badge" style="background:var(--green2);color:var(--green);border-color:#86efac">⟳ Loading</div>
+        <div class="ph-title">ðŸŒ¦ï¸ Live Weather â€” Key Hubs</div>
+        <div class="ph-badge" id="wx-badge" style="background:var(--green2);color:var(--green);border-color:#86efac">âŸ³ Loading</div>
       </div>
       <div id="wx-area"><div class="wx-empty">Fetching live weather from Open-Meteo...</div></div>
     </div>
@@ -626,24 +626,24 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <!-- AI Alerts -->
     <div class="panel">
       <div class="panel-head">
-        <div class="ph-title">🤖 AI Alert Feed</div>
+        <div class="ph-title">ðŸ¤– AI Alert Feed</div>
         <div class="ph-badge" id="alert-count-badge">0 Alerts</div>
         <div class="ph-refresh" style="font-size:10px;color:var(--text4)">AUTO 15s</div>
       </div>
       <div id="alerts-body">
-        <div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>
+        <div class="empty"><div class="empty-icon">ðŸ›¡ï¸</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>
       </div>
     </div>
 
     <!-- VaaniChat -->
     <div class="panel">
       <div class="panel-head">
-        <div class="ph-title">💬 VaaniChat</div>
-        <div class="ph-badge">AI · Hindi + English</div>
+        <div class="ph-title">ðŸ’¬ VaaniChat</div>
+        <div class="ph-badge">AI Â· Hindi + English</div>
       </div>
       <div class="chat-msgs" id="chat-msgs">
         <div class="msg msg-ai">
-          <div class="msg-bubble">नमस्ते! 🙏 I'm VaaniChain AI monitoring 🚛 Road · 🚂 Rail · ✈️ Air · 🚢 Sea freight. Ask me anything in Hindi or English.</div>
+          <div class="msg-bubble">à¤¨à¤®à¤¸à¥à¤¤à¥‡! ðŸ™ I'm VaaniChain AI monitoring ðŸš› Road Â· ðŸš‚ Rail Â· âœˆï¸ Air Â· ðŸš¢ Sea freight. Ask me anything in Hindi or English.</div>
           <div class="msg-time">Just now</div>
         </div>
       </div>
@@ -652,50 +652,50 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
           <button class="qq" onclick="qa('Mera maal kab aayega?')">Mera maal?</button>
           <button class="qq" onclick="qa('Which shipment is most at risk?')">Most at risk?</button>
           <button class="qq" onclick="qa('NH-48 pe kya problem hai?')">NH-48?</button>
-          <button class="qq" onclick="qa('Which rail shipments are delayed?')">🚂 Rail?</button>
-          <button class="qq" onclick="qa('Air cargo status?')">✈️ Air?</button>
-          <button class="qq" onclick="qa('Sea freight kya situation hai?')">🚢 Sea?</button>
+          <button class="qq" onclick="qa('Which rail shipments are delayed?')">ðŸš‚ Rail?</button>
+          <button class="qq" onclick="qa('Air cargo status?')">âœˆï¸ Air?</button>
+          <button class="qq" onclick="qa('Sea freight kya situation hai?')">ðŸš¢ Sea?</button>
         </div>
         <div class="chat-lang-row">
-          <button class="lang-toggle-btn on" id="lang-hi" onclick="setVoiceLang('hi')">🇮🇳 हिंदी</button>
-          <button class="lang-toggle-btn" id="lang-en" onclick="setVoiceLang('en')">🇬🇧 English</button>
-          <span class="voice-hint">🎤 click mic to speak</span>
+          <button class="lang-toggle-btn on" id="lang-hi" onclick="setVoiceLang('hi')">ðŸ‡®ðŸ‡³ à¤¹à¤¿à¤‚à¤¦à¥€</button>
+          <button class="lang-toggle-btn" id="lang-en" onclick="setVoiceLang('en')">ðŸ‡¬ðŸ‡§ English</button>
+          <span class="voice-hint">ðŸŽ¤ click mic to speak</span>
         </div>
         <div class="chat-row">
-          <input class="chat-in" id="chat-inp" placeholder="Hindi या English में पूछें... या 🎤 बोलें">
-          <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Speak your question">🎤</button>
-          <button class="chat-send" onclick="sendChat()">➤</button>
+          <input class="chat-in" id="chat-inp" placeholder="Hindi à¤¯à¤¾ English à¤®à¥‡à¤‚ à¤ªà¥‚à¤›à¥‡à¤‚... à¤¯à¤¾ ðŸŽ¤ à¤¬à¥‹à¤²à¥‡à¤‚">
+          <button class="mic-btn" id="mic-btn" onclick="toggleMic()" title="Speak your question">ðŸŽ¤</button>
+          <button class="chat-send" onclick="sendChat()">âž¤</button>
         </div>
-        <div class="voice-status" id="voice-status">🔴 Listening... speak now</div>
+        <div class="voice-status" id="voice-status">ðŸ”´ Listening... speak now</div>
       </div>
     </div>
 
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
+<!-- â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
      SHIPMENT DETAIL MODAL
-══════════════════════════════════════════════ -->
+â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â• -->
 <div class="sdm-ov" id="sdm-ov" onclick="if(event.target===this)closeSDM()">
 <div class="sdm">
 
   <!-- HEADER -->
   <div class="sdm-header">
     <div class="sdm-h-top">
-      <div class="sdm-mode-icon" id="sdm-mode-icon">📦</div>
+      <div class="sdm-mode-icon" id="sdm-mode-icon">ðŸ“¦</div>
       <div class="sdm-title-block">
-        <div class="sdm-shipid" id="sdm-shipid">—</div>
-        <div class="sdm-route-title" id="sdm-route-title">Origin <span class="sdm-route-arr">→</span> Destination</div>
+        <div class="sdm-shipid" id="sdm-shipid">â€”</div>
+        <div class="sdm-route-title" id="sdm-route-title">Origin <span class="sdm-route-arr">â†’</span> Destination</div>
         <div class="sdm-badges" id="sdm-badges"></div>
       </div>
-      <button class="sdm-close" onclick="closeSDM()">✕</button>
+      <button class="sdm-close" onclick="closeSDM()">âœ•</button>
     </div>
     <!-- TABS -->
     <div class="sdm-tabs">
-      <button class="sdm-tab on" onclick="switchSDMTab('overview',this)">📍 Overview</button>
-      <button class="sdm-tab" onclick="switchSDMTab('risk',this)">⚠️ Risk Analysis</button>
-      <button class="sdm-tab" onclick="switchSDMTab('driver',this)">🚛 Vehicle & Driver</button>
-      <button class="sdm-tab" onclick="switchSDMTab('routes',this)">🔀 Alt Routes</button>
+      <button class="sdm-tab on" onclick="switchSDMTab('overview',this)">ðŸ“ Overview</button>
+      <button class="sdm-tab" onclick="switchSDMTab('risk',this)">âš ï¸ Risk Analysis</button>
+      <button class="sdm-tab" onclick="switchSDMTab('driver',this)">ðŸš› Vehicle & Driver</button>
+      <button class="sdm-tab" onclick="switchSDMTab('routes',this)">ðŸ”€ Alt Routes</button>
     </div>
   </div>
 
@@ -707,7 +707,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
       <!-- Progress -->
       <div class="sdm-section">
-        <div class="sdm-section-title">📍 Live Location & Progress</div>
+        <div class="sdm-section-title">ðŸ“ Live Location & Progress</div>
         <div class="sdm-progress-wrap">
           <div class="sdm-progress-label">
             <span style="font-size:12px;font-weight:700;color:var(--text)" id="sdm-origin-lbl">Origin</span>
@@ -720,32 +720,32 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
             </div>
           </div>
           <div style="display:flex;justify-content:space-between;font-size:10px;color:var(--text4);font-family:var(--mono);margin-top:6px">
-            <span id="sdm-km-covered">— km covered</span>
-            <span id="sdm-eta-left">— h remaining</span>
+            <span id="sdm-km-covered">â€” km covered</span>
+            <span id="sdm-eta-left">â€” h remaining</span>
           </div>
         </div>
       </div>
 
       <!-- KPIs -->
       <div class="sdm-section">
-        <div class="sdm-section-title">📊 Shipment Metrics</div>
+        <div class="sdm-section-title">ðŸ“Š Shipment Metrics</div>
         <div class="sdm-kpi-row">
-          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-eta">—</div><div class="sdm-kpi-k">ETA Hours</div></div>
-          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-weight">—</div><div class="sdm-kpi-k">Weight (kg)</div></div>
-          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-km">—</div><div class="sdm-kpi-k">Route km</div></div>
-          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-risk">—</div><div class="sdm-kpi-k">Risk Score</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-eta">â€”</div><div class="sdm-kpi-k">ETA Hours</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-weight">â€”</div><div class="sdm-kpi-k">Weight (kg)</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-km">â€”</div><div class="sdm-kpi-k">Route km</div></div>
+          <div class="sdm-kpi"><div class="sdm-kpi-v" id="sdm-k-risk">â€”</div><div class="sdm-kpi-k">Risk Score</div></div>
         </div>
       </div>
 
       <!-- Route Timeline -->
       <div class="sdm-section">
-        <div class="sdm-section-title">🗺 Route Timeline</div>
+        <div class="sdm-section-title">ðŸ—º Route Timeline</div>
         <div class="sdm-timeline" id="sdm-timeline"></div>
       </div>
 
       <!-- Cargo + Supplier -->
       <div class="sdm-section">
-        <div class="sdm-section-title">📦 Cargo & Supplier</div>
+        <div class="sdm-section-title">ðŸ“¦ Cargo & Supplier</div>
         <div class="sdm-info-grid" id="sdm-cargo-grid"></div>
       </div>
 
@@ -754,9 +754,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <!-- TAB: RISK -->
     <div class="sdm-pane" id="sdm-pane-risk">
       <div class="sdm-section">
-        <div class="sdm-section-title">🧠 AI Risk Score</div>
+        <div class="sdm-section-title">ðŸ§  AI Risk Score</div>
         <div class="sdm-risk-score-row">
-          <div class="sdm-risk-meter" id="sdm-risk-meter">—</div>
+          <div class="sdm-risk-meter" id="sdm-risk-meter">â€”</div>
           <div class="sdm-risk-summary">
             <div class="sdm-risk-level" id="sdm-risk-level-text">Calculating...</div>
             <div class="sdm-risk-desc" id="sdm-risk-desc">VaaniChain AI is analysing 8 disruption factors across weather, compliance, infrastructure and more.</div>
@@ -764,7 +764,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
         </div>
       </div>
       <div class="sdm-section">
-        <div class="sdm-section-title">⚠️ Active Risk Factors</div>
+        <div class="sdm-section-title">âš ï¸ Active Risk Factors</div>
         <div class="sdm-factor-list" id="sdm-factor-list"></div>
       </div>
     </div><!-- /risk -->
@@ -772,15 +772,15 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <!-- TAB: DRIVER / VEHICLE -->
     <div class="sdm-pane" id="sdm-pane-driver">
       <div class="sdm-section">
-        <div class="sdm-section-title">🚛 Vehicle Information</div>
+        <div class="sdm-section-title">ðŸš› Vehicle Information</div>
         <div class="sdm-info-grid" id="sdm-vehicle-grid"></div>
       </div>
       <div class="sdm-section">
-        <div class="sdm-section-title">👤 Driver Details</div>
+        <div class="sdm-section-title">ðŸ‘¤ Driver Details</div>
         <div class="sdm-info-grid" id="sdm-driver-grid"></div>
       </div>
       <div class="sdm-section">
-        <div class="sdm-section-title">📋 Compliance & Documents</div>
+        <div class="sdm-section-title">ðŸ“‹ Compliance & Documents</div>
         <div class="sdm-info-grid" id="sdm-docs-grid"></div>
       </div>
     </div><!-- /driver -->
@@ -788,11 +788,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
     <!-- TAB: ALT ROUTES -->
     <div class="sdm-pane" id="sdm-pane-routes">
       <div class="sdm-section">
-        <div class="sdm-section-title">🔀 AI-Recommended Alternate Routes</div>
+        <div class="sdm-section-title">ðŸ”€ AI-Recommended Alternate Routes</div>
         <div class="sdm-alt-routes" id="sdm-alt-routes"></div>
       </div>
       <div class="sdm-section" style="margin-top:20px">
-        <div class="sdm-section-title">📝 Disruption Notes</div>
+        <div class="sdm-section-title">ðŸ“ Disruption Notes</div>
         <div style="background:var(--bg);border:1.5px solid var(--border);border-radius:10px;padding:13px 15px;font-size:12px;color:var(--text2);line-height:1.7;font-family:var(--mono)" id="sdm-disruption-notes">No active disruption notes.</div>
       </div>
     </div><!-- /routes -->
@@ -801,9 +801,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
   <!-- FOOTER ACTIONS -->
   <div class="sdm-footer">
-    <button class="sdm-btn sdm-btn-green" onclick="sdmApproveReroute()">✓ Approve Reroute</button>
-    <button class="sdm-btn sdm-btn-amber" id="sdm-email-btn" onclick="sdmEmail()">📧 Email Supplier</button>
-    <button class="sdm-btn sdm-btn-primary" onclick="sdmAskAI()">💬 Ask VaaniAI</button>
+    <button class="sdm-btn sdm-btn-green" onclick="sdmApproveReroute()">âœ“ Approve Reroute</button>
+    <button class="sdm-btn sdm-btn-amber" id="sdm-email-btn" onclick="sdmEmail()">ðŸ“§ Email Supplier</button>
+    <button class="sdm-btn sdm-btn-primary" onclick="sdmAskAI()">ðŸ’¬ Ask VaaniAI</button>
     <div class="sdm-footer-spc"></div>
     <button class="sdm-btn sdm-btn-ghost" onclick="closeSDM()">Close</button>
   </div>
@@ -814,11 +814,11 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 <!-- EMAIL MODAL -->
 <div class="modal-ov" id="email-modal">
   <div class="modal">
-    <div class="modal-title">📧 Auto-Generated Supplier Email</div>
+    <div class="modal-title">ðŸ“§ Auto-Generated Supplier Email</div>
     <div class="modal-sub" id="modal-meta">Powered by VaaniChain AI</div>
     <div class="email-content" id="email-content">Generating...</div>
     <div class="modal-btns">
-      <button class="btn-copy-e" onclick="copyEmail()">📋 Copy Email</button>
+      <button class="btn-copy-e" onclick="copyEmail()">ðŸ“‹ Copy Email</button>
       <button class="btn-close-e" onclick="closeModal()">Close</button>
     </div>
   </div>
@@ -827,9 +827,9 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 <!-- FLOATING CHAT BUTTON -->
 <button class="fab" id="fab" onclick="focusChat()" title="Open VaaniChat">
-  💬
+  ðŸ’¬
   <span class="fab-badge" id="fab-badge">1</span>
-  <span class="fab-tooltip">VaaniChat — Ask AI</span>
+  <span class="fab-tooltip">VaaniChat â€” Ask AI</span>
 </button>
 
 
@@ -840,7 +840,7 @@ body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:1
 
 
 <script>
-// ── AUTH GUARD ──
+// â”€â”€ AUTH GUARD â”€â”€
 (function(){
   const token = localStorage.getItem('vc_token');
   if (!token || token.length < 3) window.location.href = '../index.html';
@@ -860,14 +860,14 @@ const WEATHER_CITIES = [
   {name:'Hyderabad',lat:17.385, lon:78.487},
 ];
 
-const MODE_ICONS = {road:'🚛', rail:'🚂', air:'✈️', sea:'🚢'};
+const MODE_ICONS = {road:'ðŸš›', rail:'ðŸš‚', air:'âœˆï¸', sea:'ðŸš¢'};
 
-// ── SIMULATE SCENARIOS ──
+// â”€â”€ SIMULATE SCENARIOS â”€â”€
 const SCENARIOS = [
-  {route:'NH-48',      toast:'🚛 Monsoon flooding on NH-48!',         chat:'⚠️ 🚛 ROAD: Heavy monsoon rains on NH-48. SHP-1001 (Mumbai→Delhi) and SHP-1003 (JNPT→Pune) are AT RISK. Rerouting via Delhi-Mumbai Expressway available.'},
-  {route:'Howrah-Delhi Main Line', toast:'🚂 Derailment on Howrah-Delhi line!', chat:'⚠️ 🚂 RAIL: Freight derailment near Mughalsarai. RLY-2002 (Kolkata→Delhi) is AT RISK. Eastern DFC alternate — est. delay 6h.'},
-  {route:'IndiGo Cargo 6E-F201',  toast:'✈️ Dense fog at IGI Delhi!',          chat:'⚠️ ✈️ AIR: Dense fog at IGI Delhi. AIR-3001 (Mumbai→Delhi, Medical Devices) is AT RISK. Rerouting via Ahmedabad or next slot.'},
-  {mode:'sea',                     toast:'🚢 Cyclone alert — Sea freight disrupted!', chat:'⚠️ 🚢 SEA: Cyclone Vayu alert in Bay of Bengal. SEA-4001 and SEA-4003 are AT RISK. Colombo transshipment recommended.'},
+  {route:'NH-48',      toast:'ðŸš› Monsoon flooding on NH-48!',         chat:'âš ï¸ ðŸš› ROAD: Heavy monsoon rains on NH-48. SHP-1001 (Mumbaiâ†’Delhi) and SHP-1003 (JNPTâ†’Pune) are AT RISK. Rerouting via Delhi-Mumbai Expressway available.'},
+  {route:'Howrah-Delhi Main Line', toast:'ðŸš‚ Derailment on Howrah-Delhi line!', chat:'âš ï¸ ðŸš‚ RAIL: Freight derailment near Mughalsarai. RLY-2002 (Kolkataâ†’Delhi) is AT RISK. Eastern DFC alternate â€” est. delay 6h.'},
+  {route:'IndiGo Cargo 6E-F201',  toast:'âœˆï¸ Dense fog at IGI Delhi!',          chat:'âš ï¸ âœˆï¸ AIR: Dense fog at IGI Delhi. AIR-3001 (Mumbaiâ†’Delhi, Medical Devices) is AT RISK. Rerouting via Ahmedabad or next slot.'},
+  {mode:'sea',                     toast:'ðŸš¢ Cyclone alert â€” Sea freight disrupted!', chat:'âš ï¸ ðŸš¢ SEA: Cyclone Vayu alert in Bay of Bengal. SEA-4001 and SEA-4003 are AT RISK. Colombo transshipment recommended.'},
 ];
 let scenarioIdx = 0;
 
@@ -928,9 +928,9 @@ function logout() {
   window.location.replace('../index.html');
 }
 
-// ── WEATHER ──
+// â”€â”€ WEATHER â”€â”€
 async function fetchAllWeather() {
-  document.getElementById('wx-badge').textContent = '⟳ Loading';
+  document.getElementById('wx-badge').textContent = 'âŸ³ Loading';
   const results = [];
   for (const c of WEATHER_CITIES) {
     try {
@@ -956,7 +956,7 @@ async function fetchAllWeather() {
 function renderWeather(cities) {
   const anyDanger = cities.some(c => c.is_dangerous);
   const badge = document.getElementById('wx-badge');
-  badge.textContent = anyDanger ? '⚠ Alert' : '● Live';
+  badge.textContent = anyDanger ? 'âš  Alert' : 'â— Live';
   badge.style.background = anyDanger ? 'var(--red2)' : 'var(--green2)';
   badge.style.color = anyDanger ? 'var(--red)' : 'var(--green)';
   badge.style.borderColor = anyDanger ? '#fca5a5' : '#86efac';
@@ -966,18 +966,18 @@ function renderWeather(cities) {
     const isLight = rain > 0 && rain <= 5;
     const cls = isHeavy ? 'wxr-heavy' : isLight ? 'wxr-light' : 'wxr-clear';
     const label = isHeavy ? `${Math.round(rain)}mm Heavy` : isLight ? `${Math.round(rain)}mm Light` : 'Clear';
-    const icon = isHeavy ? '🌧️' : isLight ? '🌦️' : '☀️';
+    const icon = isHeavy ? 'ðŸŒ§ï¸' : isLight ? 'ðŸŒ¦ï¸' : 'â˜€ï¸';
     const iconBg = isHeavy ? '#fee2e2' : isLight ? '#dbeafe' : '#d1fae5';
     return `<div class="wx-card">
       <div class="wx-left"><div class="wx-icon" style="background:${iconBg}">${icon}</div>
-        <div><div class="wx-city">${c.city}</div><div class="wx-desc">${c.description||'Clear'} · ${Math.round(c.wind_kmh||0)} km/h</div></div>
+        <div><div class="wx-city">${c.city}</div><div class="wx-desc">${c.description||'Clear'} Â· ${Math.round(c.wind_kmh||0)} km/h</div></div>
       </div>
-      <div class="wx-right"><div class="wx-temp">${Math.round(c.temperature_c||0)}°C</div><div class="wx-rain ${cls}">${label}</div></div>
+      <div class="wx-right"><div class="wx-temp">${Math.round(c.temperature_c||0)}Â°C</div><div class="wx-rain ${cls}">${label}</div></div>
     </div>`;
   }).join('')}</div>`;
 }
 
-// ── DEMO SHIPMENTS (shown when backend is offline) ──
+// â”€â”€ DEMO SHIPMENTS (shown when backend is offline) â”€â”€
 const DEMO_SHIPMENTS = [
   {id:'SHP-1001',origin:'Mumbai',destination:'Delhi',route:'NH-48',mode:'road',status:'on_time',eta_hours:18,weight_kg:4200,cargo:'Electronics',supplier:'Reliance Retail',priority:'high'},
   {id:'SHP-1002',origin:'Delhi',destination:'Bengaluru',route:'NH-44',mode:'road',status:'at_risk',eta_hours:28,weight_kg:8500,cargo:'Pharmaceuticals',supplier:'Sun Pharma',priority:'critical'},
@@ -990,14 +990,14 @@ const DEMO_SHIPMENTS = [
   {id:'AIR-3001',origin:'Mumbai',destination:'Delhi',route:'IndiGo Cargo 6E-F201',mode:'air',status:'on_time',eta_hours:2,weight_kg:850,cargo:'Medical Devices',supplier:'Medtronic',priority:'critical'},
   {id:'AIR-3002',origin:'Delhi',destination:'Bengaluru',route:'Blue Dart BD-101',mode:'air',status:'on_time',eta_hours:3,weight_kg:420,cargo:'Semiconductor Chips',supplier:'Samsung',priority:'critical'},
   {id:'AIR-3003',origin:'Hyderabad',destination:'Mumbai',route:'SpiceXpress SG-F88',mode:'air',status:'at_risk',eta_hours:2,weight_kg:310,cargo:'Vaccines',supplier:'Dr Reddys',priority:'critical'},
-  {id:'SEA-4001',origin:'JNPT Mumbai',destination:'Singapore',route:'JNPT–SIN via Colombo',mode:'sea',status:'on_time',eta_hours:144,weight_kg:240000,cargo:'Garments',supplier:'Gokaldas Exports',priority:'normal'},
-  {id:'SEA-4002',origin:'Chennai',destination:'Rotterdam',route:'Chennai–RTM via Suez',mode:'sea',status:'on_time',eta_hours:360,weight_kg:185000,cargo:'Engineering Goods',supplier:'L&T',priority:'high'},
-  {id:'SEA-4003',origin:'Mundra',destination:'Dubai',route:'Mundra–DXB Arabian Sea',mode:'sea',status:'at_risk',eta_hours:96,weight_kg:92000,cargo:'Chemicals',supplier:'Reliance Industries',priority:'high'},
+  {id:'SEA-4001',origin:'JNPT Mumbai',destination:'Singapore',route:'JNPTâ€“SIN via Colombo',mode:'sea',status:'on_time',eta_hours:144,weight_kg:240000,cargo:'Garments',supplier:'Gokaldas Exports',priority:'normal'},
+  {id:'SEA-4002',origin:'Chennai',destination:'Rotterdam',route:'Chennaiâ€“RTM via Suez',mode:'sea',status:'on_time',eta_hours:360,weight_kg:185000,cargo:'Engineering Goods',supplier:'L&T',priority:'high'},
+  {id:'SEA-4003',origin:'Mundra',destination:'Dubai',route:'Mundraâ€“DXB Arabian Sea',mode:'sea',status:'at_risk',eta_hours:96,weight_kg:92000,cargo:'Chemicals',supplier:'Reliance Industries',priority:'high'},
   {id:'SHP-1006',origin:'Ahmedabad',destination:'Mumbai',route:'NH-48',mode:'road',status:'on_time',eta_hours:8,weight_kg:5500,cargo:'Processed Food',supplier:'Amul',priority:'normal'},
   {id:'SHP-1007',origin:'Bengaluru',destination:'Chennai',route:'NH-44',mode:'road',status:'on_time',eta_hours:6,weight_kg:2800,cargo:'IT Hardware',supplier:'Infosys',priority:'high'},
   {id:'RLY-2004',origin:'Ahmedabad',destination:'Kolkata',route:'Gujarat Mail Freight',mode:'rail',status:'on_time',eta_hours:42,weight_kg:51000,cargo:'Cotton Bales',supplier:'Arvind Ltd',priority:'normal'},
   {id:'AIR-3004',origin:'Mumbai',destination:'Kolkata',route:'Air India Cargo AI-C21',mode:'air',status:'on_time',eta_hours:2,weight_kg:680,cargo:'Perishables',supplier:'Future Fresh',priority:'high'},
-  {id:'SEA-4004',origin:'Kolkata',destination:'Bangladesh',route:'Kolkata–Chittagong',mode:'sea',status:'delayed',eta_hours:48,weight_kg:38000,cargo:'Jute Products',supplier:'Cheviot Co',priority:'normal'},
+  {id:'SEA-4004',origin:'Kolkata',destination:'Bangladesh',route:'Kolkataâ€“Chittagong',mode:'sea',status:'delayed',eta_hours:48,weight_kg:38000,cargo:'Jute Products',supplier:'Cheviot Co',priority:'normal'},
   {id:'SHP-1008',origin:'Jaipur',destination:'Delhi',route:'NH-48',mode:'road',status:'on_time',eta_hours:5,weight_kg:1900,cargo:'Handicrafts',supplier:'Rajasthali',priority:'normal'},
 ];
 
@@ -1006,7 +1006,7 @@ function saveDashboardState() {
   localStorage.setItem("vaanichain_simulate", JSON.stringify(simulateMode));
 }
 
-// ── SHIPMENTS ──
+// â”€â”€ SHIPMENTS â”€â”€
 async function loadShipments() {
   try {
     const r = await fetch(`${CONFIG.BASE_URL}/shipments`, {signal: AbortSignal.timeout(4000)});
@@ -1016,16 +1016,16 @@ async function loadShipments() {
     if (!allShips.length) { allShips = [...DEMO_SHIPMENTS]; }
     saveDashboardState();
     renderShipments(); updateKPIs();
-    document.getElementById('ship-refresh').textContent = 'Live · ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
+    document.getElementById('ship-refresh').textContent = 'Live Â· ' + new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
     updateChatBadge(true);
   } catch {
-    // Backend offline — load demo data so dashboard is always functional
+    // Backend offline â€” load demo data so dashboard is always functional
     if (!allShips.length) {
       const owner = JSON.parse(localStorage.getItem('owner_shipments') || '[]');
       allShips = [...DEMO_SHIPMENTS, ...owner];
       saveDashboardState();
       renderShipments(); updateKPIs();
-      document.getElementById('ship-refresh').textContent = 'Demo mode · backend offline';
+      document.getElementById('ship-refresh').textContent = 'Demo mode Â· backend offline';
     }
     updateChatBadge(false);
   }
@@ -1037,7 +1037,7 @@ function updateChatBadge(online) {
     // Try to find the badge by its text content if ID doesn't exist
     const badges = document.querySelectorAll('.ph-badge');
     for (const b of badges) {
-      if (b.textContent.includes('AI · Hindi')) {
+      if (b.textContent.includes('AI Â· Hindi')) {
         b.id = 'chat-badge';
         updateChatBadge(online);
         return;
@@ -1048,7 +1048,7 @@ function updateChatBadge(online) {
   if (!target) return;
 
   if (online) {
-    target.textContent = 'AI · Hindi + English';
+    target.textContent = 'AI Â· Hindi + English';
     target.style.color = '';
     target.style.background = '';
   } else {
@@ -1067,7 +1067,7 @@ function renderShipments() {
   document.getElementById('ship-count-badge').textContent = s.length + ' shipments';
   document.getElementById('ships-grid').innerHTML = s.length
     ? s.map(mkShipCard).join('')
-    : `<div class="empty"><div class="empty-icon">🔍</div><div class="empty-text">No shipments match your filter.</div></div>`;
+    : `<div class="empty"><div class="empty-icon">ðŸ”</div><div class="empty-text">No shipments match your filter.</div></div>`;
 }
 
 function getShipProgress(s) {
@@ -1090,40 +1090,40 @@ function mkShipCard(s) {
   const mode = s.mode || 'road';
   const priCls = s.priority === 'critical' ? 'pri-critical' : s.priority === 'high' ? 'pri-high' : 'pri-normal';
 
-  // ── Location tracker simulation ──
-  // owner_added = just registered → 0% progress (hasn't departed yet)
-  // existing shipments → deterministic seed-based progress
+  // â”€â”€ Location tracker simulation â”€â”€
+  // owner_added = just registered â†’ 0% progress (hasn't departed yet)
+  // existing shipments â†’ deterministic seed-based progress
   const { seed, pct, eta, km: totalKm, covKm: coveredKm, etaLeft } = getShipProgress(s);
   const dotClass  = st === 'at_risk' ? 'tracker-dot risk' : 'tracker-dot';
 
-  // ── Multi-factor risk badge ──
+  // â”€â”€ Multi-factor risk badge â”€â”€
   const predict = RISK_ENGINE.getFullRisk(s, null);
   const factorCount = predict.factors.length;
   const predBadge = predict.level === 'low'
-    ? `<span class="predict-badge predict-low">✅ Risk clear · ${factorCount} factors checked</span>`
+    ? `<span class="predict-badge predict-low">âœ… Risk clear Â· ${factorCount} factors checked</span>`
     : predict.level === 'medium'
-    ? `<span class="predict-badge predict-med">${predict.topIcon} ${predict.factors.length} risk factors · ${predict.topReason.substring(0,40)}...</span>`
-    : `<span class="predict-badge predict-high">🔴 ${predict.factors.length} risks · ${predict.topReason.substring(0,38)}...</span>`;
+    ? `<span class="predict-badge predict-med">${predict.topIcon} ${predict.factors.length} risk factors Â· ${predict.topReason.substring(0,40)}...</span>`
+    : `<span class="predict-badge predict-high">ðŸ”´ ${predict.factors.length} risks Â· ${predict.topReason.substring(0,38)}...</span>`;
 
   return `<div class="ship-card ${st}" onclick="openSDM(${JSON.stringify(s).replace(/"/g,'&quot;')})" style="cursor:pointer">
-    <div class="sc-mode-chip mc-${mode}">${MODE_ICONS[mode]||'📦'} ${mode.toUpperCase()}</div>
+    <div class="sc-mode-chip mc-${mode}">${MODE_ICONS[mode]||'ðŸ“¦'} ${mode.toUpperCase()}</div>
     <div class="sc-header" style="margin-top:16px">
       <span class="sc-id">${s.id}</span>
       <span class="sc-status s-${st}">${st.replace('_',' ')}</span>
     </div>
-    <div class="sc-route">${s.origin||'?'}<span class="sc-arr">→</span>${s.destination||'?'}</div>
-    <div class="sc-highway">${s.route||'—'}</div>
+    <div class="sc-route">${s.origin||'?'}<span class="sc-arr">â†’</span>${s.destination||'?'}</div>
+    <div class="sc-highway">${s.route||'â€”'}</div>
     <div class="sc-stats">
       <div class="sc-stat"><div class="sc-stat-k">ETA</div><div class="sc-stat-v">${s.eta_hours}h</div></div>
-      <div class="sc-stat"><div class="sc-stat-k">Cargo</div><div class="sc-stat-v">${s.cargo||'—'}</div></div>
-      <div class="sc-stat"><div class="sc-stat-k">Weight</div><div class="sc-stat-v">${s.weight_kg?(s.weight_kg).toLocaleString()+'kg':'—'}</div></div>
+      <div class="sc-stat"><div class="sc-stat-k">Cargo</div><div class="sc-stat-v">${s.cargo||'â€”'}</div></div>
+      <div class="sc-stat"><div class="sc-stat-k">Weight</div><div class="sc-stat-v">${s.weight_kg?(s.weight_kg).toLocaleString()+'kg':'â€”'}</div></div>
       <div class="sc-stat"><div class="sc-stat-k">Priority</div><div class="sc-stat-v"><span class="sc-pri ${priCls}">${s.priority||'normal'}</span></div></div>
     </div>
 
     <!-- LOCATION TRACKER -->
     <div class="tracker-wrap">
       <div class="tracker-header">
-        <span class="tracker-label">${s.owner_added ? '🕐 Awaiting departure' : '📍 In transit'}</span>
+        <span class="tracker-label">${s.owner_added ? 'ðŸ• Awaiting departure' : 'ðŸ“ In transit'}</span>
         <span class="tracker-pct">${pct}% covered</span>
       </div>
       <div class="tracker-bar">
@@ -1136,7 +1136,7 @@ function mkShipCard(s) {
         <span>${s.destination||'Destination'}</span>
       </div>
       <div class="tracker-eta">
-        📦 ~${coveredKm} km covered &nbsp;·&nbsp; ⏱ ~${etaLeft}h remaining
+        ðŸ“¦ ~${coveredKm} km covered &nbsp;Â·&nbsp; â± ~${etaLeft}h remaining
       </div>
       ${predBadge}
     </div>
@@ -1147,7 +1147,7 @@ function mkShipCard(s) {
       background:linear-gradient(to right,#fffbeb,#fefce8);
       border:1.5px solid #fcd34d;border-radius:8px;padding:7px 10px;margin-top:8px">
       <div style="display:flex;align-items:center;gap:6px">
-        <span style="font-size:13px">📋</span>
+        <span style="font-size:13px">ðŸ“‹</span>
         <div>
           <div style="font-size:10px;font-weight:700;color:#92400e;text-transform:uppercase;letter-spacing:.04em">E-Way Bill</div>
           <div style="font-family:var(--mono);font-size:11px;font-weight:600;color:var(--text)">${s.eway_bill_no}</div>
@@ -1155,19 +1155,19 @@ function mkShipCard(s) {
         ${s.eway_bill_expiry ? `<span style="font-size:9px;padding:2px 6px;border-radius:4px;font-weight:700;
           background:${new Date(s.eway_bill_expiry) < new Date() ? 'var(--red2)' : new Date(s.eway_bill_expiry) < new Date(Date.now()+86400000*2) ? '#fef3c7' : 'var(--green2)'};
           color:${new Date(s.eway_bill_expiry) < new Date() ? 'var(--red)' : new Date(s.eway_bill_expiry) < new Date(Date.now()+86400000*2) ? '#92400e' : 'var(--green)'}">${
-            new Date(s.eway_bill_expiry) < new Date() ? '⚠ EXPIRED' : 'Valid till ' + s.eway_bill_expiry
+            new Date(s.eway_bill_expiry) < new Date() ? 'âš  EXPIRED' : 'Valid till ' + s.eway_bill_expiry
           }</span>` : ''}
       </div>
       <button onclick="event.stopPropagation();downloadEwayBill('${s.id}','${s.eway_bill_no}','${s.eway_bill_expiry||''}','${s.supplier||''}','${s.origin||''}','${s.destination||''}','${s.cargo||''}','${s.weight_kg||0}')"
         style="font-size:11px;font-weight:700;padding:4px 10px;border-radius:6px;border:1.5px solid #fcd34d;
         background:var(--white);color:#92400e;cursor:pointer;font-family:var(--sans);transition:all .15s;flex-shrink:0"
         onmouseover="this.style.background='#fef3c7'" onmouseout="this.style.background='var(--white)'">
-        ⬇ Download
+        â¬‡ Download
       </button>
     </div>` : ''}
 
     <div class="sc-footer" style="margin-top:8px">
-      <span class="sc-supplier">🏢 ${s.supplier||'—'}</span>
+      <span class="sc-supplier">ðŸ¢ ${s.supplier||'â€”'}</span>
       ${s.owner_added ? '<span class="sc-owner">owner added</span>' : ''}
     </div>
   </div>`;
@@ -1180,7 +1180,7 @@ function downloadEwayBill(id, ewayNo, expiry, supplier, origin, dest, cargo, wei
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>E-Way Bill — ${ewayNo}</title>
+<title>E-Way Bill â€” ${ewayNo}</title>
 <style>
   body{font-family:'Segoe UI',sans-serif;background:#f5f5f5;margin:0;padding:20px}
   .bill{background:#fff;max-width:800px;margin:auto;border:2px solid #1d4ed8;border-radius:8px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.1)}
@@ -1208,8 +1208,8 @@ function downloadEwayBill(id, ewayNo, expiry, supplier, origin, dest, cargo, wei
 <div class="bill">
   <div class="header">
     <div>
-      <h1>🚛 E-Way Bill</h1>
-      <div class="sub">GST E-Way Bill · VaaniChain Supply Chain Intelligence</div>
+      <h1>ðŸš› E-Way Bill</h1>
+      <div class="sub">GST E-Way Bill Â· VaaniChain Supply Chain Intelligence</div>
     </div>
     <div class="header-right">
       <div class="eway-num">${ewayNo}</div>
@@ -1239,14 +1239,14 @@ function downloadEwayBill(id, ewayNo, expiry, supplier, origin, dest, cargo, wei
   <div class="section">
     <div class="section-title">E-Way Bill Validity</div>
     <div class="validity">
-      <h2>${new Date(expiry) < new Date() ? '⚠ EXPIRED' : '✓ VALID'}</h2>
+      <h2>${new Date(expiry) < new Date() ? 'âš  EXPIRED' : 'âœ“ VALID'}</h2>
       <p>Valid until: <strong>${expiry || 'Not specified'}</strong></p>
-      <p style="margin-top:6px;font-size:12px;color:#6b7280">GST Rule: 1 day validity per 100km travelled · Renew 4h before expiry</p>
+      <p style="margin-top:6px;font-size:12px;color:#6b7280">GST Rule: 1 day validity per 100km travelled Â· Renew 4h before expiry</p>
     </div>
   </div>
 
   <div class="footer">
-    <span>VaaniChain AI · Hack2skill Smart Supply Chains 2026</span>
+    <span>VaaniChain AI Â· Hack2skill Smart Supply Chains 2026</span>
     <span>This is a demo E-Way Bill for hackathon demonstration purposes</span>
   </div>
 </div>
@@ -1274,10 +1274,10 @@ function updateKPIs() {
   document.getElementById('kpi-risk').textContent = risk;
   document.getElementById('kpi-alerts').textContent = alerts;
   document.getElementById('kpi-eff').textContent = eff + '%';
-  document.getElementById('kpi-rev').textContent = rev > 0 ? '₹' + rev.toLocaleString('en-IN') : '₹0';
+  document.getElementById('kpi-rev').textContent = rev > 0 ? 'â‚¹' + rev.toLocaleString('en-IN') : 'â‚¹0';
 }
 
-// ── STATUS / ALERTS ──
+// â”€â”€ STATUS / ALERTS â”€â”€
 async function loadStatus() {
   try {
     const r = await fetch(`${CONFIG.BASE_URL}/status`);
@@ -1292,9 +1292,9 @@ async function loadStatus() {
 
 function updateRiskBadge(risk) {
   const el = document.getElementById('risk-badge');
-  if (risk === 'high')   { el.className = 'risk-badge risk-high'; el.textContent = '🔴 High Risk'; }
-  else if (risk === 'medium') { el.className = 'risk-badge risk-med'; el.textContent = '🟡 Medium Risk'; }
-  else                   { el.className = 'risk-badge risk-low';  el.textContent = '🟢 All Clear'; }
+  if (risk === 'high')   { el.className = 'risk-badge risk-high'; el.textContent = 'ðŸ”´ High Risk'; }
+  else if (risk === 'medium') { el.className = 'risk-badge risk-med'; el.textContent = 'ðŸŸ¡ Medium Risk'; }
+  else                   { el.className = 'risk-badge risk-low';  el.textContent = 'ðŸŸ¢ All Clear'; }
 }
 
 let activeAlerts = [];
@@ -1336,7 +1336,7 @@ function renderAlerts(data) {
   
   document.getElementById('alerts-body').innerHTML = count
     ? activeAlerts.map(mkAlertCard).join('')
-    : `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
+    : `<div class="empty"><div class="empty-icon">ðŸ›¡ï¸</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
   
   // BUG 1 - Sync KPI count
   updateKPIs();
@@ -1346,7 +1346,7 @@ function mkAlertCard(a) {
   const shipId = a.shipment_id || a.id || a.shipmentId || a.shp_id;
   const s = allShips.find(x => (x.id || x.shipmentId || x.shp_id) === shipId) || {};
   
-  const modeIcon = a.mode_icon || MODE_ICONS[s.mode || a.mode] || '📦';
+  const modeIcon = a.mode_icon || MODE_ICONS[s.mode || a.mode] || 'ðŸ“¦';
   const mode = s.mode || a.mode || 'road';
   
   const realReason = a.risk_reason || (a.riskFactors ? a.riskFactors.join(', ') : '') || a.risks || a.threat || a.disruption || 'Potential Delay';
@@ -1361,19 +1361,19 @@ function mkAlertCard(a) {
   };
   const mbc = modeBadgeColors[mode] || modeBadgeColors.road;
   const actionVerbs = {
-    road:'✓ Approve Reroute',
-    rail:'✓ Approve Alt Corridor',
-    air: '✓ Approve Alt Hub/Slot',
-    sea: '✓ Approve Port Diversion',
+    road:'âœ“ Approve Reroute',
+    rail:'âœ“ Approve Alt Corridor',
+    air: 'âœ“ Approve Alt Hub/Slot',
+    sea: 'âœ“ Approve Port Diversion',
   };
-  const approveLabel = actionVerbs[mode] || '✓ Approve Action';
+  const approveLabel = actionVerbs[mode] || 'âœ“ Approve Action';
 
   const recLabels = {best:'BEST',acceptable:'VIABLE',modal_shift:'MODAL SHIFT',time_critical:'URGENT',non_urgent:'ECONOMY',last_resort:'LAST RESORT'};
   const altRoutesHtml = (a.alternate_routes||[]).slice(0,2).map((r,i) => {
     const extra_h = r.extra_hours !== undefined ? r.extra_hours : (r.extraH||0);
     const extra_cost = r.extra_cost_inr !== undefined ? r.extra_cost_inr : (r.extraCost||0);
-    const costStr = extra_cost<0 ? `−₹${Math.abs(extra_cost).toLocaleString('en-IN')}` : `+₹${extra_cost.toLocaleString('en-IN')}`;
-    const timeStr = extra_h<0 ? `−${Math.abs(extra_h)}h` : `+${extra_h}h`;
+    const costStr = extra_cost<0 ? `âˆ’â‚¹${Math.abs(extra_cost).toLocaleString('en-IN')}` : `+â‚¹${extra_cost.toLocaleString('en-IN')}`;
+    const timeStr = extra_h<0 ? `âˆ’${Math.abs(extra_h)}h` : `+${extra_h}h`;
     const recLabel = recLabels[r.recommendation||r.rec] || (i===0?'BEST':'ALT');
     return `<div class="a-route ${i===0?'best':''}">
       <span class="ar-name">${r.name||r.via||'Alternate option'}<span class="ar-best">${recLabel}</span></span>
@@ -1383,20 +1383,20 @@ function mkAlertCard(a) {
 
   return `<div class="alert-card ${a.risk_level||'medium'}" id="alert-${shipId}">
     <div class="alert-head">
-      <span class="ah-id">${modeIcon} ${shipId} · ${s.supplier||a.supplier||'Unknown'}</span>
+      <span class="ah-id">${modeIcon} ${shipId} Â· ${s.supplier||a.supplier||'Unknown'}</span>
       <span class="ah-conf">${Math.round(confidence)}% confidence</span>
     </div>
     <div class="alert-body">
       <span style="display:inline-flex;align-items:center;gap:4px;font-size:9px;font-weight:700;padding:2px 8px;border-radius:4px;background:${mbc.bg};color:${mbc.color};border:1px solid ${mbc.border};margin-bottom:6px">${modeIcon} ${(a.mode_label||mode).toUpperCase()} FREIGHT</span>
-      ${a.weather_confirmed?'<span class="a-weather-badge">⛈ Weather-confirmed</span><br>':''}
+      ${a.weather_confirmed?'<span class="a-weather-badge">â›ˆ Weather-confirmed</span><br>':''}
       <span class="a-level al-${a.risk_level||'medium'}">${a.risk_level||'medium'} risk</span>
       <div class="a-reason">${realReason}</div>
-      <div class="a-action">→ ${realAction}</div>
+      <div class="a-action">â†’ ${realAction}</div>
       <div class="a-routes">${altRoutesHtml||'<div style="font-size:11px;color:var(--text4);padding:4px 0">No pre-filed alternate on record.</div>'}</div>
       <div class="a-btns">
         <button class="btn-approve" onclick="approveAlert('${shipId}',this)">${approveLabel}</button>
-        <button class="btn-email-a" onclick="showEmail('${shipId}','${s.supplier||a.supplier||''}')">📧 Email</button>
-        <button class="btn-dismiss" onclick="this.closest('.alert-card').style.opacity='0.4'">✕</button>
+        <button class="btn-email-a" onclick="showEmail('${shipId}','${s.supplier||a.supplier||''}')">ðŸ“§ Email</button>
+        <button class="btn-dismiss" onclick="this.closest('.alert-card').style.opacity='0.4'">âœ•</button>
       </div>
     </div>
   </div>`;
@@ -1425,7 +1425,7 @@ function approveAlert(id, btn) {
       const count = document.querySelectorAll('.alert-card').length;
       badge.textContent = count + ' Alert' + (count !== 1 ? 's' : '');
       if (count === 0) {
-        document.getElementById('alerts-body').innerHTML = `<div class="empty"><div class="empty-icon">🛡️</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
+        document.getElementById('alerts-body').innerHTML = `<div class="empty"><div class="empty-icon">ðŸ›¡ï¸</div><div class="empty-text">All shipments on track.<br>No disruptions detected.</div></div>`;
         badge.style.background = 'var(--green2)';
         badge.style.color = 'var(--green)';
         badge.style.borderColor = '#86efac';
@@ -1447,13 +1447,13 @@ function approveAlert(id, btn) {
   if (window.updateRoute) window.updateRoute(id);
   if (window.focusShipment) window.focusShipment(id);
 
-  btn.textContent = '✓ Approved!'; btn.disabled = true; btn.style.opacity = '.5';
+  btn.textContent = 'âœ“ Approved!'; btn.disabled = true; btn.style.opacity = '.5';
   showToast('Reroute approved for ' + id, 'ok');
-  addMsg('ai', `✓ Reroute for ${id} approved. Shipment status updated to REROUTED. Map intelligence updated.`);
+  addMsg('ai', `âœ“ Reroute for ${id} approved. Shipment status updated to REROUTED. Map intelligence updated.`);
 }
 
 async function showEmail(id, sup) {
-  document.getElementById('modal-meta').textContent = id + ' · ' + sup;
+  document.getElementById('modal-meta').textContent = id + ' Â· ' + sup;
   document.getElementById('email-content').textContent = 'Generating with AI...';
   document.getElementById('email-modal').classList.add('open');
   try {
@@ -1491,7 +1491,7 @@ VaaniChain Operations Team`;
 function closeModal() { document.getElementById('email-modal').classList.remove('open'); }
 function copyEmail() { navigator.clipboard.writeText(emailText); showToast('Email copied!','ok'); }
 
-// ── FILTERS ──
+// â”€â”€ FILTERS â”€â”€
 function setFilter(val, type) {
   if (type === 'status') {
     filterStatus = val;
@@ -1507,7 +1507,7 @@ function setFilter(val, type) {
   renderShipments();
 }
 
-// ── SIMULATE ──
+// â”€â”€ SIMULATE â”€â”€
 async function simDisrupt() {
   const s = SCENARIOS[scenarioIdx % SCENARIOS.length]; scenarioIdx++;
   simulateMode = true;
@@ -1531,7 +1531,7 @@ let _lastDisruptionTime = null;
 function _markDisruption() {
   _lastDisruptionTime = Date.now();
   document.getElementById('reset-btn-label').textContent =
-    '↺ Reset (' + allShips.filter(s => s.status === 'at_risk').length + ' at risk)';
+    'â†º Reset (' + allShips.filter(s => s.status === 'at_risk').length + ' at risk)';
 }
  
 function allClear() {
@@ -1546,7 +1546,7 @@ function allClear() {
   activeAlerts = [];
   renderAlerts();
   updateKPIs();
-  showToast('All Clear — No active disruptions', 'ok');
+  showToast('All Clear â€” No active disruptions', 'ok');
 }
 
 let resetRetryTimer = null;
@@ -1570,7 +1570,7 @@ async function resetAll() {
     localStorage.removeItem("vaanichain_simulate");
     simulateMode = false;
     _lastDisruptionTime = null;
-    document.getElementById('reset-btn-label').textContent = '↺ Reset';
+    document.getElementById('reset-btn-label').textContent = 'â†º Reset';
     
     renderShipments();
     activeAlerts = [];
@@ -1585,7 +1585,7 @@ async function resetAll() {
     await loadShipments();
     await loadStatus();
     performVisualReset();
-    addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
+    addMsg('ai', 'âœ“ All disruptions cleared. Supply chain back to normal operations.');
   } catch (err) {
     console.error('Reset backend failed:', err);
     performVisualReset();
@@ -1593,7 +1593,7 @@ async function resetAll() {
   }
 }
 
-// ── CHAT ──
+// â”€â”€ CHAT â”€â”€
 function qa(q) { document.getElementById('chat-inp').value = q; sendChat(); }
 
 async function sendChat() {
@@ -1633,9 +1633,9 @@ async function sendChat() {
       ? "You MUST reply in English only. No matter what language the user writes in, your response must always be in English only."
       : "User ne Hindi choose ki hai. Chahe user kisi bhi language mein likhe, tumhara jawab hamesha sirf Hindi mein hona chahiye. Koi English nahi.";
 
-    const systemPrompt = "You are VaaniChat, an intelligent logistics assistant for VaaniChain supply chain platform. You have access to complete real-time data below. Answer any question the user asks — about shipments, routes, maps, transport modes (sea/air/rail/road), analytics, reports, delays, risks, ETAs, cargo — using ONLY this data. Never say you don't have data. Never give generic answers. " +
+    const systemPrompt = "You are VaaniChat, an intelligent logistics assistant for VaaniChain supply chain platform. You have access to complete real-time data below. Answer any question the user asks â€” about shipments, routes, maps, transport modes (sea/air/rail/road), analytics, reports, delays, risks, ETAs, cargo â€” using ONLY this data. Never say you don't have data. Never give generic answers. " +
       "If user asks about specific shipment ID, find it in allShips and give full details. If user asks about analytics/counts, use summary object. If user asks about routes/modes, use routes array. If user asks about at-risk shipments, list them with IDs and reasons. " +
-      "Never return vague answers — always answer the specific question.\n\nLIVE DATA: " + JSON.stringify(allData) + "\n\n" + langInstruction;
+      "Never return vague answers â€” always answer the specific question.\n\nLIVE DATA: " + JSON.stringify(allData) + "\n\n" + langInstruction;
 
     addMsg('user', msg);
     input.value = '';
@@ -1662,8 +1662,8 @@ async function sendChat() {
             const s = allShips.find(x => (x.id || x.shipmentId || '').toUpperCase() === match[0].toUpperCase());
             if (s) {
                 reply = selectedLang === 'en'
-                    ? `Shipment ${s.id}: ${s.origin} to ${s.destination}, status is ${s.status}. ETA: ${s.eta_hours}h. Cargo: ${s.cargo}. Route: ${s.route || '—'}.`
-                    : `Shipment ${s.id}: ${s.origin} se ${s.destination} ja raha hai, status ${s.status} hai. ETA ${s.eta_hours} ghante hai. Maal: ${s.cargo}. Route: ${s.route || '—'}.`;
+                    ? `Shipment ${s.id}: ${s.origin} to ${s.destination}, status is ${s.status}. ETA: ${s.eta_hours}h. Cargo: ${s.cargo}. Route: ${s.route || 'â€”'}.`
+                    : `Shipment ${s.id}: ${s.origin} se ${s.destination} ja raha hai, status ${s.status} hai. ETA ${s.eta_hours} ghante hai. Maal: ${s.cargo}. Route: ${s.route || 'â€”'}.`;
             } else {
                 reply = selectedLang === 'en' ? `Could not find shipment ${match[0]}.` : `Shipment ${match[0]} nahi mila.`;
             }
@@ -1707,15 +1707,15 @@ function showToast(m, t='info') {
 }
 
 
-// ═══════════════════════════════════════════════════════════════
-// VAANICHAIN — MULTI-FACTOR DISRUPTION INTELLIGENCE ENGINE
-// Factors: Weather · Festival · E-way Bill · Driver Fatigue ·
-//          Port Congestion · Strike · Breakdown · Regulatory
-// ═══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// VAANICHAIN â€” MULTI-FACTOR DISRUPTION INTELLIGENCE ENGINE
+// Factors: Weather Â· Festival Â· E-way Bill Â· Driver Fatigue Â·
+//          Port Congestion Â· Strike Â· Breakdown Â· Regulatory
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 const RISK_ENGINE = {
 
-  // ── 1. FESTIVAL / EVENT CONGESTION ──
+  // â”€â”€ 1. FESTIVAL / EVENT CONGESTION â”€â”€
   // Traffic on Indian highways spikes 2-3x during these windows
   FESTIVALS: [
     {name:'Diwali',        month:10, days:[1,15],  impact:40, modes:['road'],           note:'3x road congestion, transporter shortage'},
@@ -1728,7 +1728,7 @@ const RISK_ENGINE = {
     {name:'Republic Day',  month:0,  days:[24,27], impact:15, modes:['road','air'],     note:'Delhi route restrictions'},
     {name:'Independence Day',month:7,days:[13,16], impact:10, modes:['road','air'],     note:'Route diversions near capitals'},
     {name:'Harvest Season (Kharif)',month:9,days:[1,30],impact:20,modes:['road'],       note:'Agri trucks flood NH-44, NH-48'},
-    {name:'Harvest Season (Rabi)',  month:3,days:[1,30],impact:15,modes:['road'],       note:'Wheat harvest — NH-1, NH-19 slow'},
+    {name:'Harvest Season (Rabi)',  month:3,days:[1,30],impact:15,modes:['road'],       note:'Wheat harvest â€” NH-1, NH-19 slow'},
   ],
 
   getFestivalRisk(month, day, mode) {
@@ -1742,9 +1742,9 @@ const RISK_ENGINE = {
     return { score: top.impact, name: top.name, note: top.note };
   },
 
-  // ── 2. E-WAY BILL EXPIRY ──
+  // â”€â”€ 2. E-WAY BILL EXPIRY â”€â”€
   // GST e-way bill validity = 1 day per 100km (min 1 day)
-  // Over 400km needs extension — heavy penalty if expired at checkpost
+  // Over 400km needs extension â€” heavy penalty if expired at checkpost
   getEwayRisk(etaHours, routeKm) {
     if (!routeKm || !etaHours) return null;
     const validityDays = Math.max(1, Math.floor(routeKm / 100));
@@ -1753,16 +1753,16 @@ const RISK_ENGINE = {
     if (bufferHours < 4) {
       return {
         score: 45,
-        note: `E-way bill expires in <${Math.max(0,Math.round(bufferHours))}h — renew before departure`,
+        note: `E-way bill expires in <${Math.max(0,Math.round(bufferHours))}h â€” renew before departure`,
         critical: true
       };
     } else if (bufferHours < 12) {
-      return { score: 20, note: `E-way bill tight — ${Math.round(bufferHours)}h buffer only` };
+      return { score: 20, note: `E-way bill tight â€” ${Math.round(bufferHours)}h buffer only` };
     }
     return null;
   },
 
-  // ── 3. DRIVER FATIGUE & MANDATORY REST ──
+  // â”€â”€ 3. DRIVER FATIGUE & MANDATORY REST â”€â”€
   // MoRTH rule: max 10h continuous driving, mandatory 8h rest after
   // Long hauls >500km need driver change or overnight stop
   getDriverFatigueRisk(etaHours, mode) {
@@ -1770,22 +1770,22 @@ const RISK_ENGINE = {
     if (etaHours > 20) {
       return {
         score: 35,
-        note: `${etaHours}h journey — mandatory rest stop required (MoRTH rule)`,
+        note: `${etaHours}h journey â€” mandatory rest stop required (MoRTH rule)`,
         stops: Math.floor(etaHours / 10)
       };
     } else if (etaHours > 10) {
       return {
         score: 20,
-        note: `${etaHours}h journey — single driver at fatigue limit`
+        note: `${etaHours}h journey â€” single driver at fatigue limit`
       };
     }
     return null;
   },
 
-  // ── 4. PORT CONGESTION INDEX ──
+  // â”€â”€ 4. PORT CONGESTION INDEX â”€â”€
   // Simulates real JNPT/Chennai port congestion patterns
-  // JNPT: high congestion Oct–Dec (pre-Christmas exports)
-  // Monsoon: Jun–Aug affects loading/unloading
+  // JNPT: high congestion Octâ€“Dec (pre-Christmas exports)
+  // Monsoon: Junâ€“Aug affects loading/unloading
   getPortCongestionRisk(month, mode, destination) {
     if (mode !== 'sea') return null;
     const dest = (destination || '').toLowerCase();
@@ -1793,46 +1793,46 @@ const RISK_ENGINE = {
 
     // JNPT seasonal patterns
     if (month >= 9 && month <= 11) {
-      score = 40; note = 'JNPT pre-Christmas export surge — 3-5 day berth wait';
+      score = 40; note = 'JNPT pre-Christmas export surge â€” 3-5 day berth wait';
     } else if (month >= 5 && month <= 7) {
-      score = 30; note = 'Monsoon slows port operations — crane stoppages';
+      score = 30; note = 'Monsoon slows port operations â€” crane stoppages';
     } else {
       score = 10; note = 'Normal port operations';
     }
 
-    // Chennai port — known for slower customs
+    // Chennai port â€” known for slower customs
     if (dest.includes('chennai') || dest.includes('colombo')) {
-      score += 10; note += ' · Chennai customs: 24-48h avg clearance';
+      score += 10; note += ' Â· Chennai customs: 24-48h avg clearance';
     }
     // International routes: longer customs
     if (dest.includes('singapore') || dest.includes('rotterdam') || dest.includes('dubai')) {
-      score += 15; note += ' · EXIM documentation required';
+      score += 15; note += ' Â· EXIM documentation required';
     }
     return score > 0 ? { score: Math.min(score, 60), note } : null;
   },
 
-  // ── 5. STRIKE / BANDH INTELLIGENCE ──
+  // â”€â”€ 5. STRIKE / BANDH INTELLIGENCE â”€â”€
   // Based on known recurring patterns in India
   getStrikeRisk(month, route, mode) {
     const r = (route || '').toLowerCase();
     const risks = [];
 
-    // Truckers' strike — happens 2-3x a year typically
+    // Truckers' strike â€” happens 2-3x a year typically
     // Last major: July 2023, Feb 2024
     if (month === 1 || month === 6) {
       if (mode === 'road') {
-        risks.push({ score: 35, note: "Truckers' strike season — monitor AITWA alerts" });
+        risks.push({ score: 35, note: "Truckers' strike season â€” monitor AITWA alerts" });
       }
     }
-    // State bandhs — Karnataka (March election), Bengal (various)
+    // State bandhs â€” Karnataka (March election), Bengal (various)
     if (month === 2 && (r.includes('bengaluru') || r.includes('karnataka'))) {
-      risks.push({ score: 25, note: 'Karnataka election season — possible bandh' });
+      risks.push({ score: 25, note: 'Karnataka election season â€” possible bandh' });
     }
-    // Port workers — JNPT workers' strikes historically in monsoon
+    // Port workers â€” JNPT workers' strikes historically in monsoon
     if (month >= 5 && month <= 8 && mode === 'sea') {
-      risks.push({ score: 20, note: 'Port worker union activity — possible go-slow' });
+      risks.push({ score: 20, note: 'Port worker union activity â€” possible go-slow' });
     }
-    // Delhi NCR protest routes — NH-44, NH-48 blocked historically
+    // Delhi NCR protest routes â€” NH-44, NH-48 blocked historically
     if ((month === 11 || month === 0) && (r.includes('delhi') || r.includes('nh-44') || r.includes('nh-48'))) {
       risks.push({ score: 30, note: 'NH-44/NH-48 protest blockade risk (Delhi border)' });
     }
@@ -1840,7 +1840,7 @@ const RISK_ENGINE = {
     return risks.length ? risks[0] : null;
   },
 
-  // ── 6. VEHICLE BREAKDOWN PROBABILITY ──
+  // â”€â”€ 6. VEHICLE BREAKDOWN PROBABILITY â”€â”€
   // Based on: route km, vehicle type, road condition index
   getBreakdownRisk(etaHours, mode, cargo) {
     if (mode !== 'road') return null;
@@ -1850,18 +1850,18 @@ const RISK_ENGINE = {
     if (routeKm > 1200) {
       return {
         score: 25,
-        note: `${routeKm.toLocaleString('en-IN')}km haul — tyre blowout / engine risk on NH`
+        note: `${routeKm.toLocaleString('en-IN')}km haul â€” tyre blowout / engine risk on NH`
       };
     } else if (routeKm > 600) {
       return {
         score: 12,
-        note: `${routeKm.toLocaleString('en-IN')}km — standard maintenance check required`
+        note: `${routeKm.toLocaleString('en-IN')}km â€” standard maintenance check required`
       };
     }
     return null;
   },
 
-  // ── 7. REGULATORY / PERMIT RISK ──
+  // â”€â”€ 7. REGULATORY / PERMIT RISK â”€â”€
   // Inter-state permits, hazmat, oversized load
   getRegulatoryRisk(cargo, route, mode) {
     const c = (cargo || '').toLowerCase();
@@ -1869,10 +1869,10 @@ const RISK_ENGINE = {
     const risks = [];
 
     if (c.includes('chemical') || c.includes('fuel') || c.includes('hazmat')) {
-      risks.push({ score: 30, note: 'ADG permit required — MoRTH · hazmat restricted zones' });
+      risks.push({ score: 30, note: 'ADG permit required â€” MoRTH Â· hazmat restricted zones' });
     }
     if (c.includes('pharma') || c.includes('medical')) {
-      risks.push({ score: 15, note: 'Cold chain compliance · drug license at checkpost' });
+      risks.push({ score: 15, note: 'Cold chain compliance Â· drug license at checkpost' });
     }
     // Night driving ban on certain highways
     if (mode === 'road' && (r.includes('nh-66') || r.includes('coastal'))) {
@@ -1881,13 +1881,13 @@ const RISK_ENGINE = {
     return risks.length ? risks[0] : null;
   },
 
-  // ── 8. INFRASTRUCTURE RISK ──
+  // â”€â”€ 8. INFRASTRUCTURE RISK â”€â”€
   // Known bad stretches, accident-prone zones
   getInfrastructureRisk(route, mode) {
     const r = (route || '').toLowerCase();
     const infraRisks = {
       'nh-48':  { score: 20, note: 'NH-48: highest accident density in India (NHAI data)' },
-      'nh-19':  { score: 25, note: 'NH-19: Bihar section — pothole density, flooding risk' },
+      'nh-19':  { score: 25, note: 'NH-19: Bihar section â€” pothole density, flooding risk' },
       'nh-66':  { score: 20, note: 'NH-66 ghat: landslide-prone, narrow carriageway' },
       'nh-44':  { score: 15, note: 'NH-44: construction delays near Nagpur interchange' },
       'ghat':   { score: 25, note: 'Ghat section: speed limit 30 km/h, overloaded trucks' },
@@ -1900,7 +1900,7 @@ const RISK_ENGINE = {
     return null;
   },
 
-  // ── MASTER SCORER ──
+  // â”€â”€ MASTER SCORER â”€â”€
   // Aggregates all 8 factors + weather into a single risk profile
   getFullRisk(shipment, weatherData) {
     const month = new Date().getMonth();
@@ -1919,54 +1919,54 @@ const RISK_ENGINE = {
     if (weatherData) {
       const ow = weatherData[shipment.origin];
       const dw = weatherData[shipment.destination];
-      if (ow?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${shipment.origin} — ${Math.round(ow.rain_mm)}mm`, score:30, severity:'high' }); totalScore+=30; }
-      else if (ow?.rain_mm > 0) { factors.push({ icon:'🌦', label:'Weather', detail:`Light rain at ${shipment.origin}`, score:10, severity:'medium' }); totalScore+=10; }
-      if (dw?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${dest} — ${Math.round(dw.rain_mm)}mm`, score:25, severity:'high' }); totalScore+=25; }
+      if (ow?.rain_mm > 5)  { factors.push({ icon:'ðŸŒ§', label:'Weather', detail:`Heavy rain at ${shipment.origin} â€” ${Math.round(ow.rain_mm)}mm`, score:30, severity:'high' }); totalScore+=30; }
+      else if (ow?.rain_mm > 0) { factors.push({ icon:'ðŸŒ¦', label:'Weather', detail:`Light rain at ${shipment.origin}`, score:10, severity:'medium' }); totalScore+=10; }
+      if (dw?.rain_mm > 5)  { factors.push({ icon:'ðŸŒ§', label:'Weather', detail:`Heavy rain at ${dest} â€” ${Math.round(dw.rain_mm)}mm`, score:25, severity:'high' }); totalScore+=25; }
     }
 
     // Seasonal weather
     if (month>=5&&month<=8) {
       if (mode==='road'&&(route.toLowerCase().includes('nh-48')||route.toLowerCase().includes('nh-19'))) {
-        factors.push({icon:'🌊',label:'Monsoon',detail:'Highway flooding risk (Jun–Sep)',score:25,severity:'high'}); totalScore+=25;
+        factors.push({icon:'ðŸŒŠ',label:'Monsoon',detail:'Highway flooding risk (Junâ€“Sep)',score:25,severity:'high'}); totalScore+=25;
       } else if (mode==='sea') {
-        factors.push({icon:'🌀',label:'Cyclone Season',detail:'Bay of Bengal — Jun–Sep',score:20,severity:'high'}); totalScore+=20;
+        factors.push({icon:'ðŸŒ€',label:'Cyclone Season',detail:'Bay of Bengal â€” Junâ€“Sep',score:20,severity:'high'}); totalScore+=20;
       }
     }
     if ((month===11||month<=1)&&(mode==='air'||route.toLowerCase().includes('delhi'))) {
-      factors.push({icon:'🌫',label:'Dense Fog',detail:'IGI Delhi fog season Dec–Feb',score:25,severity:'high'}); totalScore+=25;
+      factors.push({icon:'ðŸŒ«',label:'Dense Fog',detail:'IGI Delhi fog season Decâ€“Feb',score:25,severity:'high'}); totalScore+=25;
     }
 
     // Festival
     const fest = this.getFestivalRisk(month, day, mode);
-    if (fest) { factors.push({icon:'🎉',label:'Festival Congestion',detail:`${fest.name} — ${fest.note}`,score:fest.score,severity:fest.score>30?'high':'medium'}); totalScore+=fest.score; }
+    if (fest) { factors.push({icon:'ðŸŽ‰',label:'Festival Congestion',detail:`${fest.name} â€” ${fest.note}`,score:fest.score,severity:fest.score>30?'high':'medium'}); totalScore+=fest.score; }
 
     // E-way bill
     const eway = this.getEwayRisk(eta, km);
-    if (eway) { factors.push({icon:'📋',label:'E-way Bill',detail:eway.note,score:eway.score,severity:eway.critical?'high':'medium'}); totalScore+=eway.score; }
+    if (eway) { factors.push({icon:'ðŸ“‹',label:'E-way Bill',detail:eway.note,score:eway.score,severity:eway.critical?'high':'medium'}); totalScore+=eway.score; }
 
     // Driver fatigue
     const fatigue = this.getDriverFatigueRisk(eta, mode);
-    if (fatigue) { factors.push({icon:'😴',label:'Driver Fatigue',detail:fatigue.note,score:fatigue.score,severity:fatigue.score>25?'high':'medium'}); totalScore+=fatigue.score; }
+    if (fatigue) { factors.push({icon:'ðŸ˜´',label:'Driver Fatigue',detail:fatigue.note,score:fatigue.score,severity:fatigue.score>25?'high':'medium'}); totalScore+=fatigue.score; }
 
     // Port congestion
     const port = this.getPortCongestionRisk(month, mode, dest);
-    if (port&&port.score>10) { factors.push({icon:'⚓',label:'Port Congestion',detail:port.note,score:port.score,severity:port.score>35?'high':'medium'}); totalScore+=port.score; }
+    if (port&&port.score>10) { factors.push({icon:'âš“',label:'Port Congestion',detail:port.note,score:port.score,severity:port.score>35?'high':'medium'}); totalScore+=port.score; }
 
     // Strike
     const strike = this.getStrikeRisk(month, route, mode);
-    if (strike) { factors.push({icon:'🚧',label:'Strike Risk',detail:strike.note,score:strike.score,severity:strike.score>30?'high':'medium'}); totalScore+=strike.score; }
+    if (strike) { factors.push({icon:'ðŸš§',label:'Strike Risk',detail:strike.note,score:strike.score,severity:strike.score>30?'high':'medium'}); totalScore+=strike.score; }
 
     // Breakdown
     const breakdown = this.getBreakdownRisk(eta, mode, cargo);
-    if (breakdown) { factors.push({icon:'🔧',label:'Breakdown Risk',detail:breakdown.note,score:breakdown.score,severity:'medium'}); totalScore+=breakdown.score; }
+    if (breakdown) { factors.push({icon:'ðŸ”§',label:'Breakdown Risk',detail:breakdown.note,score:breakdown.score,severity:'medium'}); totalScore+=breakdown.score; }
 
     // Regulatory
     const reg = this.getRegulatoryRisk(cargo, route, mode);
-    if (reg) { factors.push({icon:'📑',label:'Regulatory',detail:reg.note,score:reg.score,severity:reg.score>25?'high':'medium'}); totalScore+=reg.score; }
+    if (reg) { factors.push({icon:'ðŸ“‘',label:'Regulatory',detail:reg.note,score:reg.score,severity:reg.score>25?'high':'medium'}); totalScore+=reg.score; }
 
     // Infrastructure
     const infra = this.getInfrastructureRisk(route, mode);
-    if (infra) { factors.push({icon:'🛣',label:'Infrastructure',detail:infra.note,score:infra.score,severity:'medium'}); totalScore+=infra.score; }
+    if (infra) { factors.push({icon:'ðŸ›£',label:'Infrastructure',detail:infra.note,score:infra.score,severity:'medium'}); totalScore+=infra.score; }
 
     // Cargo sensitivity multiplier
     if (cargo.toLowerCase().includes('pharma')||cargo.toLowerCase().includes('medical')) {
@@ -1981,18 +1981,18 @@ const RISK_ENGINE = {
       level,
       factors: factors.sort((a,b)=>b.score-a.score),
       topReason: factors[0]?.detail || 'All conditions normal',
-      topIcon:   factors[0]?.icon   || '✅',
+      topIcon:   factors[0]?.icon   || 'âœ…',
     };
   }
 };
 
-// ── Backward-compat wrapper (used by ship cards) ──
+// â”€â”€ Backward-compat wrapper (used by ship cards) â”€â”€
 function getPredictiveRisk(shipment) {
   const r = RISK_ENGINE.getFullRisk(shipment, null);
   return { level: r.level, score: r.score, reason: r.topReason };
 }
 
-// ── FOCUS CHAT (FAB button) ──
+// â”€â”€ FOCUS CHAT (FAB button) â”€â”€
 function focusChat() {
   // scroll to chat panel and focus input
   const chatPanel = document.querySelector('.right-col');
@@ -2012,7 +2012,7 @@ function pingFAB() {
   setTimeout(() => badge.classList.remove('show'), 8000);
 }
 
-// ── VOICE INPUT (Web Speech API) ──
+// â”€â”€ VOICE INPUT (Web Speech API) â”€â”€
 let recognition = null;
 let isRecording = false;
 let voiceLang = 'hi'; 
@@ -2022,7 +2022,7 @@ function setVoiceLang(lang) {
   document.getElementById('lang-hi').classList.toggle('on', lang === 'hi');
   document.getElementById('lang-en').classList.toggle('on', lang === 'en');
   const inp = document.getElementById('chat-inp');
-  inp.placeholder = lang === 'hi' ? 'Hindi में पूछें... या 🎤 बोलें' : 'Ask in English... or 🎤 speak';
+  inp.placeholder = lang === 'hi' ? 'Hindi à¤®à¥‡à¤‚ à¤ªà¥‚à¤›à¥‡à¤‚... à¤¯à¤¾ ðŸŽ¤ à¤¬à¥‹à¤²à¥‡à¤‚' : 'Ask in English... or ðŸŽ¤ speak';
 }
 
 function toggleMic() {
@@ -2045,10 +2045,10 @@ function startMic() {
   recognition.onstart = () => {
     isRecording = true;
     document.getElementById('mic-btn').classList.add('recording');
-    document.getElementById('mic-btn').textContent = '⏹';
+    document.getElementById('mic-btn').textContent = 'â¹';
     document.getElementById('voice-status').classList.add('show');
     document.getElementById('chat-inp').value = '';
-    document.getElementById('chat-inp').placeholder = '🔴 Listening...';
+    document.getElementById('chat-inp').placeholder = 'ðŸ”´ Listening...';
   };
 
   recognition.onresult = (e) => {
@@ -2083,14 +2083,14 @@ function stopMic() {
   isRecording = false;
   if (recognition) { try { recognition.stop(); } catch {} recognition = null; }
   document.getElementById('mic-btn').classList.remove('recording');
-  document.getElementById('mic-btn').textContent = '🎤';
+  document.getElementById('mic-btn').textContent = 'ðŸŽ¤';
   document.getElementById('voice-status').classList.remove('show');
   document.getElementById('chat-inp').placeholder = voiceLang === 'hi'
-    ? 'Hindi या English में पूछें... या 🎤 बोलें'
-    : 'Ask in English... or 🎤 speak';
+    ? 'Hindi à¤¯à¤¾ English à¤®à¥‡à¤‚ à¤ªà¥‚à¤›à¥‡à¤‚... à¤¯à¤¾ ðŸŽ¤ à¤¬à¥‹à¤²à¥‡à¤‚'
+    : 'Ask in English... or ðŸŽ¤ speak';
 }
 
-// ── VOICE OUTPUT (Web Speech Synthesis) ──
+// â”€â”€ VOICE OUTPUT (Web Speech Synthesis) â”€â”€
 let currentUtterance = null;
 
 function speakText(text, btnEl) {
@@ -2103,7 +2103,7 @@ function speakText(text, btnEl) {
     window.speechSynthesis.cancel();
     currentUtterance = null;
     document.querySelectorAll('.speak-btn.speaking').forEach(b => {
-      b.classList.remove('speaking'); b.textContent = '🔊';
+      b.classList.remove('speaking'); b.textContent = 'ðŸ”Š';
     });
     if (btnEl) return; // toggle off
   }
@@ -2111,7 +2111,7 @@ function speakText(text, btnEl) {
   const utt = new SpeechSynthesisUtterance(text);
 
   // BUG 3 - Enhanced natural voice selection
-  const hasHindi = /[ऀ-ॿ]/.test(text);
+  const hasHindi = /[à¤€-à¥¿]/.test(text);
   const targetLang = hasHindi ? 'hi-IN' : 'en-IN';
   
   const voices = window.speechSynthesis.getVoices();
@@ -2128,11 +2128,11 @@ function speakText(text, btnEl) {
 
   utt.onstart = () => {
     currentUtterance = utt;
-    if (btnEl) { btnEl.classList.add('speaking'); btnEl.textContent = '⏹'; }
+    if (btnEl) { btnEl.classList.add('speaking'); btnEl.textContent = 'â¹'; }
   };
   utt.onend = utt.onerror = () => {
     currentUtterance = null;
-    if (btnEl) { btnEl.classList.remove('speaking'); btnEl.textContent = '🔊'; }
+    if (btnEl) { btnEl.classList.remove('speaking'); btnEl.textContent = 'ðŸ”Š'; }
   };
 
   window.speechSynthesis.speak(utt);
@@ -2151,7 +2151,7 @@ addMsg = function(role, text) {
   if (!bubble) return;
   const btn = document.createElement('button');
   btn.className = 'speak-btn';
-  btn.textContent = '🔊';
+  btn.textContent = 'ðŸ”Š';
   btn.title = 'Listen to this response';
   btn.onclick = () => speakText(text, btn);
   lastAI.querySelector('.msg-time')?.after(btn) || lastAI.appendChild(btn);
@@ -2163,13 +2163,13 @@ window.speechSynthesis.onvoiceschanged = () => {
   console.log(`Loaded ${voices.length} voices.`);
 };
 
-// ══════════════════════════════════════════════════════════════
-// SHIPMENT DETAIL MODAL — VaaniChain
-// ══════════════════════════════════════════════════════════════
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+// SHIPMENT DETAIL MODAL â€” VaaniChain
+// â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
 
 let _sdmShipment = null;
 
-// ── Deterministic faux driver/vehicle data from shipment ID seed ──
+// â”€â”€ Deterministic faux driver/vehicle data from shipment ID seed â”€â”€
 function genDriverData(s) {
   const seed = s.id.split('').reduce((a,c)=>a+c.charCodeAt(0),0);
   const mode = s.mode || 'road';
@@ -2225,14 +2225,14 @@ function genDriverData(s) {
     ewayBill, ewayExpiry: ewayExpiry.toLocaleDateString('en-IN'), ewayStatus,
     lr, gst,
     capacity: mode==='road' ? `${3+(seed%12)} Ton` : mode==='sea' ? `${20+(seed%60)} TEU` : mode==='air' ? `${500+(seed%4500)} kg` : `${20+(seed%40)} Wagon`,
-    trackingGPS: `${(18 + (seed%12)).toFixed(4)}°N, ${(72 + (seed%20)).toFixed(4)}°E`,
+    trackingGPS: `${(18 + (seed%12)).toFixed(4)}Â°N, ${(72 + (seed%20)).toFixed(4)}Â°E`,
     lastPing: `${Math.floor(seed%59)} min ago`,
-    fuel: mode==='road' ? `${40+(seed%60)}%` : '—',
+    fuel: mode==='road' ? `${40+(seed%60)}%` : 'â€”',
   };
 }
 
 function genAltRoutes(s) {
-  // ── MODE-AWARE REAL-WORLD ALTERNATE ROUTE ENGINE ──
+  // â”€â”€ MODE-AWARE REAL-WORLD ALTERNATE ROUTE ENGINE â”€â”€
   // Road: actual alternate highway paths
   // Rail: different corridor / DFC / modal shift (NOT map reroute)
   // Air: hub airport change / next slot / carrier swap (NOT flight path)
@@ -2244,106 +2244,106 @@ function genAltRoutes(s) {
   const ALTS = {
     road: {
       'NH-48': [
-        {name:'Delhi–Mumbai Expressway (DMIC)',via:'Sohna → Dausa → Kota → Vadodara → Mumbai',extraH:2,extraCost:3800,rec:'best',note:'Greenfield 8-lane, no flood risk. Toll ₹480 premium over NH-48.'},
-        {name:'NH-52 via Ahmedabad',via:'Delhi → Jaipur → Ahmedabad → Surat → Mumbai',extraH:4,extraCost:5200,rec:'acceptable',note:'Longer but fully open. Avoids Vadodara flood zone entirely.'},
+        {name:'Delhiâ€“Mumbai Expressway (DMIC)',via:'Sohna â†’ Dausa â†’ Kota â†’ Vadodara â†’ Mumbai',extraH:2,extraCost:3800,rec:'best',note:'Greenfield 8-lane, no flood risk. Toll â‚¹480 premium over NH-48.'},
+        {name:'NH-52 via Ahmedabad',via:'Delhi â†’ Jaipur â†’ Ahmedabad â†’ Surat â†’ Mumbai',extraH:4,extraCost:5200,rec:'acceptable',note:'Longer but fully open. Avoids Vadodara flood zone entirely.'},
       ],
       'NH-44': [
-        {name:'NH-75 via Kolar–Vellore',via:'Bangalore → Kolar → Vellore → Chennai',extraH:2,extraCost:1400,rec:'best',note:'Avoids Krishnagiri landslide zone. Smooth 6-lane stretch.'},
-        {name:'Old Madras Road (SH-4)',via:'Bangalore → Hoskote → Ambur → Chennai',extraH:3,extraCost:900,rec:'acceptable',note:'State highway, single lane stretches. Cheaper but slower.'},
+        {name:'NH-75 via Kolarâ€“Vellore',via:'Bangalore â†’ Kolar â†’ Vellore â†’ Chennai',extraH:2,extraCost:1400,rec:'best',note:'Avoids Krishnagiri landslide zone. Smooth 6-lane stretch.'},
+        {name:'Old Madras Road (SH-4)',via:'Bangalore â†’ Hoskote â†’ Ambur â†’ Chennai',extraH:3,extraCost:900,rec:'acceptable',note:'State highway, single lane stretches. Cheaper but slower.'},
       ],
       'NH-19': [
-        {name:'NH-31 via Hajipur',via:'Kolkata → Durgapur → NH-31 → Hajipur → Patna',extraH:3,extraCost:2800,rec:'best',note:'Avoids NH-19 flood submergence near Patna.'},
-        {name:'Rail freight (Howrah–Patna)',via:'Howrah Junction → Patna Junction (Indian Railways)',extraH:5,extraCost:1800,rec:'modal_shift',note:'Modal shift to rail. Cheaper, valid if road flooded beyond 24h.'},
+        {name:'NH-31 via Hajipur',via:'Kolkata â†’ Durgapur â†’ NH-31 â†’ Hajipur â†’ Patna',extraH:3,extraCost:2800,rec:'best',note:'Avoids NH-19 flood submergence near Patna.'},
+        {name:'Rail freight (Howrahâ€“Patna)',via:'Howrah Junction â†’ Patna Junction (Indian Railways)',extraH:5,extraCost:1800,rec:'modal_shift',note:'Modal shift to rail. Cheaper, valid if road flooded beyond 24h.'},
       ],
       'NH-48 Expressway': [
-        {name:'Old Mumbai–Pune Highway via Khopoli',via:'JNPT → Khopoli → Khandala Ghat → Pune',extraH:2,extraCost:800,rec:'best',note:'Port congestion workaround. Ghat section manageable in daylight.'},
-        {name:'Panvel → Alternate Expressway Lane',via:'Panvel → Khalapur → Pune (NHAI diversion lane)',extraH:1,extraCost:1200,rec:'acceptable',note:'NHAI has opened diversion lane on expressway itself.'},
+        {name:'Old Mumbaiâ€“Pune Highway via Khopoli',via:'JNPT â†’ Khopoli â†’ Khandala Ghat â†’ Pune',extraH:2,extraCost:800,rec:'best',note:'Port congestion workaround. Ghat section manageable in daylight.'},
+        {name:'Panvel â†’ Alternate Expressway Lane',via:'Panvel â†’ Khalapur â†’ Pune (NHAI diversion lane)',extraH:1,extraCost:1200,rec:'acceptable',note:'NHAI has opened diversion lane on expressway itself.'},
       ],
       'NH-21': [
-        {name:'NH-248A via Alwar',via:'Delhi → Gurugram → Alwar → Shahpura → Jaipur',extraH:1,extraCost:600,rec:'best',note:'Avoids NH-48 fog-prone stretch. NH-248A is fully lit.'},
+        {name:'NH-248A via Alwar',via:'Delhi â†’ Gurugram â†’ Alwar â†’ Shahpura â†’ Jaipur',extraH:1,extraCost:600,rec:'best',note:'Avoids NH-48 fog-prone stretch. NH-248A is fully lit.'},
       ],
       default: [
-        {name:'State Highway Diversion',via:'Alternate state highway — consult NHAI 1033',extraH:2,extraCost:1500,rec:'best',note:'Contact NHAI helpline 1033 for live diversion updates on your corridor.'},
-        {name:'Modal Shift to Rail',via:'Nearest rail freight terminal — DFCCIL booking',extraH:8,extraCost:-2000,rec:'modal_shift',note:'Rail is cheaper for routes >600km. Consider if road delay >12h.'},
+        {name:'State Highway Diversion',via:'Alternate state highway â€” consult NHAI 1033',extraH:2,extraCost:1500,rec:'best',note:'Contact NHAI helpline 1033 for live diversion updates on your corridor.'},
+        {name:'Modal Shift to Rail',via:'Nearest rail freight terminal â€” DFCCIL booking',extraH:8,extraCost:-2000,rec:'modal_shift',note:'Rail is cheaper for routes >600km. Consider if road delay >12h.'},
       ],
     },
     rail: {
       'Howrah': [
-        {name:'Eastern DFC — DFCCIL',via:'Dankuni (Kolkata) → Sonnagar → Ludhiana → Tughlakabad (Delhi)',extraH:6,extraCost:11000,rec:'best',note:'Dedicated freight corridor. No passenger conflict. Priority slot available.'},
-        {name:'Road via NH-19 (partial)',via:'Kolkata → Varanasi → Delhi — road bridge for blocked segment',extraH:12,extraCost:18000,rec:'modal_shift',note:'Partial road transfer for derailed section only. Last resort.'},
+        {name:'Eastern DFC â€” DFCCIL',via:'Dankuni (Kolkata) â†’ Sonnagar â†’ Ludhiana â†’ Tughlakabad (Delhi)',extraH:6,extraCost:11000,rec:'best',note:'Dedicated freight corridor. No passenger conflict. Priority slot available.'},
+        {name:'Road via NH-19 (partial)',via:'Kolkata â†’ Varanasi â†’ Delhi â€” road bridge for blocked segment',extraH:12,extraCost:18000,rec:'modal_shift',note:'Partial road transfer for derailed section only. Last resort.'},
       ],
       'Western': [
-        {name:'Western DFC — DFCCIL',via:'Dadri (Delhi) → Rewari → Palanpur → Mundra/Mumbai port',extraH:3,extraCost:8500,rec:'best',note:'DFCCIL dedicated corridor. 25% faster than main line. Priority slot.'},
-        {name:'Road freight via NH-48 (partial)',via:'Delhi → Mumbai via NH-48 — truck for blocked rail segment',extraH:14,extraCost:24000,rec:'modal_shift',note:'Road modal shift. Use only if DFC is also unavailable.'},
+        {name:'Western DFC â€” DFCCIL',via:'Dadri (Delhi) â†’ Rewari â†’ Palanpur â†’ Mundra/Mumbai port',extraH:3,extraCost:8500,rec:'best',note:'DFCCIL dedicated corridor. 25% faster than main line. Priority slot.'},
+        {name:'Road freight via NH-48 (partial)',via:'Delhi â†’ Mumbai via NH-48 â€” truck for blocked rail segment',extraH:14,extraCost:24000,rec:'modal_shift',note:'Road modal shift. Use only if DFC is also unavailable.'},
       ],
       'Grand Trunk': [
-        {name:'Air freight upgrade MAA → DEL',via:'Chennai MAA → Delhi DEL direct (air cargo)',extraH:-30,extraCost:45000,rec:'time_critical',note:'Save 30h if cargo is refrigerated or time-critical. 3× cost premium.'},
-        {name:'Road via NH-44 (partial)',via:'Chennai → Nagpur → Delhi — road bypass around signal failure zone',extraH:8,extraCost:18000,rec:'modal_shift',note:'Partial road transfer around Nagpur junction signal failure.'},
+        {name:'Air freight upgrade MAA â†’ DEL',via:'Chennai MAA â†’ Delhi DEL direct (air cargo)',extraH:-30,extraCost:45000,rec:'time_critical',note:'Save 30h if cargo is refrigerated or time-critical. 3Ã— cost premium.'},
+        {name:'Road via NH-44 (partial)',via:'Chennai â†’ Nagpur â†’ Delhi â€” road bypass around signal failure zone',extraH:8,extraCost:18000,rec:'modal_shift',note:'Partial road transfer around Nagpur junction signal failure.'},
       ],
       'Central': [
-        {name:'NH-27 Road Segment',via:'Ahmedabad → Nagpur → Kolkata — road bypass for Bhusawal yard',extraH:5,extraCost:14000,rec:'best',note:'Road bypass around Bhusawal flood-affected yard. Available immediately.'},
+        {name:'NH-27 Road Segment',via:'Ahmedabad â†’ Nagpur â†’ Kolkata â€” road bypass for Bhusawal yard',extraH:5,extraCost:14000,rec:'best',note:'Road bypass around Bhusawal flood-affected yard. Available immediately.'},
       ],
       'South Central': [
-        {name:'NH-44 Road Transfer',via:'Bangalore → Kolar → Hyderabad — short 180km road segment',extraH:2,extraCost:3500,rec:'best',note:'Short road segment around Wadi track fracture. Fastest option.'},
+        {name:'NH-44 Road Transfer',via:'Bangalore â†’ Kolar â†’ Hyderabad â€” short 180km road segment',extraH:2,extraCost:3500,rec:'best',note:'Short road segment around Wadi track fracture. Fastest option.'},
       ],
       default: [
         {name:'Dedicated Freight Corridor (DFC)',via:'DFCCIL slot on parallel corridor',extraH:4,extraCost:9000,rec:'best',note:'Contact DFCCIL control room for priority allocation on alternate corridor.'},
-        {name:'Road freight transfer',via:'Nearest truck terminal — road bridge for blocked section',extraH:10,extraCost:15000,rec:'modal_shift',note:'Partial road transfer for disrupted segment only.'},
+        {name:'Road freight transfer',via:'Nearest truck terminal â€” road bridge for blocked section',extraH:10,extraCost:15000,rec:'modal_shift',note:'Partial road transfer for disrupted segment only.'},
       ],
     },
     air: {
       DEL: [
-        {name:'Reroute via Jaipur (JAI) hub',via:'Surface feeder Mumbai → JAI → Delhi DEL',extraH:4,extraCost:8500,rec:'best',note:'JAI unaffected by IGI fog. 2 daily cargo slots open.'},
-        {name:'Next DEL slot (+5h)',via:'Same route — next ATC slot after fog lifts',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Cat III ops clear by 0900h IST.'},
-        {name:'Surface Express (Blue Dart)',via:'Mumbai → Delhi via surface priority road freight',extraH:18,extraCost:-6000,rec:'non_urgent',note:'Save ₹6,000 if delivery allows 18h surface transit.'},
+        {name:'Reroute via Jaipur (JAI) hub',via:'Surface feeder Mumbai â†’ JAI â†’ Delhi DEL',extraH:4,extraCost:8500,rec:'best',note:'JAI unaffected by IGI fog. 2 daily cargo slots open.'},
+        {name:'Next DEL slot (+5h)',via:'Same route â€” next ATC slot after fog lifts',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Cat III ops clear by 0900h IST.'},
+        {name:'Surface Express (Blue Dart)',via:'Mumbai â†’ Delhi via surface priority road freight',extraH:18,extraCost:-6000,rec:'non_urgent',note:'Save â‚¹6,000 if delivery allows 18h surface transit.'},
       ],
       BOM: [
-        {name:'Reroute via Pune (PNQ)',via:'Surface truck Mumbai → PNQ → destination flight',extraH:3,extraCost:7000,rec:'best',note:'PNQ is 150km from Mumbai. Independent ATC from BOM.'},
-        {name:'Next BOM slot',via:'Same route — next available BOM ATC slot',extraH:4,extraCost:0,rec:'acceptable',note:'Standard rebook. No extra cost.'},
+        {name:'Reroute via Pune (PNQ)',via:'Surface truck Mumbai â†’ PNQ â†’ destination flight',extraH:3,extraCost:7000,rec:'best',note:'PNQ is 150km from Mumbai. Independent ATC from BOM.'},
+        {name:'Next BOM slot',via:'Same route â€” next available BOM ATC slot',extraH:4,extraCost:0,rec:'acceptable',note:'Standard rebook. No extra cost.'},
       ],
       MAA: [
-        {name:'Reroute via Coimbatore (CJB)',via:'Surface truck Chennai → CJB → Mumbai BOM flight',extraH:3,extraCost:8500,rec:'best',note:'Avoids Bay of Bengal cyclone impact on MAA. CJB inland airport fully operational.'},
-        {name:'Reroute via Trichy (TRZ)',via:'Surface to TRZ → charter to BOM',extraH:5,extraCost:14000,rec:'acceptable',note:'Limited slots at TRZ. Charter option only.'},
+        {name:'Reroute via Coimbatore (CJB)',via:'Surface truck Chennai â†’ CJB â†’ Mumbai BOM flight',extraH:3,extraCost:8500,rec:'best',note:'Avoids Bay of Bengal cyclone impact on MAA. CJB inland airport fully operational.'},
+        {name:'Reroute via Trichy (TRZ)',via:'Surface to TRZ â†’ charter to BOM',extraH:5,extraCost:14000,rec:'acceptable',note:'Limited slots at TRZ. Charter option only.'},
       ],
       HYD: [
-        {name:'Reroute via Bhubaneswar (BBI)',via:'HYD → Bhubaneswar BBI tech stop → Kolkata CCU',extraH:2,extraCost:9000,rec:'best',note:'Single runway at HYD under maintenance. BBI fully operational.'},
-        {name:'Next HYD slot',via:'Same route — wait for HYD runway to reopen post-maintenance',extraH:3,extraCost:0,rec:'acceptable',note:'Runway opens post 1400h IST.'},
+        {name:'Reroute via Bhubaneswar (BBI)',via:'HYD â†’ Bhubaneswar BBI tech stop â†’ Kolkata CCU',extraH:2,extraCost:9000,rec:'best',note:'Single runway at HYD under maintenance. BBI fully operational.'},
+        {name:'Next HYD slot',via:'Same route â€” wait for HYD runway to reopen post-maintenance',extraH:3,extraCost:0,rec:'acceptable',note:'Runway opens post 1400h IST.'},
       ],
       COK: [
-        {name:'Hold at COK — next weather window',via:'Hold cargo at Kochi COK until DXB sandstorm clears',extraH:6,extraCost:15000,rec:'best',note:'DXB sandstorm advisory 0600–1200 GST. Hold + crew standby cost.'},
-        {name:'Reroute via Muscat (MCT)',via:'COK → Muscat MCT → Dubai DXB (next day)',extraH:12,extraCost:28000,rec:'acceptable',note:'Oman Air cargo slot available if DXB closure extends >8h.'},
+        {name:'Hold at COK â€” next weather window',via:'Hold cargo at Kochi COK until DXB sandstorm clears',extraH:6,extraCost:15000,rec:'best',note:'DXB sandstorm advisory 0600â€“1200 GST. Hold + crew standby cost.'},
+        {name:'Reroute via Muscat (MCT)',via:'COK â†’ Muscat MCT â†’ Dubai DXB (next day)',extraH:12,extraCost:28000,rec:'acceptable',note:'Oman Air cargo slot available if DXB closure extends >8h.'},
       ],
       default: [
-        {name:'Alternate hub airport',via:'Nearest unaffected airport within 300km — surface feeder',extraH:4,extraCost:10000,rec:'best',note:'Contact Blue Dart / IndiGo Cargo for next available hub slot.'},
-        {name:'Next available slot',via:'Same city pair — next ATC slot with same carrier',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Rebook with same carrier.'},
+        {name:'Alternate hub airport',via:'Nearest unaffected airport within 300km â€” surface feeder',extraH:4,extraCost:10000,rec:'best',note:'Contact Blue Dart / IndiGo Cargo for next available hub slot.'},
+        {name:'Next available slot',via:'Same city pair â€” next ATC slot with same carrier',extraH:5,extraCost:0,rec:'acceptable',note:'Zero additional cost. Rebook with same carrier.'},
         {name:'Surface freight (non-urgent)',via:'Priority road or rail surface freight',extraH:20,extraCost:-8000,rec:'non_urgent',note:'Save significantly if 1-day delay is acceptable.'},
       ],
     },
     sea: {
       JNPT: [
-        {name:'Colombo Transshipment (SLPA)',via:'JNPT → Colombo CMB → Singapore',extraH:48,extraCost:85000,rec:'best',note:"Avoid Bay of Bengal cyclone route. Colombo is South Asia's largest transship hub."},
-        {name:'Mundra Port Diversion',via:'Road drayage to Mundra → Mundra → Singapore direct',extraH:24,extraCost:42000,rec:'acceptable',note:'Mundra berths open. Drayage cost ₹18,000 included.'},
+        {name:'Colombo Transshipment (SLPA)',via:'JNPT â†’ Colombo CMB â†’ Singapore',extraH:48,extraCost:85000,rec:'best',note:"Avoid Bay of Bengal cyclone route. Colombo is South Asia's largest transship hub."},
+        {name:'Mundra Port Diversion',via:'Road drayage to Mundra â†’ Mundra â†’ Singapore direct',extraH:24,extraCost:42000,rec:'acceptable',note:'Mundra berths open. Drayage cost â‚¹18,000 included.'},
       ],
       Mundra: [
-        {name:'NSICT Alternate Berth (JNPT)',via:'Mundra → road drayage to JNPT NSICT → Suez Canal → Rotterdam',extraH:12,extraCost:35000,rec:'best',note:'JNPT NSICT has 3 open berth slots this week.'},
-        {name:'Cape of Good Hope Route',via:'Mundra → Cape of Good Hope → Rotterdam (bypass Suez)',extraH:168,extraCost:280000,rec:'last_resort',note:'Only if Suez Canal is blocked. Adds 7 days + heavy bunker fuel.'},
+        {name:'NSICT Alternate Berth (JNPT)',via:'Mundra â†’ road drayage to JNPT NSICT â†’ Suez Canal â†’ Rotterdam',extraH:12,extraCost:35000,rec:'best',note:'JNPT NSICT has 3 open berth slots this week.'},
+        {name:'Cape of Good Hope Route',via:'Mundra â†’ Cape of Good Hope â†’ Rotterdam (bypass Suez)',extraH:168,extraCost:280000,rec:'last_resort',note:'Only if Suez Canal is blocked. Adds 7 days + heavy bunker fuel.'},
       ],
       Chennai: [
-        {name:'Tuticorin Port (VOC)',via:'Road drayage Chennai → Tuticorin VOC Port → Colombo',extraH:18,extraCost:28000,rec:'best',note:'Chennai cyclone warning active. Tuticorin 180km inland, unaffected.'},
-        {name:'Wait for port reopening',via:'Hold cargo at Chennai CFS — port resumes post-cyclone',extraH:36,extraCost:12000,rec:'acceptable',note:'CFS demurrage applies. Viable if cyclone passes within 24h.'},
+        {name:'Tuticorin Port (VOC)',via:'Road drayage Chennai â†’ Tuticorin VOC Port â†’ Colombo',extraH:18,extraCost:28000,rec:'best',note:'Chennai cyclone warning active. Tuticorin 180km inland, unaffected.'},
+        {name:'Wait for port reopening',via:'Hold cargo at Chennai CFS â€” port resumes post-cyclone',extraH:36,extraCost:12000,rec:'acceptable',note:'CFS demurrage applies. Viable if cyclone passes within 24h.'},
       ],
       Kolkata: [
-        {name:'Rail freight via NER',via:'Kolkata → Patna via North Eastern Railway',extraH:24,extraCost:18000,rec:'best',note:'Low Ganga water levels — draft restriction <1.5m. Rail is the viable option.'},
-        {name:'Road freight via NH-19',via:'Kolkata → Patna by road (NH-19)',extraH:10,extraCost:8500,rec:'acceptable',note:'Check NH-19 flood status before committing.'},
+        {name:'Rail freight via NER',via:'Kolkata â†’ Patna via North Eastern Railway',extraH:24,extraCost:18000,rec:'best',note:'Low Ganga water levels â€” draft restriction <1.5m. Rail is the viable option.'},
+        {name:'Road freight via NH-19',via:'Kolkata â†’ Patna by road (NH-19)',extraH:10,extraCost:8500,rec:'acceptable',note:'Check NH-19 flood status before committing.'},
       ],
       Kochi: [
-        {name:'Air freight upgrade (COK → MLE)',via:'Kochi COK → Male MLE by air (Maldivian / IndiGo)',extraH:-68,extraCost:95000,rec:'time_critical',note:'4m wave height — vessel held. Air is only viable for essential supplies.'},
-        {name:'Wait for weather window',via:'Hold at Kochi Port — depart next window (est. 36h)',extraH:36,extraCost:8000,rec:'acceptable',note:'Port holding + crew standby. Wave height expected below 2.5m in 36h.'},
+        {name:'Air freight upgrade (COK â†’ MLE)',via:'Kochi COK â†’ Male MLE by air (Maldivian / IndiGo)',extraH:-68,extraCost:95000,rec:'time_critical',note:'4m wave height â€” vessel held. Air is only viable for essential supplies.'},
+        {name:'Wait for weather window',via:'Hold at Kochi Port â€” depart next window (est. 36h)',extraH:36,extraCost:8000,rec:'acceptable',note:'Port holding + crew standby. Wave height expected below 2.5m in 36h.'},
       ],
       default: [
         {name:'Nearest alternate port',via:'Divert to nearest unaffected port in same region',extraH:24,extraCost:40000,rec:'best',note:'Contact shipping line for berth availability at alternate port.'},
-        {name:'Colombo transshipment hub',via:'Colombo CMB — Asia primary transshipment hub',extraH:48,extraCost:75000,rec:'acceptable',note:"Colombo handles diversions from India's east or west coast."},
-        {name:'Hold at origin CFS',via:'Hold cargo at origin port CFS — wait for disruption to clear',extraH:36,extraCost:15000,rec:'non_urgent',note:'CFS demurrage applies. Cheapest if disruption is short-lived.'},
+        {name:'Colombo transshipment hub',via:'Colombo CMB â€” Asia primary transshipment hub',extraH:48,extraCost:75000,rec:'acceptable',note:"Colombo handles diversions from India's east or west coast."},
+        {name:'Hold at origin CFS',via:'Hold cargo at origin port CFS â€” wait for disruption to clear',extraH:36,extraCost:15000,rec:'non_urgent',note:'CFS demurrage applies. Cheapest if disruption is short-lived.'},
       ],
     },
   };
@@ -2398,17 +2398,17 @@ function genTimeline(s) {
 
   const stops = [];
   // Origin (done)
-  stops.push({ name: s.origin || 'Origin', meta: 'Departed', eta: 'Departed ✓', state: 'done' });
+  stops.push({ name: s.origin || 'Origin', meta: 'Departed', eta: 'Departed âœ“', state: 'done' });
 
   // Mid stops based on distance
   if (km > 400) {
     const mid1Km = Math.round(km * 0.3);
     const mid1State = pct > 35 ? 'done' : pct > 20 ? 'current' : 'pending';
-    stops.push({ name: `Checkpoint — ${Math.round(km*0.3)} km`, meta: mode === 'road' ? 'Toll + rest stop' : mode === 'rail' ? 'Rail junction' : 'Waypoint', eta: mid1State === 'done' ? 'Cleared ✓' : `~${Math.round(eta*0.3)}h from origin`, state: mid1State });
+    stops.push({ name: `Checkpoint â€” ${Math.round(km*0.3)} km`, meta: mode === 'road' ? 'Toll + rest stop' : mode === 'rail' ? 'Rail junction' : 'Waypoint', eta: mid1State === 'done' ? 'Cleared âœ“' : `~${Math.round(eta*0.3)}h from origin`, state: mid1State });
   }
   if (km > 800) {
     const mid2State = pct > 65 ? 'done' : pct > 50 ? 'current' : 'pending';
-    stops.push({ name: `Midpoint — ${Math.round(km*0.6)} km`, meta: mode === 'road' ? 'Driver change / fuel stop' : 'Major junction', eta: mid2State === 'done' ? 'Cleared ✓' : `~${Math.round(eta*0.6)}h from origin`, state: mid2State });
+    stops.push({ name: `Midpoint â€” ${Math.round(km*0.6)} km`, meta: mode === 'road' ? 'Driver change / fuel stop' : 'Major junction', eta: mid2State === 'done' ? 'Cleared âœ“' : `~${Math.round(eta*0.6)}h from origin`, state: mid2State });
   }
 
   // Current position (if mid-journey)
@@ -2416,12 +2416,12 @@ function genTimeline(s) {
   if (hasCurrentStop && pct > 10 && pct < 85) {
     const curKm = Math.round(pct / 100 * km);
     stops.splice(stops.length - (km > 400 ? 0 : 0), 0, {
-      name: `📍 Current Position — ~${curKm} km`, meta: `Live GPS · ${Math.floor(seed%59)} min ago`, eta: `${Math.round(eta * (1 - pct/100))}h to destination`, state: 'current'
+      name: `ðŸ“ Current Position â€” ~${curKm} km`, meta: `Live GPS Â· ${Math.floor(seed%59)} min ago`, eta: `${Math.round(eta * (1 - pct/100))}h to destination`, state: 'current'
     });
   }
 
   // Destination
-  stops.push({ name: s.destination || 'Destination', meta: s.status === 'delayed' ? '⚠️ Delayed' : `ETA ~${Math.round(eta*(1-pct/100))}h`, eta: s.status === 'on_time' ? `On-time delivery` : s.status === 'delayed' ? 'Delayed arrival' : 'At risk', state: 'pending' });
+  stops.push({ name: s.destination || 'Destination', meta: s.status === 'delayed' ? 'âš ï¸ Delayed' : `ETA ~${Math.round(eta*(1-pct/100))}h`, eta: s.status === 'on_time' ? `On-time delivery` : s.status === 'delayed' ? 'Delayed arrival' : 'At risk', state: 'pending' });
 
   return stops;
 }
@@ -2450,10 +2450,10 @@ function openSDM(s) {
   // Mode styling
   const modeStyle = { road:'background:#fef3c7;color:#92400e', rail:'background:#dbeafe;color:#1447be', air:'background:#ede9fe;color:#6d28d9', sea:'background:#d1fae5;color:#065f46' };
 
-  // ── Header ──
-  document.getElementById('sdm-shipid').textContent = s.id + ' · ' + (s.route || '—');
-  document.getElementById('sdm-route-title').innerHTML = `${s.origin||'?'} <span class="sdm-route-arr">→</span> ${s.destination||'?'}`;
-  document.getElementById('sdm-mode-icon').textContent = MODE_ICONS[mode] || '📦';
+  // â”€â”€ Header â”€â”€
+  document.getElementById('sdm-shipid').textContent = s.id + ' Â· ' + (s.route || 'â€”');
+  document.getElementById('sdm-route-title').innerHTML = `${s.origin||'?'} <span class="sdm-route-arr">â†’</span> ${s.destination||'?'}`;
+  document.getElementById('sdm-mode-icon').textContent = MODE_ICONS[mode] || 'ðŸ“¦';
   document.getElementById('sdm-mode-icon').style.cssText = `${modeStyle[mode]||''};width:52px;height:52px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;box-shadow:var(--shadow2)`;
 
   const priCls = s.priority === 'critical' ? 'pri-critical' : s.priority === 'high' ? 'pri-high' : 'pri-normal';
@@ -2464,7 +2464,7 @@ function openSDM(s) {
     ${s.owner_added ? '<span class="sc-owner">owner added</span>' : ''}
   `;
 
-  // ── Overview Tab ──
+  // â”€â”€ Overview Tab â”€â”€
   // Progress
   document.getElementById('sdm-origin-lbl').textContent = s.origin || 'Origin';
   document.getElementById('sdm-dest-lbl').textContent   = s.destination || 'Destination';
@@ -2477,7 +2477,7 @@ function openSDM(s) {
 
   // KPIs
   document.getElementById('sdm-k-eta').textContent    = eta + 'h';
-  document.getElementById('sdm-k-weight').textContent = s.weight_kg ? s.weight_kg.toLocaleString('en-IN') : '—';
+  document.getElementById('sdm-k-weight').textContent = s.weight_kg ? s.weight_kg.toLocaleString('en-IN') : 'â€”';
   document.getElementById('sdm-k-km').textContent     = km.toLocaleString('en-IN');
   document.getElementById('sdm-k-risk').innerHTML     = `<span style="color:${risk.level==='high'?'var(--red)':risk.level==='medium'?'var(--amber)':'var(--green)'}">${risk.score}</span>`;
 
@@ -2494,26 +2494,26 @@ function openSDM(s) {
 
   // Cargo + Supplier
   document.getElementById('sdm-cargo-grid').innerHTML = `
-    <div class="sdm-info-card"><div class="sdm-info-k">Cargo Type</div><div class="sdm-info-v normal">${s.cargo||'—'}</div></div>
-    <div class="sdm-info-card"><div class="sdm-info-k">Supplier</div><div class="sdm-info-v normal">${s.supplier||'—'}</div></div>
-    <div class="sdm-info-card"><div class="sdm-info-k">Weight</div><div class="sdm-info-v">${s.weight_kg?s.weight_kg.toLocaleString('en-IN')+' kg':'—'}</div></div>
-    <div class="sdm-info-card"><div class="sdm-info-k">Highway / Route</div><div class="sdm-info-v">${s.route||'—'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Cargo Type</div><div class="sdm-info-v normal">${s.cargo||'â€”'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Supplier</div><div class="sdm-info-v normal">${s.supplier||'â€”'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Weight</div><div class="sdm-info-v">${s.weight_kg?s.weight_kg.toLocaleString('en-IN')+' kg':'â€”'}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">Highway / Route</div><div class="sdm-info-v">${s.route||'â€”'}</div></div>
     <div class="sdm-info-card"><div class="sdm-info-k">Transport Mode</div><div class="sdm-info-v">${MODE_ICONS[mode]} ${mode.toUpperCase()}</div></div>
     <div class="sdm-info-card"><div class="sdm-info-k">Status</div><div class="sdm-info-v normal">${st.replace('_',' ').toUpperCase()}</div></div>
   `;
 
-  // ── Risk Tab ──
+  // â”€â”€ Risk Tab â”€â”€
   const rLevel = risk.level;
   const meter = document.getElementById('sdm-risk-meter');
   meter.textContent = risk.score;
   meter.className = `sdm-risk-meter ${rLevel}`;
   document.getElementById('sdm-risk-level-text').textContent =
-    rLevel === 'high' ? '🔴 High Risk — Immediate action needed' :
-    rLevel === 'medium' ? '🟡 Medium Risk — Monitor closely' : '🟢 Low Risk — All conditions normal';
+    rLevel === 'high' ? 'ðŸ”´ High Risk â€” Immediate action needed' :
+    rLevel === 'medium' ? 'ðŸŸ¡ Medium Risk â€” Monitor closely' : 'ðŸŸ¢ Low Risk â€” All conditions normal';
   document.getElementById('sdm-risk-desc').textContent =
     risk.factors.length > 0
       ? `${risk.factors.length} disruption factor${risk.factors.length>1?'s':''} detected. Top concern: ${risk.topReason}`
-      : 'VaaniChain AI checked 8 disruption factors — weather, compliance, infrastructure, festivals, strikes, driver fatigue, port congestion, and regulatory. All clear.';
+      : 'VaaniChain AI checked 8 disruption factors â€” weather, compliance, infrastructure, festivals, strikes, driver fatigue, port congestion, and regulatory. All clear.';
 
   if (risk.factors.length > 0) {
     document.getElementById('sdm-factor-list').innerHTML = risk.factors.map(f => `
@@ -2523,16 +2523,16 @@ function openSDM(s) {
           <div class="sdm-factor-label">${f.label}</div>
           <div class="sdm-factor-detail">${f.detail}</div>
         </div>
-        <div class="sdm-factor-score fs-${f.severity}">${f.score > 35 ? '🔴' : f.score > 20 ? '🟡' : '🟢'} ${f.score}/100</div>
+        <div class="sdm-factor-score fs-${f.severity}">${f.score > 35 ? 'ðŸ”´' : f.score > 20 ? 'ðŸŸ¡' : 'ðŸŸ¢'} ${f.score}/100</div>
       </div>
     `).join('');
   } else {
     document.getElementById('sdm-factor-list').innerHTML = `
-      <div class="sdm-factor-empty">✅ No active risk factors.<br>All 8 intelligence modules returned clear signals for this shipment.</div>
+      <div class="sdm-factor-empty">âœ… No active risk factors.<br>All 8 intelligence modules returned clear signals for this shipment.</div>
     `;
   }
 
-  // ── Driver / Vehicle Tab ──
+  // â”€â”€ Driver / Vehicle Tab â”€â”€
   const d = genDriverData(s);
   document.getElementById('sdm-vehicle-grid').innerHTML = `
     <div class="sdm-info-card"><div class="sdm-info-k">Vehicle</div><div class="sdm-info-v normal">${d.vehicle}</div></div>
@@ -2544,7 +2544,7 @@ function openSDM(s) {
     <div class="sdm-info-card" style="grid-column:1/-1"><div class="sdm-info-k">GPS Coordinates</div><div class="sdm-info-v">${d.trackingGPS}</div></div>
   `;
   document.getElementById('sdm-driver-grid').innerHTML = mode !== 'road' && mode !== 'rail' ? `
-    <div class="sdm-info-card" style="grid-column:1/-1"><div class="sdm-info-k">Operator</div><div class="sdm-info-v normal">${d.driver} · ${d.dPhone}</div></div>
+    <div class="sdm-info-card" style="grid-column:1/-1"><div class="sdm-info-k">Operator</div><div class="sdm-info-v normal">${d.driver} Â· ${d.dPhone}</div></div>
   ` : `
     <div class="sdm-info-card"><div class="sdm-info-k">Driver Name</div><div class="sdm-info-v normal">${d.driver}</div></div>
     <div class="sdm-info-card"><div class="sdm-info-k">Contact</div><div class="sdm-info-v">${d.dPhone}</div></div>
@@ -2556,16 +2556,16 @@ function openSDM(s) {
     <div class="sdm-info-card"><div class="sdm-info-k">Lorry Receipt No.</div><div class="sdm-info-v">${d.lr}</div></div>
     <div class="sdm-info-card"><div class="sdm-info-k">GST / GSTIN</div><div class="sdm-info-v">${d.gst}</div></div>
     <div class="sdm-info-card"><div class="sdm-info-k">E-Way Bill No.</div><div class="sdm-info-v">${d.ewayBill}</div></div>
-    <div class="sdm-info-card"><div class="sdm-info-k">E-Way Expiry</div><div class="sdm-info-v" style="color:${ewayColor}">${d.ewayExpiry} · ${d.ewayStatus}</div></div>
+    <div class="sdm-info-card"><div class="sdm-info-k">E-Way Expiry</div><div class="sdm-info-v" style="color:${ewayColor}">${d.ewayExpiry} Â· ${d.ewayStatus}</div></div>
   `;
 
-  // ── Alt Routes Tab ──
+  // â”€â”€ Alt Routes Tab â”€â”€
   const { alts, recBadges } = genAltRoutes(s);
   const modeCtx = {
-    road: {heading:'🛣️ Alternate Highway Options', sub:'Different road paths avoiding the disrupted segment. Map reroute IS valid for road.'},
-    rail: {heading:'🚂 Rail Corridor Alternatives', sub:'Rail runs on fixed tracks — alternatives are different corridors (DFC/alternate line) or modal shift to road/air.'},
-    air:  {heading:'✈️ Air Cargo Strategic Options', sub:'Flights follow fixed ATC airways — alternatives are hub airport changes, next slot, or different airline.'},
-    sea:  {heading:'🚢 Ocean Freight Strategic Options', sub:'Port, canal, and transshipment hub decisions — not map path changes.'},
+    road: {heading:'ðŸ›£ï¸ Alternate Highway Options', sub:'Different road paths avoiding the disrupted segment. Map reroute IS valid for road.'},
+    rail: {heading:'ðŸš‚ Rail Corridor Alternatives', sub:'Rail runs on fixed tracks â€” alternatives are different corridors (DFC/alternate line) or modal shift to road/air.'},
+    air:  {heading:'âœˆï¸ Air Cargo Strategic Options', sub:'Flights follow fixed ATC airways â€” alternatives are hub airport changes, next slot, or different airline.'},
+    sea:  {heading:'ðŸš¢ Ocean Freight Strategic Options', sub:'Port, canal, and transshipment hub decisions â€” not map path changes.'},
   }[mode] || {heading:'Alternative Options', sub:''};
 
   document.getElementById('sdm-alt-routes').innerHTML = `
@@ -2576,8 +2576,8 @@ function openSDM(s) {
   ` + alts.map((r, i) => {
     const rec = r.rec || (i===0?'best':'acceptable');
     const badge = recBadges[rec] || recBadges.acceptable;
-    const costStr = r.extraCost < 0 ? `−₹${Math.abs(r.extraCost).toLocaleString('en-IN')}` : `+₹${r.extraCost.toLocaleString('en-IN')}`;
-    const timeStr = r.extraH < 0 ? `−${Math.abs(r.extraH)}h` : `+${r.extraH}h`;
+    const costStr = r.extraCost < 0 ? `âˆ’â‚¹${Math.abs(r.extraCost).toLocaleString('en-IN')}` : `+â‚¹${r.extraCost.toLocaleString('en-IN')}`;
+    const timeStr = r.extraH < 0 ? `âˆ’${Math.abs(r.extraH)}h` : `+${r.extraH}h`;
     return `<div class="sdm-alt-route" onclick="selectAltRoute(this, ${i})" style="cursor:pointer; display:flex; justify-content:space-between; align-items:center; padding:11px 14px; border-radius:10px; border:1.5px solid var(--border); background:var(--white); transition:all .15s; margin-bottom:8px">
       <div class="sar-left" style="flex:1; display:flex; align-items:center; gap:10px">
         <input type="radio" name="route-select" style="cursor:pointer">
@@ -2596,13 +2596,13 @@ function openSDM(s) {
     </div>`;
   }).join('');
 
-  const disruptions = risk.factors.map(f => `• [${f.label}] ${f.detail}`).join('\n') || '• No active disruptions detected on this route.';
+  const disruptions = risk.factors.map(f => `â€¢ [${f.label}] ${f.detail}`).join('\n') || 'â€¢ No active disruptions detected on this route.';
   document.getElementById('sdm-disruption-notes').textContent = disruptions;
 
   // Update email button
   document.getElementById('sdm-email-btn').onclick = () => { closeSDM(); showEmail(s.id, s.supplier||''); };
 
-  // ── Reset to overview tab ──
+  // â”€â”€ Reset to overview tab â”€â”€
   switchSDMTab('overview', document.querySelector('.sdm-tab'));
   document.getElementById('sdm-ov').classList.add('open');
   document.body.style.overflow = 'hidden';
@@ -2642,8 +2642,8 @@ function sdmApproveReroute() {
     renderAlerts();
     updateKPIs();
     
-    showToast('✓ Reroute approved for ' + ship.id, 'ok');
-    addMsg('ai', `✓ Reroute for ${ship.id} approved via ${_selectedRoute.name}. New ETA: ${ship.eta_hours}h.`);
+    showToast('âœ“ Reroute approved for ' + ship.id, 'ok');
+    addMsg('ai', `âœ“ Reroute for ${ship.id} approved via ${_selectedRoute.name}. New ETA: ${ship.eta_hours}h.`);
   }
   
   closeSDM();
