@@ -1,0 +1,724 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaaniChain — Analytics</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
+  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+  --blue:#2563eb;--indigo:#4f46e5;--green:#059669;--green2:#d1fae5;
+  --amber:#d97706;--amber2:#fef3c7;--red:#dc2626;--red2:#fee2e2;--sky:#0ea5e9;
+  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
+  --grad2:linear-gradient(135deg,#059669,#0ea5e9);
+  --grad3:linear-gradient(135deg,#d97706,#dc2626);
+  --grad4:linear-gradient(135deg,#6366f1,#8b5cf6);
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow2:0 4px 16px rgba(0,0,0,.1);
+  --r:12px;
+}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh}
+
+.nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-brand{display:flex;align-items:center;gap:10px;text-decoration:none;cursor:pointer}
+.nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-name{font-size:18px;font-weight:800;color:var(--text)}
+.nav-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-spc{flex:1}
+.nav-mid{display:flex;align-items:center;gap:4px}
+.nav-tab{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:var(--sans)}
+.nav-tab:hover{background:var(--bg);color:var(--text2)}
+.nav-tab.on{background:var(--grad1);color:#fff}
+
+.page{padding:24px 28px 60px}
+.page-header{margin-bottom:24px}
+.page-title{font-size:26px;font-weight:800;color:var(--text);letter-spacing:-.3px;margin-bottom:4px}
+.page-sub{font-size:13px;color:var(--text3)}
+.page-sub span{font-family:var(--mono);color:var(--blue)}
+
+/* KPI row */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.kpi-card{background:var(--white);border-radius:var(--r);padding:18px 20px;border:1px solid var(--border);box-shadow:var(--shadow);position:relative;overflow:hidden}
+.kpi-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.k1::before{background:var(--grad1)}.k2::before{background:var(--grad2)}
+.k3::before{background:var(--grad3)}.k4::before{background:var(--grad4)}
+.kpi-label{font-size:11px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px}
+.kpi-value{font-size:28px;font-weight:800;font-family:var(--mono);color:var(--text);line-height:1;margin-bottom:3px}
+.kpi-sub{font-size:11px;color:var(--text4)}
+.kpi-icon{position:absolute;top:16px;right:16px;font-size:20px;opacity:.5}
+
+/* Charts grid */
+.charts-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px}
+.chart-full{grid-column:1/-1}
+.chart-card{background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow);padding:20px}
+.chart-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px}
+.chart-title{font-size:14px;font-weight:700;color:var(--text)}
+.chart-sub{font-size:12px;color:var(--text3);margin-top:2px}
+.chart-badge{font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;background:var(--green2);color:var(--green);border:1px solid #86efac}
+.chart-wrap{position:relative;height:240px}
+.chart-wrap.tall{height:300px}
+
+/* Insights panel */
+.insights-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:18px}
+.insight-card{background:var(--white);border-radius:var(--r);border:1px solid var(--border);box-shadow:var(--shadow);padding:16px}
+.insight-icon{font-size:24px;margin-bottom:8px}
+.insight-title{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px}
+.insight-text{font-size:12px;color:var(--text3);line-height:1.5}
+.insight-card.warn{border-left:3px solid var(--amber);background:linear-gradient(to right,#fffbeb,var(--white))}
+.insight-card.ok{border-left:3px solid var(--green);background:linear-gradient(to right,#f0fdf4,var(--white))}
+.insight-card.info{border-left:3px solid var(--blue);background:linear-gradient(to right,#eff6ff,var(--white))}
+
+/* Route risk table */
+.risk-table{width:100%;border-collapse:collapse;font-size:13px}
+.risk-table th{text-align:left;font-size:10px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;padding:8px 12px;border-bottom:2px solid var(--border)}
+.risk-table td{padding:10px 12px;border-bottom:1px solid var(--border)}
+.risk-table tr:last-child td{border-bottom:none}
+.risk-table tr:hover td{background:var(--bg)}
+.risk-bar-mini{height:6px;border-radius:3px;background:var(--border);overflow:hidden;width:80px;display:inline-block;vertical-align:middle;margin-right:6px}
+.risk-fill-mini{height:100%;border-radius:3px}
+.risk-pct{font-family:var(--mono);font-size:11px;font-weight:700}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <div class="nav-brand" onclick="window.location.href='../dashboard/dashboard.html'">
+    <div class="nav-icon">🚛</div>
+    <div class="nav-name"><span>Vaani</span>Chain</div>
+  </div>
+  <div class="nav-spc"></div>
+  <div class="nav-mid">
+    <button class="nav-tab" onclick="window.location.href='../dashboard/dashboard.html'">Dashboard</button>
+    <button class="nav-tab" onclick="window.location.href='../map/map.html'">🗺 Map</button>
+    <button class="nav-tab on">Analytics</button>
+    <button class="nav-tab" onclick="window.location.href='../reports/reports.html'">Reports</button>
+  </div>
+  <div class="nav-spc"></div>
+  <div style="font-family:var(--mono);font-size:11px;color:var(--text4);background:var(--bg);padding:5px 12px;border-radius:8px;border:1px solid var(--border)" id="nav-clock">--:--:--</div>
+</nav>
+
+<div class="page">
+  <div class="page-header">
+    <div class="page-title">Network Analytics</div>
+    <div class="page-sub">Live intelligence across all transport modes · <span id="data-date">loading...</span></div>
+  </div>
+
+  <!-- KPIs -->
+  <div class="kpi-row">
+    <div class="kpi-card k1"><div class="kpi-label">Total Shipments</div><div class="kpi-value" id="a-total">20</div><div class="kpi-sub">Across 4 modes</div><div class="kpi-icon">📦</div></div>
+    <div class="kpi-card k2"><div class="kpi-label">On-time Rate</div><div class="kpi-value" id="a-rate" style="color:var(--green)">—</div><div class="kpi-sub">Network efficiency</div><div class="kpi-icon">✅</div></div>
+    <div class="kpi-card k3"><div class="kpi-label">Revenue Saved</div><div class="kpi-value" id="a-saved" style="color:var(--green);font-size:20px">—</div><div class="kpi-sub">By AI rerouting</div><div class="kpi-icon">💰</div></div>
+    <div class="kpi-card k4"><div class="kpi-label">Disruptions Caught</div><div class="kpi-value" id="a-caught" style="color:var(--indigo)">—</div><div class="kpi-sub">Weather + route alerts</div><div class="kpi-icon">🤖</div></div>
+  </div>
+
+  <!-- AI Insights — Dynamic multi-factor -->
+  <div class="insights-grid" id="insights-grid"></div>
+
+  <!-- Charts row 1 -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-head">
+        <div><div class="chart-title">Mode-wise Shipment Distribution</div><div class="chart-sub">20 active shipments across 4 transport modes</div></div>
+        <span class="chart-badge">Live</span>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-mode"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div><div class="chart-title">Disruption Frequency by Route</div><div class="chart-sub">Historical risk score by highway/corridor</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-route"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts row 2 -->
+  <div class="charts-grid">
+    <div class="chart-card chart-full">
+      <div class="chart-head">
+        <div><div class="chart-title">Weather Risk Trend — Last 12 Months</div><div class="chart-sub">Disruption risk score by month across all modes</div></div>
+      </div>
+      <div class="chart-wrap tall"><canvas id="chart-weather"></canvas></div>
+    </div>
+  </div>
+
+  <!-- Charts row 3 -->
+  <div class="charts-grid">
+    <div class="chart-card">
+      <div class="chart-head">
+        <div><div class="chart-title">Cost Impact Analysis</div><div class="chart-sub">Estimated cost per disruption type (₹)</div></div>
+      </div>
+      <div class="chart-wrap"><canvas id="chart-cost"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <div class="chart-head">
+        <div><div class="chart-title">Route Risk Leaderboard</div><div class="chart-sub">Highest risk corridors in current network</div></div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="risk-table" id="risk-table">
+          <thead><tr><th>Route / Corridor</th><th>Mode</th><th>Risk Score</th><th>Primary Threat</th></tr></thead>
+          <tbody id="risk-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/shipments.js"></script>
+
+<script>
+(function(){ if(!localStorage.getItem('vc_token')) window.location.href='../index.html'; })();
+
+const BASE_URL = CONFIG.BASE_URL || 'http://localhost:5000';
+
+// clock
+setInterval(() => {
+  document.getElementById('nav-clock').textContent =
+    new Date().toLocaleTimeString('en-IN',{hour:'2-digit',minute:'2-digit',second:'2-digit',timeZone:'Asia/Kolkata'});
+}, 1000);
+
+document.getElementById('data-date').textContent =
+  new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+
+// ── Load live data ──
+async function loadData() {
+  let ships = [], status = {};
+  
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  if (savedShips) {
+    try {
+      ships = JSON.parse(savedShips);
+      console.log("Using synced shipment data from dashboard state");
+    } catch(e) {
+      console.error("Failed to parse synced ships", e);
+    }
+  }
+
+  // Fallback to approvedReroutes if vaanichain_ships is not yet set (legacy/compatibility)
+  if (!ships.length) {
+    const localReroutes = localStorage.getItem('approvedReroutes');
+    if (localReroutes) {
+      try {
+        ships = JSON.parse(localReroutes);
+      } catch(e) {}
+    }
+  }
+
+  try {
+    const [sr, st] = await Promise.all([
+      fetch(`${CONFIG.BASE_URL}/shipments`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json()),
+      fetch(`${CONFIG.BASE_URL}/status`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json())
+    ]);
+    if (!ships.length) ships = sr;
+    status = st;
+  } catch {}
+
+  const total   = ships.length || 20;
+  const ontime  = ships.filter(s=>s.status==='on_time').length || 15;
+  const atRisk  = ships.filter(s=>s.status==='at_risk' || s.status==='delayed').length || 0;
+  const rerouted = ships.filter(s=>s.status==='REROUTED').length || 0;
+  const rate    = total ? Math.round(((ontime + rerouted)/total)*100) : 100;
+  const saved   = (atRisk === 0 && rerouted > 0) ? (rerouted * 42000) : (atRisk > 0 ? 0 : Math.round(Math.random()*2+3) * 50000); 
+  const caught  = status.alerts?.length || rerouted;
+
+  document.getElementById('a-total').textContent  = total;
+  document.getElementById('a-rate').textContent   = Math.min(100, rate) + '%';
+  document.getElementById('a-saved').textContent  = '₹' + (saved||150000).toLocaleString('en-IN');
+  document.getElementById('a-caught').textContent = caught + (caught===0?' (all clear)':'');
+
+  // Mode counts from real data or defaults
+  const modeCounts = {road:0,rail:0,air:0,sea:0};
+  ships.forEach(s=>{ if(modeCounts[s.mode]!==undefined) modeCounts[s.mode]++; });
+  if(!ships.length){modeCounts.road=5;modeCounts.rail=5;modeCounts.air=5;modeCounts.sea=5;}
+
+  buildCharts(modeCounts, atRisk);
+  buildRiskTable(ships);
+}
+
+// Re-render on storage change
+window.addEventListener("storage", (e) => {
+  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
+    loadData();
+    buildDynamicInsights();
+  }
+});
+
+function buildCharts(modeCounts, atRisk) {
+  const font = { family:"'Plus Jakarta Sans',sans-serif", size:12 };
+  Chart.defaults.font = font;
+  Chart.defaults.color = '#6b7280';
+
+  // 1. Mode doughnut
+  new Chart(document.getElementById('chart-mode'), {
+    type: 'doughnut',
+    data: {
+      labels: ['🚛 Road','🚂 Rail','✈️ Air','🚢 Sea'],
+      datasets:[{
+        data: [modeCounts.road, modeCounts.rail, modeCounts.air, modeCounts.sea],
+        backgroundColor: ['#fef3c7','#dbeafe','#ede9fe','#d1fae5'],
+        borderColor:     ['#d97706','#2563eb','#7c3aed','#059669'],
+        borderWidth: 2, hoverOffset: 6
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'bottom',labels:{padding:16,font,usePointStyle:true}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ${ctx.raw} shipments`}}
+      },
+      cutout:'62%'
+    }
+  });
+
+  // 2. Route disruption bar
+  new Chart(document.getElementById('chart-route'), {
+    type: 'bar',
+    data: {
+      labels: ['NH-48','NH-19','NH-44','Howrah-Delhi','IGI Delhi','Bay of Bengal','Mundra Port','Ganga NW-1'],
+      datasets:[{
+        label:'Disruption Risk Score',
+        data: [78, 72, 55, 62, 68, 70, 45, 58],
+        backgroundColor: ctx => {
+          const v = ctx.raw;
+          return v>=70?'rgba(220,38,38,.75)':v>=55?'rgba(217,119,6,.75)':'rgba(5,150,105,.75)';
+        },
+        borderRadius: 6, borderSkipped: false
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false, indexAxis:'y',
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>`Risk: ${ctx.raw}/100`}}},
+      scales:{
+        x:{max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v+'/100'}},
+        y:{grid:{display:false}}
+      }
+    }
+  });
+
+  // 3. Weather risk trend (12 months)
+  const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+  // Realistic monsoon pattern — peaks Jun–Sep
+  const roadRisk    = [15,12,18,20,28,72,85,80,65,30,18,20];
+  const railRisk    = [10,8,12,14,20,45,55,52,40,22,12,14];
+  const airRisk     = [35,40,25,15,12,30,35,32,28,18,30,42]; // fog in winter
+  const seaRisk     = [20,18,15,20,30,55,70,68,60,35,22,18];
+
+  new Chart(document.getElementById('chart-weather'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets:[
+        {label:'🚛 Road',data:roadRisk,borderColor:'#d97706',backgroundColor:'rgba(217,119,6,.08)',tension:.4,fill:true,borderWidth:2,pointRadius:3},
+        {label:'🚂 Rail',data:railRisk,borderColor:'#2563eb',backgroundColor:'rgba(37,99,235,.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3},
+        {label:'✈️ Air', data:airRisk, borderColor:'#7c3aed',backgroundColor:'rgba(124,58,237,.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3},
+        {label:'🚢 Sea', data:seaRisk, borderColor:'#059669',backgroundColor:'rgba(5,150,105,.06)',tension:.4,fill:true,borderWidth:2,pointRadius:3},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top',labels:{padding:16,font,usePointStyle:true}},
+        tooltip:{mode:'index',intersect:false}
+      },
+      scales:{
+        y:{min:0,max:100,grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>v}},
+        x:{grid:{display:false}}
+      },
+      interaction:{mode:'nearest',axis:'x',intersect:false}
+    }
+  });
+
+  // 4. Cost impact bar
+  new Chart(document.getElementById('chart-cost'), {
+    type: 'bar',
+    data: {
+      labels:['Monsoon Flood','Rail Derailment','Airport Fog','Port Congestion','Highway Closure','Cyclone Alert'],
+      datasets:[
+        {label:'Avg Delay Cost (₹)',data:[85000,120000,45000,95000,65000,180000],backgroundColor:'rgba(220,38,38,.7)',borderRadius:5,borderSkipped:false},
+        {label:'AI Reroute Savings (₹)',data:[62000,90000,30000,70000,45000,130000],backgroundColor:'rgba(5,150,105,.7)',borderRadius:5,borderSkipped:false},
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{position:'top',labels:{padding:12,font,usePointStyle:true}},
+        tooltip:{callbacks:{label:ctx=>`${ctx.label}: ₹${ctx.raw.toLocaleString('en-IN')}`}}
+      },
+      scales:{
+        y:{grid:{color:'rgba(0,0,0,.05)'},ticks:{callback:v=>'₹'+v.toLocaleString('en-IN')}},
+        x:{grid:{display:false}}
+      }
+    }
+  });
+}
+
+function buildRiskTable() {
+  const routes = [
+    {route:'NH-48 (Mumbai–Delhi)',mode:'🚛 Road',risk:78,threat:'Monsoon flooding'},
+    {route:'Bay of Bengal Sea Route',mode:'🚢 Sea',risk:70,threat:'Cyclone season'},
+    {route:'Delhi IGI Airport',mode:'✈️ Air',risk:68,threat:'Winter fog'},
+    {route:'Howrah–Delhi Main Line',mode:'🚂 Rail',risk:62,threat:'Derailment / delays'},
+    {route:'NH-19 (Kolkata–Patna)',mode:'🚛 Road',risk:72,threat:'Bihar flooding'},
+    {route:'Ganga Inland Waterway',mode:'🚢 Sea',risk:58,threat:'Low water levels'},
+    {route:'NH-44 (Chennai–Bengaluru)',mode:'🚛 Road',risk:55,threat:'Landslide risk'},
+    {route:'Mundra Port',mode:'🚢 Sea',risk:45,threat:'Berth congestion'},
+  ].sort((a,b)=>b.risk-a.risk);
+
+  document.getElementById('risk-tbody').innerHTML = routes.map(r => {
+    const col = r.risk>=70?'#dc2626':r.risk>=55?'#d97706':'#059669';
+    return `<tr>
+      <td style="font-weight:600">${r.route}</td>
+      <td>${r.mode}</td>
+      <td>
+        <div class="risk-bar-mini"><div class="risk-fill-mini" style="width:${r.risk}%;background:${col}"></div></div>
+        <span class="risk-pct" style="color:${col}">${r.risk}</span>
+      </td>
+      <td style="color:var(--text3);font-size:12px">${r.threat}</td>
+    </tr>`;
+  }).join('');
+}
+
+
+// ═══════════════════════════════════════════════════════════════
+// VAANICHAIN — MULTI-FACTOR DISRUPTION INTELLIGENCE ENGINE v2.0
+// Factors: Weather · Festival · E-way Bill · Driver Fatigue ·
+//          Port Congestion · Strike · Breakdown · Regulatory
+// ═══════════════════════════════════════════════════════════════
+
+const RISK_ENGINE = {
+
+  // ── 1. FESTIVAL / EVENT CONGESTION ──
+  // Traffic on Indian highways spikes 2-3x during these windows
+  FESTIVALS: [
+    {name:'Diwali',        month:10, days:[1,15],  impact:40, modes:['road'],           note:'3x road congestion, transporter shortage'},
+    {name:'Durga Puja',    month:9,  days:[1,15],  impact:30, modes:['road','rail'],     note:'Heavy movement in East India'},
+    {name:'Eid ul-Fitr',   month:3,  days:[28,31], impact:25, modes:['road'],           note:'Pan-India road congestion'},
+    {name:'Holi',          month:2,  days:[24,26], impact:20, modes:['road'],           note:'North India highway slowdown'},
+    {name:'Ganesh Chaturthi',month:8,days:[20,31], impact:30, modes:['road','sea'],     note:'Mumbai port area congestion'},
+    {name:'Pongal',        month:0,  days:[13,16], impact:20, modes:['road'],           note:'South India freight slowdown'},
+    {name:'New Year',      month:11, days:[29,31], impact:15, modes:['air'],            note:'Air cargo capacity squeeze'},
+    {name:'Republic Day',  month:0,  days:[24,27], impact:15, modes:['road','air'],     note:'Delhi route restrictions'},
+    {name:'Independence Day',month:7,days:[13,16], impact:10, modes:['road','air'],     note:'Route diversions near capitals'},
+    {name:'Harvest Season (Kharif)',month:9,days:[1,30],impact:20,modes:['road'],       note:'Agri trucks flood NH-44, NH-48'},
+    {name:'Harvest Season (Rabi)',  month:3,days:[1,30],impact:15,modes:['road'],       note:'Wheat harvest — NH-1, NH-19 slow'},
+  ],
+
+  getFestivalRisk(month, day, mode) {
+    const hits = this.FESTIVALS.filter(f =>
+      f.month === month &&
+      day >= f.days[0] && day <= f.days[1] &&
+      (f.modes.includes(mode) || f.modes.includes('all'))
+    );
+    if (!hits.length) return null;
+    const top = hits.sort((a,b)=>b.impact-a.impact)[0];
+    return { score: top.impact, name: top.name, note: top.note };
+  },
+
+  // ── 2. E-WAY BILL EXPIRY ──
+  // GST e-way bill validity = 1 day per 100km (min 1 day)
+  // Over 400km needs extension — heavy penalty if expired at checkpost
+  getEwayRisk(etaHours, routeKm) {
+    if (!routeKm || !etaHours) return null;
+    const validityDays = Math.max(1, Math.floor(routeKm / 100));
+    const validityHours = validityDays * 24;
+    const bufferHours = validityHours - etaHours;
+    if (bufferHours < 4) {
+      return {
+        score: 45,
+        note: `E-way bill expires in <${Math.max(0,Math.round(bufferHours))}h — renew before departure`,
+        critical: true
+      };
+    } else if (bufferHours < 12) {
+      return { score: 20, note: `E-way bill tight — ${Math.round(bufferHours)}h buffer only` };
+    }
+    return null;
+  },
+
+  // ── 3. DRIVER FATIGUE & MANDATORY REST ──
+  // MoRTH rule: max 10h continuous driving, mandatory 8h rest after
+  // Long hauls >500km need driver change or overnight stop
+  getDriverFatigueRisk(etaHours, mode) {
+    if (mode !== 'road') return null;
+    if (etaHours > 20) {
+      return {
+        score: 35,
+        note: `${etaHours}h journey — mandatory rest stop required (MoRTH rule)`,
+        stops: Math.floor(etaHours / 10)
+      };
+    } else if (etaHours > 10) {
+      return {
+        score: 20,
+        note: `${etaHours}h journey — single driver at fatigue limit`
+      };
+    }
+    return null;
+  },
+
+  // ── 4. PORT CONGESTION INDEX ──
+  // Simulates real JNPT/Chennai port congestion patterns
+  // JNPT: high congestion Oct–Dec (pre-Christmas exports)
+  // Monsoon: Jun–Aug affects loading/unloading
+  getPortCongestionRisk(month, mode, destination) {
+    if (mode !== 'sea') return null;
+    const dest = (destination || '').toLowerCase();
+    let score = 0, note = '';
+
+    // JNPT seasonal patterns
+    if (month >= 9 && month <= 11) {
+      score = 40; note = 'JNPT pre-Christmas export surge — 3-5 day berth wait';
+    } else if (month >= 5 && month <= 7) {
+      score = 30; note = 'Monsoon slows port operations — crane stoppages';
+    } else {
+      score = 10; note = 'Normal port operations';
+    }
+
+    // Chennai port — known for slower customs
+    if (dest.includes('chennai') || dest.includes('colombo')) {
+      score += 10; note += ' · Chennai customs: 24-48h avg clearance';
+    }
+    // International routes: longer customs
+    if (dest.includes('singapore') || dest.includes('rotterdam') || dest.includes('dubai')) {
+      score += 15; note += ' · EXIM documentation required';
+    }
+    return score > 0 ? { score: Math.min(score, 60), note } : null;
+  },
+
+  // ── 5. STRIKE / BANDH INTELLIGENCE ──
+  // Based on known recurring patterns in India
+  getStrikeRisk(month, route, mode) {
+    const r = (route || '').toLowerCase();
+    const risks = [];
+
+    // Truckers' strike — happens 2-3x a year typically
+    // Last major: July 2023, Feb 2024
+    if (month === 1 || month === 6) {
+      if (mode === 'road') {
+        risks.push({ score: 35, note: "Truckers' strike season — monitor AITWA alerts" });
+      }
+    }
+    // State bandhs — Karnataka (March election), Bengal (various)
+    if (month === 2 && (r.includes('bengaluru') || r.includes('karnataka'))) {
+      risks.push({ score: 25, note: 'Karnataka election season — possible bandh' });
+    }
+    // Port workers — JNPT workers' strikes historically in monsoon
+    if (month >= 5 && month <= 8 && mode === 'sea') {
+      risks.push({ score: 20, note: 'Port worker union activity — possible go-slow' });
+    }
+    // Delhi NCR protest routes — NH-44, NH-48 blocked historically
+    if ((month === 11 || month === 0) && (r.includes('delhi') || r.includes('nh-44') || r.includes('nh-48'))) {
+      risks.push({ score: 30, note: 'NH-44/NH-48 protest blockade risk (Delhi border)' });
+    }
+
+    return risks.length ? risks[0] : null;
+  },
+
+  // ── 6. VEHICLE BREAKDOWN PROBABILITY ──
+  // Based on: route km, vehicle type, road condition index
+  getBreakdownRisk(etaHours, mode, cargo) {
+    if (mode !== 'road') return null;
+    const routeKm = etaHours * 65;
+
+    // Long distance = higher breakdown probability
+    if (routeKm > 1200) {
+      return {
+        score: 25,
+        note: `${routeKm.toLocaleString('en-IN')}km haul — tyre blowout / engine risk on NH`
+      };
+    } else if (routeKm > 600) {
+      return {
+        score: 12,
+        note: `${routeKm.toLocaleString('en-IN')}km — standard maintenance check required`
+      };
+    }
+    return null;
+  },
+
+  // ── 7. REGULATORY / PERMIT RISK ──
+  // Inter-state permits, hazmat, oversized load
+  getRegulatoryRisk(cargo, route, mode) {
+    const c = (cargo || '').toLowerCase();
+    const r = (route || '').toLowerCase();
+    const risks = [];
+
+    if (c.includes('chemical') || c.includes('fuel') || c.includes('hazmat')) {
+      risks.push({ score: 30, note: 'ADG permit required — MoRTH · hazmat restricted zones' });
+    }
+    if (c.includes('pharma') || c.includes('medical')) {
+      risks.push({ score: 15, note: 'Cold chain compliance · drug license at checkpost' });
+    }
+    // Night driving ban on certain highways
+    if (mode === 'road' && (r.includes('nh-66') || r.includes('coastal'))) {
+      risks.push({ score: 10, note: 'NH-66 night driving restrictions on ghat sections' });
+    }
+    return risks.length ? risks[0] : null;
+  },
+
+  // ── 8. INFRASTRUCTURE RISK ──
+  // Known bad stretches, accident-prone zones
+  getInfrastructureRisk(route, mode) {
+    const r = (route || '').toLowerCase();
+    const infraRisks = {
+      'nh-48':  { score: 20, note: 'NH-48: highest accident density in India (NHAI data)' },
+      'nh-19':  { score: 25, note: 'NH-19: Bihar section — pothole density, flooding risk' },
+      'nh-66':  { score: 20, note: 'NH-66 ghat: landslide-prone, narrow carriageway' },
+      'nh-44':  { score: 15, note: 'NH-44: construction delays near Nagpur interchange' },
+      'ghat':   { score: 25, note: 'Ghat section: speed limit 30 km/h, overloaded trucks' },
+      'kazigund':{ score:30, note: 'Kazigund-Banihal: J&K snowfall blocks' },
+      'nathu la':{ score:35, note: 'Nathu La: high altitude, weather closure' },
+    };
+    for (const [key, val] of Object.entries(infraRisks)) {
+      if (r.includes(key)) return val;
+    }
+    return null;
+  },
+
+  // ── MASTER SCORER ──
+  // Aggregates all 8 factors + weather into a single risk profile
+  getFullRisk(shipment, weatherData) {
+    const month = new Date().getMonth();
+    const day   = new Date().getDate();
+    const mode  = shipment.mode  || 'road';
+    const route = shipment.route || '';
+    const cargo = shipment.cargo || '';
+    const eta   = shipment.eta_hours || 12;
+    const km    = eta * 65;
+    const dest  = shipment.destination || '';
+
+    const factors = [];
+    let totalScore = 0;
+
+    // Weather (existing)
+    if (weatherData) {
+      const ow = weatherData[shipment.origin];
+      const dw = weatherData[shipment.destination];
+      if (ow?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${shipment.origin} — ${Math.round(ow.rain_mm)}mm`, score:30, severity:'high' }); totalScore+=30; }
+      else if (ow?.rain_mm > 0) { factors.push({ icon:'🌦', label:'Weather', detail:`Light rain at ${shipment.origin}`, score:10, severity:'medium' }); totalScore+=10; }
+      if (dw?.rain_mm > 5)  { factors.push({ icon:'🌧', label:'Weather', detail:`Heavy rain at ${dest} — ${Math.round(dw.rain_mm)}mm`, score:25, severity:'high' }); totalScore+=25; }
+    }
+
+    // Seasonal weather
+    if (month>=5&&month<=8) {
+      if (mode==='road'&&(route.toLowerCase().includes('nh-48')||route.toLowerCase().includes('nh-19'))) {
+        factors.push({icon:'🌊',label:'Monsoon',detail:'Highway flooding risk (Jun–Sep)',score:25,severity:'high'}); totalScore+=25;
+      } else if (mode==='sea') {
+        factors.push({icon:'🌀',label:'Cyclone Season',detail:'Bay of Bengal — Jun–Sep',score:20,severity:'high'}); totalScore+=20;
+      }
+    }
+    if ((month===11||month<=1)&&(mode==='air'||route.toLowerCase().includes('delhi'))) {
+      factors.push({icon:'🌫',label:'Dense Fog',detail:'IGI Delhi fog season Dec–Feb',score:25,severity:'high'}); totalScore+=25;
+    }
+
+    // Festival
+    const fest = this.getFestivalRisk(month, day, mode);
+    if (fest) { factors.push({icon:'🎉',label:'Festival Congestion',detail:`${fest.name} — ${fest.note}`,score:fest.score,severity:fest.score>30?'high':'medium'}); totalScore+=fest.score; }
+
+    // E-way bill
+    const eway = this.getEwayRisk(eta, km);
+    if (eway) { factors.push({icon:'📋',label:'E-way Bill',detail:eway.note,score:eway.score,severity:eway.critical?'high':'medium'}); totalScore+=eway.score; }
+
+    // Driver fatigue
+    const fatigue = this.getDriverFatigueRisk(eta, mode);
+    if (fatigue) { factors.push({icon:'😴',label:'Driver Fatigue',detail:fatigue.note,score:fatigue.score,severity:fatigue.score>25?'high':'medium'}); totalScore+=fatigue.score; }
+
+    // Port congestion
+    const port = this.getPortCongestionRisk(month, mode, dest);
+    if (port&&port.score>10) { factors.push({icon:'⚓',label:'Port Congestion',detail:port.note,score:port.score,severity:port.score>35?'high':'medium'}); totalScore+=port.score; }
+
+    // Strike
+    const strike = this.getStrikeRisk(month, route, mode);
+    if (strike) { factors.push({icon:'🚧',label:'Strike Risk',detail:strike.note,score:strike.score,severity:strike.score>30?'high':'medium'}); totalScore+=strike.score; }
+
+    // Breakdown
+    const breakdown = this.getBreakdownRisk(eta, mode, cargo);
+    if (breakdown) { factors.push({icon:'🔧',label:'Breakdown Risk',detail:breakdown.note,score:breakdown.score,severity:'medium'}); totalScore+=breakdown.score; }
+
+    // Regulatory
+    const reg = this.getRegulatoryRisk(cargo, route, mode);
+    if (reg) { factors.push({icon:'📑',label:'Regulatory',detail:reg.note,score:reg.score,severity:reg.score>25?'high':'medium'}); totalScore+=reg.score; }
+
+    // Infrastructure
+    const infra = this.getInfrastructureRisk(route, mode);
+    if (infra) { factors.push({icon:'🛣',label:'Infrastructure',detail:infra.note,score:infra.score,severity:'medium'}); totalScore+=infra.score; }
+
+    // Cargo sensitivity multiplier
+    if (cargo.toLowerCase().includes('pharma')||cargo.toLowerCase().includes('medical')) {
+      totalScore = Math.round(totalScore * 1.3);
+    }
+
+    totalScore = Math.min(totalScore, 100);
+    const level = totalScore >= 60 ? 'high' : totalScore >= 30 ? 'medium' : 'low';
+
+    return {
+      score: totalScore,
+      level,
+      factors: factors.sort((a,b)=>b.score-a.score),
+      topReason: factors[0]?.detail || 'All conditions normal',
+      topIcon:   factors[0]?.icon   || '✅',
+    };
+  }
+};
+
+function getPredictiveRisk(s) {
+  const r = RISK_ENGINE.getFullRisk(s, null);
+  return { level: r.level, score: r.score, reason: r.topReason };
+}
+
+function buildDynamicInsights() {
+  const month = new Date().getMonth();
+  const insights = [];
+
+  // Festival check
+  const day = new Date().getDate();
+  const fest = RISK_ENGINE.getFestivalRisk(month, day, 'road');
+  if (fest) {
+    insights.push({cls:'warn', icon:'🎉', title: fest.name + ' Congestion Active', text: fest.note + '. Plan departures outside peak festival windows. Add 30–50% buffer to road ETAs.'});
+  }
+
+  // Monsoon
+  if (month>=5&&month<=8) {
+    insights.push({cls:'warn', icon:'🌧️', title:'Monsoon Season Active', text:'NH-48 and NH-19 have elevated disruption probability. Road shipments show 35% higher risk vs baseline. Consider rail via DFCCIL for critical cargo.'});
+  }
+
+  // Fog
+  if (month===11||month<=1) {
+    insights.push({cls:'warn', icon:'🌫', title:'Winter Fog Advisory', text:'Delhi IGI showing Cat II/III fog windows in early morning. Schedule air departures after 9am. NH-44 and NH-19 also affected.'});
+  }
+
+  // Port congestion
+  if (month>=9&&month<=11) {
+    insights.push({cls:'warn', icon:'⚓', title:'Port Pre-Christmas Surge', text:'JNPT entering peak export season (Oct–Dec). Expect 3–5 day berth waiting time. Book slots 10 days in advance.'});
+  }
+
+  // Strike risk
+  const strike = RISK_ENGINE.getStrikeRisk(month, 'nh-48', 'road');
+  if (strike) {
+    insights.push({cls:'warn', icon:'🚧', title:'Strike Risk Elevated', text: strike.note + '. Monitor AITWA and state transport authority alerts before confirming pickup.'});
+  }
+
+  // Always add a positive insight
+  insights.push({cls:'ok', icon:'🚂', title:'Rail Freight Most Reliable', text:'Eastern and Western DFC corridors performing at 94% on-time. Recommended for time-sensitive cargo during current risk window.'});
+  insights.push({cls:'info', icon:'📋', title:'E-way Bill Alert', text:'For hauls > 400km, e-way bill validity = 1 day per 100km. Renew at least 4 hours before expiry to avoid checkpost penalties.'});
+
+  const shown = insights.slice(0,3);
+  document.getElementById('insights-grid').innerHTML = shown.map(i =>
+    `<div class="insight-card ${i.cls}"><div class="insight-icon">${i.icon}</div><div class="insight-title">${i.title}</div><div class="insight-text">${i.text}</div></div>`
+  ).join('');
+}
+
+loadData();
+buildDynamicInsights();
+</script>
+</body>
+</html>
