@@ -165,21 +165,21 @@ textarea.inp{min-height:80px;resize:vertical}
 <body>
 
 <nav class="nav">
-  <a class="nav-brand" href="dashboard/dashboard.html">
+  <a class="nav-brand" href="dashboard/index.html">
     <div class="nav-icon">🚛</div>
     <div class="nav-name"><span>Vaani</span>Chain</div>
   </a>
   <div class="nav-hindi">वाणी चेन</div>
   <div class="nav-sep"></div>
   <div class="nav-mid">
-    <a href="dashboard/dashboard.html" class="nav-tab">Dashboard</a>
-    <a href="map/map.html" class="nav-tab">🗺 Map</a>
-    <a href="analytics/analytics.html" class="nav-tab">Analytics</a>
+    <a href="dashboard/index.html" class="nav-tab">Dashboard</a>
+    <a href="map/index.html" class="nav-tab">🗺 Map</a>
+    <a href="analytics/index.html" class="nav-tab">Analytics</a>
     <a href="reports/reports.html" class="nav-tab">Reports</a>
   </div>
   <div class="nav-spc"></div>
   <div class="breadcrumb">
-    <a href="dashboard/dashboard.html">Dashboard</a>
+    <a href="dashboard/index.html">Dashboard</a>
     <span class="sep">›</span>
     <span class="cur">New Shipment</span>
   </div>
@@ -1649,7 +1649,7 @@ function submitShipment() {
   };
 
   // Send to backend
-  fetch(API_BASE + '/shipments/add', {
+  fetch(API + '/shipments/add', {
     method: 'POST',
     headers: {'Content-Type':'application/json'},
     body: JSON.stringify(s)
@@ -1664,7 +1664,7 @@ function submitShipment() {
   const btn = document.getElementById('submit-btn');
   btn.textContent = '✓ Added! Redirecting...'; btn.disabled = true;
   toast(`${ref} added to dashboard – AI monitoring started ✓`, 'ok');
-  setTimeout(() => window.location.href = 'dashboard/dashboard.html', 1200);
+  setTimeout(() => window.location.href = 'dashboard/index.html', 1200);
 }
 
 function toast(m, t = 'ok') {
