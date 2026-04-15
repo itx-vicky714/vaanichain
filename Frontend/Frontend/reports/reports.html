@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaaniChain — Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
+  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+  --blue:#2563eb;--indigo:#4f46e5;--green:#059669;--green2:#d1fae5;
+  --amber:#d97706;--amber2:#fef3c7;--red:#dc2626;--red2:#fee2e2;
+  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
+  --grad2:linear-gradient(135deg,#059669,#0ea5e9);
+  --sans:'Plus Jakarta Sans',sans-serif;--mono:'JetBrains Mono',monospace;
+  --shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow2:0 4px 16px rgba(0,0,0,.1);--r:12px;
+}
+html{font-size:14px;-webkit-font-smoothing:antialiased}
+body{background:var(--bg);color:var(--text);font-family:var(--sans);min-height:100vh;display:flex;flex-direction:column}
+
+/* NAVBAR */
+.nav{background:var(--white);border-bottom:1px solid var(--border);height:60px;display:flex;align-items:center;padding:0 28px;gap:12px;position:sticky;top:0;z-index:100;box-shadow:var(--shadow)}
+.nav-brand{display:flex;align-items:center;gap:10px;cursor:pointer;text-decoration:none}
+.nav-icon{width:36px;height:36px;border-radius:10px;background:var(--grad1);display:flex;align-items:center;justify-content:center;font-size:16px}
+.nav-name{font-size:18px;font-weight:800;color:var(--text)}
+.nav-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.nav-spc{flex:1}
+.nav-mid{display:flex;align-items:center;gap:4px}
+.nav-tab{padding:7px 14px;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;border:none;background:transparent;color:var(--text3);transition:all .15s;font-family:var(--sans);text-decoration:none}
+.nav-tab:hover{background:var(--bg);color:var(--text2)}
+.nav-tab.on{background:var(--grad1);color:#fff}
+
+/* MAIN CONTENT */
+.main-wrap{padding:24px 28px;max-width:1400px;margin:0 auto;width:100%}
+
+/* TOP CARDS */
+.reports-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:32px}
+.report-card{background:var(--white);border:1px solid var(--border);border-radius:var(--r);padding:20px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;position:relative;overflow:hidden}
+.report-card::before{content:'';position:absolute;top:0;left:0;right:0;height:3px}
+.rc-blue::before{background:var(--grad1)}.rc-green::before{background:var(--grad2)}
+.rc-amber::before{background:linear-gradient(135deg,#d97706,#dc2626)}.rc-purple::before{background:var(--grad4)}
+.rc-sky::before{background:linear-gradient(135deg,#0ea5e9,#6366f1)}.rc-teal::before{background:linear-gradient(135deg,#059669,#0891b2)}
+.report-card:hover{box-shadow:var(--shadow2);transform:translateY(-2px)}
+.rc-icon{width:44px;height:44px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:14px}
+.rc-title{font-size:14px;font-weight:700;color:var(--text);margin-bottom:4px}
+.rc-sub{font-size:12px;color:var(--text3);line-height:1.5;margin-bottom:12px}
+.rc-meta{display:flex;align-items:center;justify-content:space-between}
+.rc-freq{font-size:11px;font-family:var(--mono);color:var(--text4)}
+.rc-btn{font-size:11px;font-weight:600;padding:4px 12px;border-radius:6px;border:none;background:var(--grad1);color:#fff;cursor:pointer;font-family:var(--sans)}
+
+/* SIDEBAR LAYOUT */
+.layout{display:grid;grid-template-columns:280px 1fr;gap:24px;align-items:start}
+.sidebar{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;position:sticky;top:84px}
+.sb-head{padding:18px 20px;border-bottom:1px solid var(--border);font-size:14px;font-weight:700;color:var(--text)}
+.sb-item{padding:14px 20px;font-size:13px;font-weight:600;color:var(--text3);cursor:pointer;border-bottom:1px solid var(--bg);transition:all .15s;display:flex;align-items:center;gap:10px}
+.sb-item:hover{background:var(--bg);color:var(--text)}
+.sb-item.on{background:var(--bg);color:var(--blue);border-left:4px solid var(--blue)}
+.sb-item:last-child{border-bottom:none}
+
+/* REPORT PANEL */
+.report-panel{background:var(--white);border:1px solid var(--border);border-radius:var(--r);box-shadow:var(--shadow);min-height:600px;display:flex;flex-direction:column}
+.rp-header{padding:20px 24px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:#fafbfc}
+.rp-title-wrap{flex:1}
+.rp-title{font-size:18px;font-weight:800;color:var(--text)}
+.rp-sub{font-size:12px;color:var(--text4);font-family:var(--mono);margin-top:2px}
+.rp-actions{display:flex;gap:8px}
+.rp-btn{padding:8px 16px;border-radius:8px;font-size:12px;font-weight:700;cursor:pointer;font-family:var(--sans);border:1px solid var(--border);background:var(--white);color:var(--text2);transition:all .15s}
+.rp-btn:hover{background:var(--bg)}
+.rp-btn-primary{background:var(--grad1);color:#fff;border:none}
+.rp-body{padding:24px;flex:1}
+
+/* DATA TABLES & CONTENT */
+.report-section{margin-bottom:32px}
+.rs-title{font-size:13px;font-weight:700;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;margin-bottom:16px;padding-bottom:8px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
+.data-table{width:100%;border-collapse:collapse;font-size:13px}
+.data-table th{text-align:left;padding:12px;background:var(--bg);color:var(--text3);font-weight:700;font-size:11px;text-transform:uppercase;letter-spacing:.04em;border-bottom:2px solid var(--border)}
+.data-table td{padding:12px;border-bottom:1px solid var(--border);color:var(--text2)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:#f8fafc}
+
+/* KPI CELLS */
+.summary-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:24px}
+.sum-cell{background:var(--bg);border-radius:10px;padding:16px;border:1px solid var(--border);text-align:center}
+.sum-val{font-size:24px;font-weight:800;font-family:var(--mono);color:var(--text);margin-bottom:4px}
+.sum-key{font-size:10px;font-weight:700;color:var(--text4);text-transform:uppercase;letter-spacing:.05em}
+
+/* BADGES */
+.status-pill{padding:3px 8px;border-radius:20px;font-size:10px;font-weight:700;text-transform:uppercase}
+.s-ok{background:var(--green2);color:var(--green)}
+.s-risk{background:var(--amber2);color:var(--amber)}
+.s-del{background:var(--red2);color:var(--red)}
+
+.toast{position:fixed;bottom:24px;right:24px;background:var(--text);color:#fff;padding:12px 20px;border-radius:10px;font-size:13px;font-weight:600;box-shadow:var(--shadow2);z-index:999;transform:translateY(100px);transition:all .3s}
+.toast.show{transform:translateY(0)}
+
+@media print{
+  .nav, .sidebar, .reports-grid, .rp-actions{display:none !important}
+  .layout{display:block}
+  .main-wrap{padding:0}
+  .report-panel{border:none;box-shadow:none}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a class="nav-brand" href="../dashboard/dashboard.html">
+    <div class="nav-icon">🚛</div>
+    <div class="nav-name"><span>Vaani</span>Chain</div>
+  </a>
+  <div class="nav-spc"></div>
+  <div class="nav-mid">
+    <a href="../dashboard/dashboard.html" class="nav-tab">Dashboard</a>
+    <a href="../map/map.html" class="nav-tab">🗺 Map</a>
+    <a href="../analytics/analytics.html" class="nav-tab">Analytics</a>
+    <a href="reports.html" class="nav-tab on">Reports</a>
+  </div>
+  <div class="nav-spc"></div>
+  <div style="font-family:var(--mono);font-size:12px;color:var(--text3);background:var(--bg);padding:6px 14px;border-radius:8px;border:1px solid var(--border)" id="nav-clock">--:--:--</div>
+</nav>
+
+<div class="main-wrap">
+  
+  <!-- TOP CARDS -->
+  <div class="reports-grid">
+    <div class="report-card rc-blue" onclick="genReport('daily', 0)">
+      <div class="rc-icon" style="background:#eff6ff">📊</div>
+      <div class="rc-title">Daily Operations Summary</div>
+      <div class="rc-sub">Complete snapshot of current network status, shipments and system health.</div>
+      <div class="rc-meta"><span class="rc-freq">Daily</span><button class="rc-btn">Generate →</button></div>
+    </div>
+    <div class="report-card rc-green" onclick="genReport('disruption', 1)">
+      <div class="rc-icon" style="background:#f0fdf4">⚠️</div>
+      <div class="rc-title">Disruption Analysis</div>
+      <div class="rc-sub">Deep dive into active disruptions, root causes and rerouting efficiency.</div>
+      <div class="rc-meta"><span class="rc-freq">On Demand</span><button class="rc-btn">Generate →</button></div>
+    </div>
+    <div class="report-card rc-amber" onclick="genReport('cost', 2)">
+      <div class="rc-icon" style="background:#fffbeb">💰</div>
+      <div class="rc-title">Cost Impact Report</div>
+      <div class="rc-sub">Financial overview including revenue at risk and cost savings from AI rerouting.</div>
+      <div class="rc-meta"><span class="rc-freq">Weekly</span><button class="rc-btn">Generate →</button></div>
+    </div>
+    <div class="report-card rc-purple" onclick="genReport('weather', 3)">
+      <div class="rc-icon" style="background:#faf5ff">🌦️</div>
+      <div class="rc-title">Weather 72h Forecast</div>
+      <div class="rc-sub">Forward-looking weather risk intelligence for all active corridors.</div>
+      <div class="rc-meta"><span class="rc-freq">3x Daily</span><button class="rc-btn">Generate →</button></div>
+    </div>
+    <div class="report-card rc-sky" onclick="genReport('mode', 4)">
+      <div class="rc-icon" style="background:#f0f9ff">🚛</div>
+      <div class="rc-title">Mode Performance</div>
+      <div class="rc-sub">Comparative reliability and cost analysis across Road, Rail, Air and Sea.</div>
+      <div class="rc-meta"><span class="rc-freq">Monthly</span><button class="rc-btn">Generate →</button></div>
+    </div>
+    <div class="report-card rc-teal" onclick="genReport('predict', 5)">
+      <div class="rc-icon" style="background:#f0fdf4">🔮</div>
+      <div class="rc-title">Predictive Risk Assessment</div>
+      <div class="rc-sub">7-day risk trajectory based on seasonal patterns and historical data.</div>
+      <div class="rc-meta"><span class="rc-freq">AI Generated</span><button class="rc-btn">Generate →</button></div>
+    </div>
+  </div>
+
+  <div class="layout">
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="sb-head">Generate Reports</div>
+      <div class="sb-item on" onclick="genReport('daily', 0)">📊 Daily Operations Summary</div>
+      <div class="sb-item" onclick="genReport('disruption', 1)">⚠️ Disruption Analysis</div>
+      <div class="sb-item" onclick="genReport('cost', 2)">💰 Cost Impact Report</div>
+      <div class="sb-item" onclick="genReport('weather', 3)">🌦️ Weather 72h Forecast</div>
+      <div class="sb-item" onclick="genReport('mode', 4)">🚛 Mode Performance</div>
+      <div class="sb-item" onclick="genReport('predict', 5)">🔮 Predictive Risk Assessment</div>
+    </div>
+
+    <!-- MAIN PANEL -->
+    <div class="report-panel">
+      <div class="rp-header">
+        <div class="rp-title-wrap">
+          <div class="rp-title" id="rp-title">Select a report to generate</div>
+          <div class="rp-sub" id="rp-sub">VaaniChain Intelligence Engine</div>
+        </div>
+        <div class="rp-actions">
+          <button class="rp-btn" onclick="showToast('Report sent to email')">📧 Email Report</button>
+          <button class="rp-btn rp-btn-primary" onclick="window.print()">📥 Download PDF</button>
+        </div>
+      </div>
+      <div class="rp-body" id="rp-body">
+        <div style="text-align:center;padding:100px 0;color:var(--text4)">
+          <div style="font-size:40px;margin-bottom:16px">📄</div>
+          <p>Click a report card or sidebar item to generate full data report</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script src="js/config.js"></script>
+<script src="js/api.js"></script>
+
+<script>
+(function(){
+  const token = localStorage.getItem('vc_token');
+  if (!token) window.location.href = '../index.html';
+})();
+
+function updateClock() {
+  document.getElementById('nav-clock').textContent = new Date().toLocaleTimeString('en-IN', {hour:'2-digit', minute:'2-digit', second:'2-digit'});
+}
+setInterval(updateClock, 1000); updateClock();
+
+function showToast(m) {
+  const el = document.getElementById('toast');
+  el.textContent = m; el.classList.add('show');
+  setTimeout(() => el.classList.remove('show'), 3000);
+}
+
+let allShips = [];
+let statusData = {};
+
+async function loadData() {
+  const savedShips = localStorage.getItem("vaanichain_ships");
+  if (savedShips) {
+    try {
+      allShips = JSON.parse(savedShips);
+      console.log("Using synced shipment data from dashboard state for Reports");
+    } catch(e) {
+      console.error("Failed to parse synced ships for Reports", e);
+    }
+  }
+
+  // Fallback to legacy key if vaanichain_ships is empty
+  if (!allShips.length) {
+    const localReroutes = localStorage.getItem('approvedReroutes');
+    if (localReroutes) {
+      try {
+        allShips = JSON.parse(localReroutes);
+      } catch(e) {}
+    }
+  }
+
+  try {
+    const [rs, st] = await Promise.all([
+      fetch(`${CONFIG.BASE_URL}/shipments`),
+      fetch(`${CONFIG.BASE_URL}/status`)
+    ]);
+    const serverShips = await rs.json();
+    statusData = await st.json();
+    
+    // If we don't have local synced ships, use server data
+    if (!allShips.length) {
+      allShips = serverShips;
+    }
+  } catch(e) {
+    console.warn("Backend offline, using fallback or local data");
+    if (!allShips.length) {
+      allShips = [
+        {id:'SHP-1001',mode:'road',route:'NH-48',origin:'Mumbai',destination:'Delhi',eta_hours:18,status:'on_time',cargo:'Electronics'},
+        {id:'SHP-1002',mode:'road',route:'NH-44',origin:'Delhi',destination:'Bengaluru',eta_hours:28,status:'at_risk',cargo:'Pharma'},
+        {id:'RLY-2001',mode:'rail',route:'Western DFC',origin:'Mumbai',destination:'Delhi',eta_hours:22,status:'on_time',cargo:'FMCG'},
+        {id:'AIR-3001',mode:'air',route:'IndiGo Cargo',origin:'Mumbai',destination:'Delhi',eta_hours:2,status:'on_time',cargo:'Medical'}
+      ];
+    }
+    statusData = { alerts: [{shipment_id:'SHP-1002', risk_reason:'Monsoon Flooding', recommended_action:'Reroute via NH-52'}] };
+  }
+}
+
+// Re-render on storage change
+window.addEventListener("storage", (e) => {
+  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
+    // Determine current report type
+    const activeItem = document.querySelector('.sb-item.on');
+    const type = activeItem ? activeItem.textContent.toLowerCase() : 'daily';
+    const finalType = type.includes('daily') ? 'daily' : 
+                      type.includes('disruption') ? 'disruption' :
+                      type.includes('cost') ? 'cost' :
+                      type.includes('weather') ? 'weather' :
+                      type.includes('mode') ? 'mode' : 'predict';
+    
+    const idx = Array.from(document.querySelectorAll('.sb-item')).indexOf(activeItem);
+    genReport(finalType, idx >= 0 ? idx : 0);
+  }
+});
+
+// BUG 5 - Modal logic for Review Route
+function showReviewModal(shipId) {
+  const ship = allShips.find(s => (s.id || s.shipmentId || s.shp_id) === shipId);
+  const alert = (statusData.alerts || []).find(a => (a.shipment_id || a.id) === shipId);
+  
+  if (!ship) {
+    showToast("Shipment details not found");
+    return;
+  }
+
+  const origin = ship.origin || ship.from || "?";
+  const destination = ship.destination || ship.to || "?";
+  const route = ship.route || ship.highway || "Primary Corridor";
+  const alt = alert ? (alert.recommended_action || alert.altRoute || alert.alternative) : null;
+
+  const modalHtml = `
+    <div id="dynamic-modal-ov" style="position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:1000; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(4px)">
+      <div style="background:white; padding:30px; border-radius:16px; max-width:500px; width:90%; box-shadow:0 20px 50px rgba(0,0,0,0.3)">
+        <h3 style="margin-bottom:15px; color:var(--text)">Route Intelligence — ${shipId}</h3>
+        <div style="margin-bottom:20px; font-size:14px; line-height:1.6">
+          <p><b>Journey:</b> ${origin} → ${destination}</p>
+          <p><b>Current Route:</b> ${route}</p>
+          <hr style="margin:15px 0; border:0; border-top:1px solid var(--border)">
+          <p style="color:var(--blue)"><b>AI Suggestion:</b> ${alt ? alt : "No alternate route available at this time. Current route is being monitored."}</p>
+        </div>
+        <button onclick="document.getElementById('dynamic-modal-ov').remove()" style="width:100%; padding:12px; background:var(--grad1); color:white; border:none; border-radius:8px; cursor:pointer; font-weight:700">Close Analysis</button>
+      </div>
+    </div>
+  `;
+  
+  const div = document.createElement('div');
+  div.innerHTML = modalHtml;
+  document.body.appendChild(div.firstElementChild);
+}
+
+async function genReport(type, idx) {
+  const body = document.getElementById('rp-body');
+  const title = document.getElementById('rp-title');
+  const sub = document.getElementById('rp-sub');
+  
+  // Update UI
+  document.querySelectorAll('.sb-item').forEach((item, i) => {
+    item.classList.toggle('on', i === idx);
+  });
+  
+  title.textContent = "Generating Report...";
+  body.innerHTML = '<div style="text-align:center;padding:100px 0"><div class="spinner"></div><p>Aggregating live supply chain data...</p></div>';
+  
+  await loadData();
+  
+  const now = new Date().toLocaleString('en-IN');
+  sub.textContent = "Generated: " + now + " IST · Real-time Intelligence";
+
+  if (type === 'daily') {
+    title.textContent = "Daily Operations Summary";
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Summary Metrics</div>
+        <div class="summary-grid">
+          <div class="sum-cell"><div class="sum-val">${allShips.length}</div><div class="sum-key">Total Shipments</div></div>
+          <div class="sum-cell"><div class="sum-val" style="color:var(--green)">${allShips.filter(s=>s.status==='on_time').length}</div><div class="sum-key">On Time</div></div>
+          <div class="sum-cell"><div class="sum-val" style="color:var(--amber)">${allShips.filter(s=>s.status==='at_risk').length}</div><div class="sum-key">At Risk</div></div>
+          <div class="sum-cell"><div class="sum-val" style="color:var(--red)">${allShips.filter(s=>s.status==='delayed').length}</div><div class="sum-key">Delayed</div></div>
+        </div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Active Shipment Log</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>ID</th><th>Mode</th><th>Route</th><th>Origin</th><th>Destination</th><th>ETA</th><th>Status</th><th>Cargo</th></tr>
+          </thead>
+          <tbody>
+            ${allShips.map(s => `
+              <tr>
+                <td style="font-family:var(--mono);font-weight:700">${s.id || s.shipmentId || s.shp_id}</td>
+                <td>${(s.mode || 'road').toUpperCase()}</td>
+                <td>${(s.origin || s.from || '?')} → ${(s.destination || s.to || '?')}</td>
+                <td>${s.origin || s.from || '—'}</td>
+                <td>${s.destination || s.to || '—'}</td>
+                <td style="font-family:var(--mono)">${s.eta_hours || s.eta || 0}h</td>
+                <td><span class="status-pill ${(s.status || 'on_time') === 'on_time' ? 's-ok' : (s.status || 'on_time') === 'at_risk' ? 's-risk' : 's-del'}">${(s.status || 'on_time').replace('_', ' ')}</span></td>
+                <td>${s.cargo || s.cargo_type || 'General'}</td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } else if (type === 'disruption') {
+    title.textContent = "Disruption Analysis Report";
+    const alerts = statusData.alerts || [];
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Active Disruption Map</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Shipment</th><th>Detected Threat</th><th>Impacted Area</th><th>AI Suggested Alternative</th><th>Savings (Est)</th></tr>
+          </thead>
+          <tbody>
+            ${alerts.length ? alerts.map(a => {
+              const shipId = a.shipment_id || a.id || a.shipmentId || a.shp_id || "Unknown";
+              const ship = allShips.find(s => (s.id || s.shipmentId || s.shp_id) === shipId) || {};
+              const threat = a.risk_reason || a.riskFactors || a.risks || a.threat || a.disruption || 'Potential Delay';
+              const altText = a.recommended_action || a.altRoute || a.alternative || a.suggestedRoute || 'Review Route';
+              
+              // BUG 5 - Clickable Review Route button
+              const actionHtml = altText.toLowerCase().includes('review') 
+                ? `<button onclick="showReviewModal('${shipId}')" style="background:var(--blue); color:white; border:none; padding:4px 10px; border-radius:4px; font-size:10px; cursor:pointer; font-weight:700">🔍 Review Route</button>`
+                : `<span style="color:var(--blue);font-weight:600">${altText}</span>`;
+
+              return `
+                <tr>
+                  <td style="font-family:var(--mono);font-weight:700">${shipId}</td>
+                  <td style="color:var(--red);font-weight:600">${Array.isArray(threat) ? threat.join(', ') : threat}</td>
+                  <td>${a.route || ship.route || (ship.origin ? ship.origin + ' → ' + ship.destination : 'Network Node')}</td>
+                  <td>${actionHtml}</td>
+                  <td style="font-weight:700">₹${(a.savings_est || 42000).toLocaleString()}</td>
+                </tr>
+              `;
+            }).join('') : '<tr><td colspan="5" style="text-align:center;padding:40px;color:var(--text4)">No active disruptions in network</td></tr>'}
+          </tbody>
+        </table>
+      </div>
+    `;
+  } else if (type === 'cost') {
+    title.textContent = "Cost Impact Analysis";
+    const atRiskCount = allShips.filter(s=>s.status==='at_risk').length;
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Financial Summary</div>
+        <div class="summary-grid">
+          <div class="sum-cell"><div class="sum-val" style="color:var(--red)">₹${(atRiskCount * 85000).toLocaleString()}</div><div class="sum-key">Revenue at Risk</div></div>
+          <div class="sum-cell"><div class="sum-val" style="color:var(--green)">₹${(atRiskCount * 42000).toLocaleString()}</div><div class="sum-key">Saved by AI</div></div>
+          <div class="sum-cell"><div class="sum-val">₹${(allShips.length * 4200).toLocaleString()}</div><div class="sum-key">Toll Charges</div></div>
+          <div class="sum-cell"><div class="sum-val">₹${(allShips.length * 12500).toLocaleString()}</div><div class="sum-key">Fuel Costs</div></div>
+        </div>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Disruption Cost Breakdown</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Disruption Type</th><th>Avg Delay</th><th>Cost per Incident</th><th>AI Reroute Saving</th><th>Net Loss Avoided</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Monsoon Road Flooding</td><td>12.5h</td><td>₹85,000</td><td>₹62,000</td><td style="color:var(--green);font-weight:700">73%</td></tr>
+            <tr><td>Rail Track Maintenance</td><td>8.0h</td><td>₹45,000</td><td>₹38,000</td><td style="color:var(--green);font-weight:700">84%</td></tr>
+            <tr><td>Port Congestion</td><td>48.0h</td><td>₹1,20,000</td><td>₹70,000</td><td style="color:var(--green);font-weight:700">58%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+  } else if (type === 'weather') {
+    title.textContent = "Weather Intelligence (72h)";
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Corridor Risk Forecast</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Route/Corridor</th><th>Mode</th><th>24H Risk</th><th>48H Risk</th><th>72H Risk</th><th>Primary Threat</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>NH-48 (Mumbai-Jaipur)</td><td>Road</td><td><b style="color:var(--red)">HIGH</b></td><td><b style="color:var(--red)">HIGH</b></td><td><b>MED</b></td><td>Heavy Rain / Flood</td></tr>
+            <tr><td>Western Dedicated Freight</td><td>Rail</td><td><b>LOW</b></td><td><b>LOW</b></td><td><b>LOW</b></td><td>Nominal</td></tr>
+            <tr><td>Bay of Bengal NW-2</td><td>Sea</td><td><b>MED</b></td><td><b style="color:var(--red)">HIGH</b></td><td><b style="color:var(--red)">HIGH</b></td><td>Cyclone Warning</td></tr>
+            <tr><td>IGI Delhi Air Hub</td><td>Air</td><td><b>LOW</b></td><td><b>MED</b></td><td><b>LOW</b></td><td>Fog Probability</td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">AI Recommendations</div>
+        <ul style="list-style:none; padding:0">
+          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">1. <b>Road:</b> Delay departures from JNPT by 6 hours to avoid peak rainfall window on NH-48.</li>
+          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">2. <b>Sea:</b> Port vessels at Ennore to secure additional draft or move to holding area by 48H.</li>
+          <li style="margin-bottom:12px; padding:12px; background:var(--bg); border-radius:8px">3. <b>Rail:</b> Western DFC is clear; recommended for pharma cargo originally planned for road.</li>
+        </ul>
+      </div>
+    `;
+  } else if (type === 'mode') {
+    title.textContent = "Mode Performance Comparison";
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Network Efficiency by Mode</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Mode</th><th>Shipments</th><th>On-Time Rate</th><th>Avg Delay Risk</th><th>Avg Cost/kg</th><th>Reliability Score</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>🚛 Road</td><td>12</td><td>72%</td><td>14.2%</td><td>₹12.50</td><td>7.2/10</td></tr>
+            <tr><td>🚂 Rail</td><td>5</td><td>94%</td><td>2.1%</td><td>₹4.20</td><td>9.4/10</td></tr>
+            <tr><td>✈️ Air</td><td>2</td><td>88%</td><td>5.5%</td><td>₹145.00</td><td>8.5/10</td></tr>
+            <tr><td>🚢 Sea</td><td>1</td><td>78%</td><td>12.0%</td><td>₹2.80</td><td>7.0/10</td></tr>
+          </tbody>
+        </table>
+      </div>
+    `;
+  } else if (type === 'predict') {
+    title.textContent = "7-Day Predictive Risk Assessment";
+    body.innerHTML = `
+      <div class="report-section">
+        <div class="rs-title">Intelligence Forecast</div>
+        <table class="data-table">
+          <thead>
+            <tr><th>Shipment</th><th>Mode</th><th>Risk Score</th><th>Day 1-2</th><th>Day 3-6</th><th>Day 7</th><th>Active Factors</th></tr>
+          </thead>
+          <tbody>
+            ${allShips.slice(0,5).map(s => {
+              const shipId = s.id || s.shipmentId || s.shp_id;
+              const status = s.status || 'on_time';
+              return `
+                <tr>
+                  <td style="font-family:var(--mono);font-weight:700">${shipId}</td>
+                  <td>${(s.mode || 'road').toUpperCase()}</td>
+                  <td style="font-weight:800; color:${status === 'at_risk' ? 'var(--red)' : 'var(--green)'}">74/100</td>
+                  <td>${status === 'at_risk' ? 'At Risk' : 'On Track'}</td><td>Stable</td><td>Clear</td>
+                  <td style="font-size:11px">Monsoon + Traffic</td>
+                </tr>
+              `;
+            }).join('')}
+          </tbody>
+        </table>
+      </div>
+      <div class="report-section">
+        <div class="rs-title">Risk Factors Analysed</div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px">
+          <div style="padding:12px; background:var(--bg); border-radius:8px">🌧️ <b>Meteorological:</b> 12 data points per route</div>
+          <div style="padding:12px; background:var(--bg); border-radius:8px">🚧 <b>Infrastructure:</b> NHAI roadwork database</div>
+          <div style="padding:12px; background:var(--bg); border-radius:8px">📈 <b>Demand:</b> Seasonal surge modeling</div>
+          <div style="padding:12px; background:var(--bg); border-radius:8px">⚖️ <b>Regulatory:</b> E-way bill & checkpost data</div>
+        </div>
+      </div>
+    `;
+  }
+}
+
+// Default load
+window.onload = () => {
+  genReport('daily', 0);
+};
+</script>
+</body>
+</html>

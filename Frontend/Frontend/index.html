@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>VaaniChain — Sign In</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+Devanagari:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#f0f2f7;--white:#fff;--border:#e2e6ef;--border2:#c8cfe0;
+  --text:#0f172a;--text2:#374151;--text3:#6b7280;--text4:#9ca3af;
+  --blue:#2563eb;--green:#059669;--green2:#d1fae5;--red:#dc2626;--red2:#fee2e2;
+  --grad1:linear-gradient(135deg,#2563eb,#4f46e5);
+  --sans:'Plus Jakarta Sans',sans-serif;
+  --mono:'JetBrains Mono',monospace;
+  --hindi:'Noto Sans Devanagari',sans-serif;
+  --shadow:0 1px 3px rgba(0,0,0,.08);
+  --shadow-lg:0 16px 48px rgba(0,0,0,.12),0 4px 16px rgba(0,0,0,.06);
+}
+html{
+  font-size:14px;
+  -webkit-font-smoothing:antialiased;
+  height:100%;
+}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:var(--sans);
+  min-height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:20px 16px;
+  overflow-y:auto;
+  overflow-x:hidden;
+}
+
+/* Subtle bg blobs — positioned so they don't cause overflow */
+.blob{position:fixed;border-radius:50%;pointer-events:none;z-index:0}
+.blob-1{width:480px;height:480px;top:-160px;right:-160px;background:radial-gradient(circle,rgba(37,99,235,.07),transparent 70%)}
+.blob-2{width:380px;height:380px;bottom:-120px;left:-120px;background:radial-gradient(circle,rgba(5,150,105,.07),transparent 70%)}
+
+.wrap{
+  position:relative;z-index:1;
+  width:100%;max-width:380px;
+  animation:up .35s ease both;
+  margin:auto;
+}
+@keyframes up{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+
+/* Logo */
+.logo{text-align:center;margin-bottom:18px}
+.logo-mark{
+  width:48px;height:48px;border-radius:14px;
+  background:var(--grad1);
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:22px;margin-bottom:10px;
+  box-shadow:0 4px 16px rgba(37,99,235,.35);
+  animation:breathe 3s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{box-shadow:0 6px 20px rgba(37,99,235,.3)}50%{box-shadow:0 6px 28px rgba(37,99,235,.55)}}
+.logo-name{font-size:22px;font-weight:800;color:var(--text);letter-spacing:-.4px;line-height:1}
+.logo-name span{background:var(--grad1);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.logo-tag{font-size:12px;color:var(--text3);margin-top:4px;font-family:var(--mono);letter-spacing:.02em}
+.logo-hindi{font-family:var(--hindi);font-size:11px;color:var(--text4);margin-top:2px}
+
+/* Card */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:18px;
+  padding:24px 24px 20px;
+  box-shadow:var(--shadow-lg);
+}
+.card-title{font-size:19px;font-weight:700;color:var(--text);margin-bottom:3px}
+.card-sub{font-size:13px;color:var(--text3);margin-bottom:20px;font-family:var(--mono)}
+
+/* Demo hint */
+.hint{
+  background:#eff6ff;border:1px solid #bfdbfe;
+  border-radius:8px;padding:9px 12px;
+  font-size:11px;color:var(--blue);
+  margin-bottom:18px;font-family:var(--mono);
+  display:flex;align-items:center;gap:7px;line-height:1.5;
+}
+.hint-icon{font-size:13px;flex-shrink:0}
+
+/* Fields */
+.field{margin-bottom:12px}
+.field label{
+  display:block;font-size:11px;font-weight:700;
+  color:var(--text3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:7px;
+}
+.field input{
+  width:100%;background:var(--bg);
+  border:1.5px solid var(--border);border-radius:9px;
+  padding:11px 14px;color:var(--text);
+  font-size:14px;font-family:var(--sans);outline:none;transition:all .18s;
+}
+.field input:focus{border-color:var(--blue);background:var(--white);box-shadow:0 0 0 3px rgba(37,99,235,.1)}
+.field input::placeholder{color:var(--text4)}
+
+/* Error */
+.err{
+  background:var(--red2);border:1px solid #fca5a5;
+  border-radius:7px;padding:9px 12px;
+  font-size:12px;color:var(--red);margin-bottom:14px;display:none;
+}
+.err.show{display:block}
+
+/* Button */
+.btn-login{
+  width:100%;background:var(--grad1);
+  border:none;border-radius:10px;padding:13px;
+  color:#fff;font-size:14px;font-weight:700;
+  font-family:var(--sans);cursor:pointer;transition:all .18s;
+  box-shadow:0 3px 10px rgba(37,99,235,.3);letter-spacing:.02em;
+}
+.btn-login:hover{opacity:.92;transform:translateY(-1px);box-shadow:0 5px 14px rgba(37,99,235,.4)}
+.btn-login:active{transform:scale(.98)}
+.btn-login:disabled{opacity:.5;cursor:not-allowed;transform:none}
+
+/* Footer stats row */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:18px}
+.stat{
+  background:var(--bg);border:1px solid var(--border);
+  border-radius:9px;padding:9px 6px;text-align:center;
+}
+.stat-v{font-size:14px;font-weight:800;font-family:var(--mono);margin-bottom:1px}
+.stat-v.blue{color:var(--blue)}.stat-v.green{color:var(--green)}
+.stat-k{font-size:9px;color:var(--text4);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+/* Mode badges row */
+.modes{display:flex;gap:5px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.mode-b{
+  font-size:11px;font-weight:600;
+  padding:4px 10px;border-radius:20px;
+  border:1px solid var(--border);color:var(--text3);background:var(--white);
+}
+.divider-text{text-align:center;font-size:10px;color:var(--text4);margin-top:10px;font-family:var(--mono);letter-spacing:.02em}
+</style>
+</head>
+<body>
+
+<div class="blob blob-1"></div>
+<div class="blob blob-2"></div>
+
+<div class="wrap">
+
+  <div class="logo">
+    <div class="logo-mark">🚛</div>
+    <div class="logo-name"><span>Vaani</span>Chain</div>
+    <div class="logo-tag">AI Supply Chain Intelligence</div>
+    <div class="logo-hindi">भारत की आपूर्ति श्रृंखला का भविष्य</div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Welcome back</div>
+    <div class="card-sub">Sign in to your operations dashboard</div>
+
+    <div class="hint">
+      <span class="hint-icon">ℹ</span>
+      Demo — username: <strong>demo</strong> &nbsp;/&nbsp; password: <strong>vaanichain123</strong>
+    </div>
+
+    <div class="err" id="err">Invalid credentials. Please try again.</div>
+
+    <div class="field">
+      <label>Username</label>
+      <input type="text" id="username" placeholder="Enter username" value="demo" autocomplete="username">
+    </div>
+    <div class="field">
+      <label>Password</label>
+      <input type="password" id="password" placeholder="Enter password" value="vaanichain123" autocomplete="current-password">
+    </div>
+
+    <button class="btn-login" id="login-btn" onclick="doLogin()">Sign In →</button>
+
+    <div class="modes">
+      <span class="mode-b">🚛 Road</span>
+      <span class="mode-b">🚂 Rail</span>
+      <span class="mode-b">✈️ Air</span>
+      <span class="mode-b">🚢 Sea</span>
+    </div>
+    <div class="divider-text">20 shipments · AI-powered · Hindi / English</div>
+  </div>
+
+</div>
+
+
+
+<script>
+const VALID = { demo:'vaanichain123', admin:'admin123', judge:'hackathon' };
+
+// NEVER auto-redirect on login.html — always show the form
+// Redirect happens ONLY inside saveAndGo() after successful login
+
+async function doLogin() {
+  const btn  = document.getElementById('login-btn');
+  const err  = document.getElementById('err');
+  const user = document.getElementById('username').value.trim();
+  const pass = document.getElementById('password').value.trim();
+
+  if (!user || !pass) {
+    err.textContent = 'Please enter username and password.';
+    err.classList.add('show'); return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Signing in...';
+  err.classList.remove('show');
+
+  // Try backend first (3s timeout — short so demo doesn't stall)
+  try {
+    const r = await fetch('http://localhost:5000/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ username: user, password: pass }),
+      signal: AbortSignal.timeout(10000)
+    });
+    const d = await r.json();
+    if (d.success) { saveAndGo(user, d.token || 'backend-token'); return; }
+    showErr('Invalid credentials. Please try again.');
+    return;
+  } catch {}
+
+  // Backend down — validate locally
+  if (VALID[user] === pass) {
+    saveAndGo(user, 'local-' + Date.now());
+  } else {
+    showErr('Invalid credentials. Try: demo / vaanichain123');
+  }
+}
+
+function showErr(msg) {
+  const err = document.getElementById('err');
+  const btn = document.getElementById('login-btn');
+  err.textContent = msg;
+  err.classList.add('show');
+  btn.disabled = false;
+  btn.textContent = 'Sign In →';
+}
+
+function saveAndGo(user, token) {
+  localStorage.setItem('vc_token', token);
+  localStorage.setItem('vc_user', user);
+  document.getElementById('login-btn').textContent = '✓ Redirecting...';
+  // use replace() so back button from dashboard doesn't return here
+  setTimeout(() => window.location.replace('dashboard/dashboard.html'), 600);
+}
+
+document.addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+</script>
+</body>
+</html>
