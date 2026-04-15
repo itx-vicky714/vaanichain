@@ -228,41 +228,15 @@ let allShips = [];
 let statusData = {};
 
 async function loadData() {
-  const savedShips = localStorage.getItem("vaanichain_ships");
-  if (savedShips) {
+  const saved = localStorage.getItem('vaanichain_ships');
+  if(saved) { 
+    allShips = JSON.parse(saved); 
+  } else {
     try {
-      allShips = JSON.parse(savedShips);
-      console.log("Using synced shipment data from dashboard state for Reports");
+      const rs = await fetch(`${CONFIG.BASE_URL}/shipments`);
+      allShips = await rs.json();
     } catch(e) {
-      console.error("Failed to parse synced ships for Reports", e);
-    }
-  }
-
-  // Fallback to legacy key if vaanichain_ships is empty
-  if (!allShips.length) {
-    const localReroutes = localStorage.getItem('approvedReroutes');
-    if (localReroutes) {
-      try {
-        allShips = JSON.parse(localReroutes);
-      } catch(e) {}
-    }
-  }
-
-  try {
-    const [rs, st] = await Promise.all([
-      fetch(`${CONFIG.BASE_URL}/shipments`),
-      fetch(`${CONFIG.BASE_URL}/status`)
-    ]);
-    const serverShips = await rs.json();
-    statusData = await st.json();
-    
-    // If we don't have local synced ships, use server data
-    if (!allShips.length) {
-      allShips = serverShips;
-    }
-  } catch(e) {
-    console.warn("Backend offline, using fallback or local data");
-    if (!allShips.length) {
+      console.warn("Backend offline, using fallback data");
       allShips = [
         {id:'SHP-1001',mode:'road',route:'NH-48',origin:'Mumbai',destination:'Delhi',eta_hours:18,status:'on_time',cargo:'Electronics'},
         {id:'SHP-1002',mode:'road',route:'NH-44',origin:'Delhi',destination:'Bengaluru',eta_hours:28,status:'at_risk',cargo:'Pharma'},
@@ -270,24 +244,24 @@ async function loadData() {
         {id:'AIR-3001',mode:'air',route:'IndiGo Cargo',origin:'Mumbai',destination:'Delhi',eta_hours:2,status:'on_time',cargo:'Medical'}
       ];
     }
+  }
+
+  try {
+    const st = await fetch(`${CONFIG.BASE_URL}/status`);
+    statusData = await st.json();
+  } catch(e) {
     statusData = { alerts: [{shipment_id:'SHP-1002', risk_reason:'Monsoon Flooding', recommended_action:'Reroute via NH-52'}] };
   }
 }
 
 // Re-render on storage change
 window.addEventListener("storage", (e) => {
-  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
-    // Determine current report type
+  if (e.key === "vaanichain_ships" && e.newValue) {
+    allShips = JSON.parse(e.newValue);
     const activeItem = document.querySelector('.sb-item.on');
-    const type = activeItem ? activeItem.textContent.toLowerCase() : 'daily';
-    const finalType = type.includes('daily') ? 'daily' : 
-                      type.includes('disruption') ? 'disruption' :
-                      type.includes('cost') ? 'cost' :
-                      type.includes('weather') ? 'weather' :
-                      type.includes('mode') ? 'mode' : 'predict';
-    
     const idx = Array.from(document.querySelectorAll('.sb-item')).indexOf(activeItem);
-    genReport(finalType, idx >= 0 ? idx : 0);
+    const types = ['daily', 'disruption', 'cost', 'weather', 'mode', 'predict'];
+    genReport(types[idx >= 0 ? idx : 0], idx >= 0 ? idx : 0);
   }
 });
 
@@ -365,7 +339,7 @@ async function genReport(type, idx) {
           <tbody>
             ${allShips.map(s => `
               <tr>
-                <td style="font-family:var(--mono);font-weight:700">${s.id || s.shipmentId || s.shp_id}</td>
+                <td style="font-family:var(--mono);font-weight:700">${s.id || s.shipmentId || s.shp_id || s.shipment_id || 'Unknown'}</td>
                 <td>${(s.mode || 'road').toUpperCase()}</td>
                 <td>${(s.origin || s.from || '?')} → ${(s.destination || s.to || '?')}</td>
                 <td>${s.origin || s.from || '—'}</td>
@@ -497,7 +471,7 @@ async function genReport(type, idx) {
           </thead>
           <tbody>
             ${allShips.slice(0,5).map(s => {
-              const shipId = s.id || s.shipmentId || s.shp_id;
+              const shipId = s.id || s.shipmentId || s.shp_id || s.shipment_id || 'Unknown';
               const status = s.status || 'on_time';
               return `
                 <tr>

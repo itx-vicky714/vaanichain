@@ -850,6 +850,7 @@ const BASE_URL = CONFIG.BASE_URL || 'http://localhost:5000';
 let allShips = [], latestAnalysis = {alerts:[], overall_risk:'low'};
 let filterStatus = 'all', filterModeVal = 'all', emailText = '';
 let simulateMode = false;
+let _simRetryTimer = null; let _simCountdownInterval = null;
 
 const WEATHER_CITIES = [
   {name:'Mumbai',   lat:19.076, lon:72.878},
@@ -1520,7 +1521,18 @@ async function simDisrupt() {
     pingFAB();
     setTimeout(() => { loadShipments(); loadStatus(); }, 1500);
   } catch { 
-    showToast('Reset scheduled - backend is waking up, please try again in 30 seconds', 'warn'); 
+    clearTimeout(_simRetryTimer); clearInterval(_simCountdownInterval);
+    let count = 30;
+    showToast(`Reset scheduled - backend is waking up, please try again in ${count} seconds`, 'warn');
+    _simCountdownInterval = setInterval(() => {
+      count--;
+      if(count <= 0) {
+        clearInterval(_simCountdownInterval);
+      } else {
+        const toastEl = document.getElementById('toast');
+        if(toastEl) toastEl.textContent = `Reset scheduled - backend is waking up, please try again in ${count} seconds`;
+      }
+    }, 1000);
     updateChatBadge(false);
   }
 }
@@ -1554,41 +1566,27 @@ let resetCountdown = null;
 let _resetRetryCount = 0;
 
 async function resetAll() {
-  clearInterval(resetCountdown);
-  clearTimeout(resetRetryTimer);
-  _resetRetryCount = 0;
-
-  const performVisualReset = () => {
-    // Manually reset allShips statuses if needed (for visual reset)
-    allShips.forEach(s => {
-      if (s.status === 'at_risk' || s.status === 'delayed' || s.status === 'REROUTED') {
-        s.status = 'on_time';
-      }
-    });
+  const localResetSteps = () => {
+    allShips.forEach(s => { if(s.status !== 'ON_TIME') s.status = 'ON_TIME'; });
+    localStorage.setItem('vaanichain_ships', JSON.stringify(allShips));
     localStorage.removeItem('approvedReroutes');
-    localStorage.removeItem("vaanichain_ships");
-    localStorage.removeItem("vaanichain_simulate");
+    localStorage.removeItem('vaanichain_simulate');
+    if(typeof renderShipments === 'function') renderShipments();
+    if(typeof renderAlerts === 'function') renderAlerts();
+    if(typeof updateKPIs === 'function') updateKPIs();
     simulateMode = false;
-    _lastDisruptionTime = null;
-    document.getElementById('reset-btn-label').textContent = '↺ Reset';
-    
-    renderShipments();
-    activeAlerts = [];
-    renderAlerts();
-    updateKPIs();
-    showToast('Reset complete!', 'ok');
+    showToast('Reset complete! ✅', 'success');
   };
 
   try {
-    const res = await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
-    // Even if res.ok is false, we proceed with visual reset
+    await fetch(`${CONFIG.BASE_URL}/reset`, { method: 'POST' });
     await loadShipments();
     await loadStatus();
-    performVisualReset();
+    localResetSteps();
     addMsg('ai', '✓ All disruptions cleared. Supply chain back to normal operations.');
   } catch (err) {
     console.error('Reset backend failed:', err);
-    performVisualReset();
+    localResetSteps();
     updateChatBadge(false);
   }
 }
@@ -1601,41 +1599,37 @@ async function sendChat() {
     const msg = input.value.trim();
     if (!msg) return;
 
+    // BUG-1 & BUG-2: Real data injection + Language enforcement
+    const lang = voiceLang === 'hi' ? 'Hindi' : 'English';
+    const langInstruction = lang === 'English' 
+      ? "You MUST reply ONLY in English. No Hindi. No Hinglish. Regardless of what language user writes."
+      : "Tumhara jawab SIRF Hindi mein hona chahiye. Chahe user kisi bhi bhasha mein likhe. Koi English nahi.";
+
     const allData = {
       shipments: allShips,
-      summary: {
-        total: allShips.length,
-        onTime: allShips.filter(s => (s.status||'').toUpperCase() === 'ON_TIME').length,
-        atRisk: allShips.filter(s => (s.status||'').toUpperCase() === 'AT_RISK').length,
-        delayed: allShips.filter(s => (s.status||'').toUpperCase() === 'DELAYED').length,
-        rerouted: allShips.filter(s => (s.status||'').toUpperCase() === 'REROUTED').length
+      total: allShips.length,
+      onTime: allShips.filter(s => ['ON_TIME','on_time','On Time'].includes(s.status)).length,
+      atRisk: allShips.filter(s => ['AT_RISK','at_risk','At Risk'].includes(s.status)).length,
+      delayed: allShips.filter(s => ['DELAYED','delayed','Delayed'].includes(s.status)).length,
+      rerouted: allShips.filter(s => ['REROUTED','rerouted'].includes(s.status)).length,
+      byMode: {
+        road: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('road')).length,
+        rail: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('rail')).length,
+        air: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('air')).length,
+        sea: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('sea')).length
       },
       routes: allShips.map(s => ({
-        id: s.id || s.shipmentId,
-        mode: s.mode || s.transportMode,
-        origin: s.origin,
-        destination: s.destination,
-        currentRoute: s.currentRoute || s.route,
-        altRoutes: s.altRoutes || s.alternativeRoutes || []
-      })),
-      analytics: {
-        byMode: {
-          sea: allShips.filter(s => (s.mode||'').toLowerCase().includes('sea') || (s.mode||'').toLowerCase().includes('ship')).length,
-          air: allShips.filter(s => (s.mode||'').toLowerCase().includes('air')).length,
-          rail: allShips.filter(s => (s.mode||'').toLowerCase().includes('rail')).length,
-          road: allShips.filter(s => (s.mode||'').toLowerCase().includes('road')).length
-        }
-      }
+        id: s.id||s.shipmentId||s.shp_id,
+        origin: s.origin, destination: s.destination,
+        mode: s.mode||s.transportMode,
+        status: s.status, eta: s.eta||s.ETA,
+        risk: s.riskScore||s.risk,
+        cargo: s.cargo||s.cargoType,
+        altRoutes: s.altRoutes||s.alternativeRoutes||[]
+      }))
     };
 
-    const selectedLang = voiceLang; 
-    const langInstruction = selectedLang === 'en' 
-      ? "You MUST reply in English only. No matter what language the user writes in, your response must always be in English only."
-      : "User ne Hindi choose ki hai. Chahe user kisi bhi language mein likhe, tumhara jawab hamesha sirf Hindi mein hona chahiye. Koi English nahi.";
-
-    const systemPrompt = "You are VaaniChat, an intelligent logistics assistant for VaaniChain supply chain platform. You have access to complete real-time data below. Answer any question the user asks — about shipments, routes, maps, transport modes (sea/air/rail/road), analytics, reports, delays, risks, ETAs, cargo — using ONLY this data. Never say you don't have data. Never give generic answers. " +
-      "If user asks about specific shipment ID, find it in allShips and give full details. If user asks about analytics/counts, use summary object. If user asks about routes/modes, use routes array. If user asks about at-risk shipments, list them with IDs and reasons. " +
-      "Never return vague answers — always answer the specific question.\n\nLIVE DATA: " + JSON.stringify(allData) + "\n\n" + langInstruction;
+    const systemPrompt = "You are VaaniChat, AI logistics assistant for VaaniChain. LIVE DATA: " + JSON.stringify(allData) + ". Answer ONLY from this data. Never give vague or generic answers. If asked about specific shipment ID, find it in shipments array and give full details. " + langInstruction;
 
     addMsg('user', msg);
     input.value = '';

@@ -513,9 +513,9 @@ function drawShipment(s) {
 
   // Build path
   let path = [];
-  if (s.selectedRoute && s.selectedRoute.via) {
-    // If rerouted, we might want to show the new route. 
-    // For simplicity in this UI, we just map O -> VIA -> D
+  if (s.selectedRoute && s.selectedRoute.coordinates) {
+    path = s.selectedRoute.coordinates;
+  } else if (s.selectedRoute && s.selectedRoute.via) {
     const viaCoord = resolveCoord(s.selectedRoute.via);
     path = [originCoord, viaCoord || originCoord, destCoord].filter(c => c);
   } else {
@@ -529,14 +529,17 @@ function drawShipment(s) {
   }
   if (path.length < 2) path = [originCoord, destCoord];
 
-  const color = s.status === 'at_risk' || s.status === 'delayed' ? '#dc2626' : 
-                s.status === 'REROUTED' ? '#2563eb' : (MODE_COLOR[s.mode] || '#6b7280');
+  // BUG-6: Status based colors
+  let color = '#059669'; // Default Green (ON_TIME)
+  if (['AT_RISK', 'at_risk', 'At Risk'].includes(s.status)) color = '#d97706'; // Orange
+  if (['DELAYED', 'delayed', 'Delayed'].includes(s.status)) color = '#dc2626'; // Red
+  if (['REROUTED', 'rerouted'].includes(s.status)) color = '#2563eb'; // Blue
   
   const weight  = activeShipId === s.id ? 5 : 3;
   const opacity = activeShipId === null || activeShipId === s.id ? 0.85 : 0.3;
   
-  const dash = s.status === 'at_risk' || s.status === 'delayed' ? '10 5' :
-               s.status === 'REROUTED' ? '5 5' :
+  const dash = (['AT_RISK','at_risk','DELAYED','delayed'].includes(s.status)) ? '10 5' :
+               (['REROUTED','rerouted'].includes(s.status)) ? '5 5' :
                s.mode === 'air' ? '6 6' :
                s.mode === 'sea' ? '2 8' : null;
 

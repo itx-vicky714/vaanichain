@@ -193,64 +193,54 @@ document.getElementById('data-date').textContent =
   new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
 // ── Load live data ──
+let allShips = [];
 async function loadData() {
-  let ships = [], status = {};
-  
-  const savedShips = localStorage.getItem("vaanichain_ships");
-  if (savedShips) {
+  const saved = localStorage.getItem('vaanichain_ships');
+  if(saved) { 
+    allShips = JSON.parse(saved); 
+  } else {
     try {
-      ships = JSON.parse(savedShips);
-      console.log("Using synced shipment data from dashboard state");
+      const r = await fetch(`${CONFIG.BASE_URL}/shipments`,{signal:AbortSignal.timeout(4000)});
+      allShips = await r.json();
     } catch(e) {
-      console.error("Failed to parse synced ships", e);
+      console.error("Fetch failed", e);
     }
   }
 
-  // Fallback to approvedReroutes if vaanichain_ships is not yet set (legacy/compatibility)
-  if (!ships.length) {
-    const localReroutes = localStorage.getItem('approvedReroutes');
-    if (localReroutes) {
-      try {
-        ships = JSON.parse(localReroutes);
-      } catch(e) {}
-    }
-  }
+  renderAllCharts();
+}
 
-  try {
-    const [sr, st] = await Promise.all([
-      fetch(`${CONFIG.BASE_URL}/shipments`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json()),
-      fetch(`${CONFIG.BASE_URL}/status`,{signal:AbortSignal.timeout(4000)}).then(r=>r.json())
-    ]);
-    if (!ships.length) ships = sr;
-    status = st;
-  } catch {}
+function renderAllCharts() {
+  const total = allShips.length;
+  const onTime = allShips.filter(s => ['ON_TIME','on_time','On Time'].includes(s.status)).length;
+  const atRisk = allShips.filter(s => ['AT_RISK','at_risk','At Risk'].includes(s.status)).length;
+  const delayed = allShips.filter(s => ['DELAYED','delayed','Delayed'].includes(s.status)).length;
+  const rerouted = allShips.filter(s => ['REROUTED','rerouted'].includes(s.status)).length;
+  
+  const rate = total ? Math.round(((onTime + rerouted)/total)*100) : 100;
+  const saved = rerouted * 42000;
+  
+  document.getElementById('a-total').textContent = total;
+  document.getElementById('a-rate').textContent = Math.min(100, rate) + '%';
+  document.getElementById('a-saved').textContent = '₹' + (saved || 150000).toLocaleString('en-IN');
+  document.getElementById('a-caught').textContent = (atRisk + delayed + rerouted) || 0;
 
-  const total   = ships.length || 20;
-  const ontime  = ships.filter(s=>s.status==='on_time').length || 15;
-  const atRisk  = ships.filter(s=>s.status==='at_risk' || s.status==='delayed').length || 0;
-  const rerouted = ships.filter(s=>s.status==='REROUTED').length || 0;
-  const rate    = total ? Math.round(((ontime + rerouted)/total)*100) : 100;
-  const saved   = (atRisk === 0 && rerouted > 0) ? (rerouted * 42000) : (atRisk > 0 ? 0 : Math.round(Math.random()*2+3) * 50000); 
-  const caught  = status.alerts?.length || rerouted;
-
-  document.getElementById('a-total').textContent  = total;
-  document.getElementById('a-rate').textContent   = Math.min(100, rate) + '%';
-  document.getElementById('a-saved').textContent  = '₹' + (saved||150000).toLocaleString('en-IN');
-  document.getElementById('a-caught').textContent = caught + (caught===0?' (all clear)':'');
-
-  // Mode counts from real data or defaults
-  const modeCounts = {road:0,rail:0,air:0,sea:0};
-  ships.forEach(s=>{ if(modeCounts[s.mode]!==undefined) modeCounts[s.mode]++; });
-  if(!ships.length){modeCounts.road=5;modeCounts.rail=5;modeCounts.air=5;modeCounts.sea=5;}
+  const modeCounts = {
+    road: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('road')).length,
+    rail: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('rail')).length,
+    air: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('air')).length,
+    sea: allShips.filter(s => (s.mode||s.transportMode||'').toLowerCase().includes('sea')).length
+  };
 
   buildCharts(modeCounts, atRisk);
-  buildRiskTable(ships);
+  buildRiskTable(allShips);
 }
 
 // Re-render on storage change
 window.addEventListener("storage", (e) => {
-  if (e.key === "vaanichain_ships" || e.key === "vaanichain_simulate") {
-    loadData();
+  if (e.key === "vaanichain_ships" && e.newValue) {
+    allShips = JSON.parse(e.newValue);
+    renderAllCharts();
     buildDynamicInsights();
   }
 });
